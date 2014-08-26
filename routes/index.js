@@ -4,5 +4,8 @@
  */
 
 exports.index = function(req, res){
-    res.render('index', { title: 'Zao Qi La' });
+    res.render('index', {
+        title: '早起啦',
+        time: new Date()
+    });
 };
