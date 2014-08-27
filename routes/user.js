@@ -12,8 +12,8 @@ exports.list = function(req, res) {
  * @param req
  * @param res
  */
-exports.login = function(req, res) {
-    res.render('user/login', {
+exports.reg = function(req, res) {
+    res.render('user/reg', {
         title: '登录'
     });
 }

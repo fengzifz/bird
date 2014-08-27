@@ -10,7 +10,7 @@ var sites = require('./routes/index');
 var users = require('./routes/user');
 
 /**
- *
+ * 路由配置
  * @param app
  */
 module.exports = function(app) {
@@ -20,6 +20,6 @@ module.exports = function(app) {
 
     // User
     // Login
-    app.get('/login', users.login);
+    app.get('/reg', users.reg);
 
 }
