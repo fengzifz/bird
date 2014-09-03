@@ -11,15 +11,16 @@ var users = require('./routes/user');
 
 /**
  * 路由配置
- * @param app
+ *
  */
 module.exports = function(app) {
 
     // Homepage
-    app.get('/', sites.index);
+    // router.get('/', sites.index);
+    app.use('/', sites);
 
     // User
     // Login
-    app.get('/reg', users.reg);
+    app.use('/reg', users);
 
 }
