@@ -18,11 +18,16 @@ exports.list = function(req, res) {
 };
 
 /**
- * 登录页面
+ * 注册页面
+ * 密码使用 md5 加密
+ * 需要邮箱验证
  * @param req
  * @param res
  */
 exports.reg = function(req, res) {
+
+
+
     res.render('user/reg', {
         title: zhCN.REGISTER
     });
