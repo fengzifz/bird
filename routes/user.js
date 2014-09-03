@@ -11,15 +11,6 @@ var express = require('express');
 var router = express.Router();
 
 /**
- *
- * @param req
- * @param res
- */
-//exports.list = function(req, res) {
-//    res.send("respond with a resource");
-//};
-
-/**
  * 注册页面
  * 密码使用 md5 加密
  * 需要邮箱验证
@@ -33,4 +24,5 @@ router.get('/', function(req, res) {
     });
 });
 
+// Express 4.x 需要把 router 暴露
 module.exports = router;

@@ -16,11 +16,9 @@ var users = require('./routes/user');
 module.exports = function(app) {
 
     // Homepage
-    // router.get('/', sites.index);
     app.use('/', sites);
 
     // User
-    // Login
     app.use('/reg', users);
 
 }
