@@ -33,8 +33,8 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
     var user = {};
 
-    user.email = (req.body.email).trim();
-    user.username = (req.body.username).trim();
+    user.mail = (req.body.mail).trim();
+    user.name = (req.body.name).trim();
     user.password = (req.body.password).trim();
     user.rePassword = (req.body['re-password']).trim();
 
@@ -44,11 +44,9 @@ router.post('/', function(req, res) {
     // Display message
     if (err.length != 0) {
 
-        for (var p in err) {
-            if (err.p) {
+        req.flash('error', 'damon teset');
+        return res.redirect('/reg');
 
-            }
-        }
     }
 
 
@@ -73,14 +71,14 @@ function checkRegisterInfo(user) {
     }
 
     // 验证邮件格式
-    if (!validator.isEmail(user.email)) {
-        err.email = true;
+    if (!validator.isEmail(user.mail)) {
+        err.mail = true;
     }
 
     // 用户名只能使用字母、数字和下划线
     var usernamePatt = /([a-zA-Z0-9]|[_])$/;
-    if (!validator.matches(user.username, usernamePatt)) {
-        err.username = true;
+    if (!validator.matches(user.name, usernamePatt)) {
+        err.name = true;
     }
 
     // 密码长度至少6位
