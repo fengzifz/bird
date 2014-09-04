@@ -10,6 +10,8 @@ var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var settings = require('./settings');
 var flash = require('connect-flash');
 
 var app = express();
@@ -25,6 +27,15 @@ app.use(logger('dev'));
 // app.use(express.methodOverride());
 // app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Session configuration
+app.use(session({
+    secret: settings.cookieSecret,
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},
+    db: new MongoStore({
+        db: settings.db
+    })
+}));
 
 // development only
 //if ('development' == app.get('env')) {
