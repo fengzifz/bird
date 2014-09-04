@@ -9,6 +9,7 @@ var http = require('http');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
@@ -22,6 +23,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(favicon());
 app.use(logger('dev'));
+app.use(flash());
+app.use(bodyParser());
 // app.use(express.json());
 // app.use(express.urlencoded());
 // app.use(express.methodOverride());
@@ -36,6 +39,15 @@ app.use(session({
         db: settings.db
     })
 }));
+
+// Set local
+app.use(function(req, res, next) {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.session.user;
+    next(); // 转交控制权
+});
+
 
 // development only
 //if ('development' == app.get('env')) {
