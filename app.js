@@ -9,6 +9,8 @@ var http = require('http');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
+var session = require('express-session');
+var flash = require('connect-flash');
 
 var app = express();
 
