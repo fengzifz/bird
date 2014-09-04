@@ -11,6 +11,7 @@
         "cookie-parser": "~1.0.1",
         "body-parser": "~1.0.0",
         "express-session": "*",
+        "connect-flash": "*",
         "morgan": "~1.0.0",
         "angular": "*",
         "ejs": "*",
