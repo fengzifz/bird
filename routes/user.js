@@ -43,12 +43,8 @@ router.post('/', function(req, res) {
 
     // Display message
     if (err.length != 0) {
-
-        for (var p in err) {
-            req.flash('error', err.message);
-            return res.redirect('/reg');
-        }
-
+        req.flash('error', err.message);
+        return res.redirect('/reg');
     }
 
 
@@ -66,7 +62,7 @@ function checkRegisterInfo(user) {
 
     // 所有信息必须填写
     for (var p in user) {
-        if (user[p] == null || user[p] == undefined) {
+        if (user[p] == null || user[p] == undefined || user[p] == '') {
             err.all = true;
             err.message = zhCN.ERR_SHOULD_ENTER_ALL;
             break;
