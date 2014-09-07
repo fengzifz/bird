@@ -12,6 +12,7 @@
         "body-parser": "~1.0.0",
         "express-session": "*",
         "connect-flash": "*",
+        "mongoose": "*",
         "connect-mongo": "*",
         "morgan": "~1.0.0",
         "angular": "*",
