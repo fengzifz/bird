@@ -10,6 +10,7 @@ var zhCN = require('../languages/zh_CN');
 var express = require('express');
 var router = express.Router();
 var validator = require('validator');
+var crypto = require('crypto');
 
 /**
  * 注册页面
@@ -47,6 +48,14 @@ router.post('/', function(req, res) {
         return res.redirect('/reg');
     }
 
+    // 通过验证
+    // TODO: md5 base64 加密
+    var md5 = crypto.createHash('md5');
+    user.password = md5.update(user.password).digest('base64');
+
+    // TODO: 创建新的 user 对象，用于保存到数据库
+
+    // TODO: 保存到数据库
 
 });
 
