@@ -58,9 +58,9 @@ router.post('/', function(req, res) {
 
     // 创建新的 user 对象，用于保存到数据库
     var newUser = new User({
-        'name': user.name,
-        'password': user.password,
-        'mail': user.mail
+        name: user.name,
+        password: user.password,
+        mail: user.mail
     });
 
     // 保存到数据库
