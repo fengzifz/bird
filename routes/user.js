@@ -18,7 +18,7 @@ var helper = require('../helper/check_helper');
  * Path
  */
 var pathReg = '/reg';
-var pathIndex = '/index';
+var pathIndex = '/';
 
 /**
  * 注册页面
