@@ -8,6 +8,7 @@
  */
 var sites = require('./routes/index');
 var users = require('./routes/user');
+var path = require('./configs/path_config');
 
 /**
  * 路由配置
@@ -16,9 +17,9 @@ var users = require('./routes/user');
 module.exports = function(app) {
 
     // Homepage
-    app.use('/', sites);
+    app.use(path.home, sites);
 
     // User
-    app.use('/reg', users);
+    app.use(path.reg, users);
 
 }

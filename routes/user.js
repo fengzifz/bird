@@ -13,12 +13,7 @@ var validator = require('validator');
 var crypto = require('crypto');
 var User = require('../models/user');
 var helper = require('../helper/check_helper');
-
-/**
- * Path
- */
-var pathReg = '/reg';
-var pathIndex = '/';
+var path = require('../configs/path_config');
 
 /**
  * 注册页面
@@ -27,7 +22,7 @@ var pathIndex = '/';
  */
 router.get('/', function(req, res) {
 
-    res.render('user' + pathReg, {
+    res.render('user' + path.reg, {
         title: zhCN.REGISTER
     });
 });
@@ -53,7 +48,7 @@ router.post('/', function(req, res) {
     // Display message
     if (err.message) {
         req.flash('error', err.message);
-        return res.redirect(pathReg);
+        return res.redirect(path.reg);
     }
 
     // 通过验证
@@ -73,12 +68,12 @@ router.post('/', function(req, res) {
         // Some error happened
         if (err) {
             req.flash('error', helper.checkErrorCode(err));
-            return res.redirect(pathReg);
+            return res.redirect(path.reg);
         }
 
         req.session.user = newUser;
         req.flash('success', zhCN.SUCCESS_REGISTER);
-        return res.redirect(pathIndex);
+        return res.redirect(path.home);
     });
 
 });
