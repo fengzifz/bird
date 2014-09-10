@@ -11,6 +11,13 @@ var express = require('express');
 var router = express.Router();
 var validator = require('validator');
 var crypto = require('crypto');
+var User = require('../models/user');
+
+/**
+ * Path
+ */
+var pathReg = '/reg';
+var pathIndex = '/index';
 
 /**
  * 注册页面
@@ -19,7 +26,7 @@ var crypto = require('crypto');
  */
 router.get('/', function(req, res) {
 
-    res.render('user/reg', {
+    res.render('user' + pathReg, {
         title: zhCN.REGISTER
     });
 });
@@ -43,19 +50,39 @@ router.post('/', function(req, res) {
     var err = checkRegisterInfo(user);
 
     // Display message
-    if (err.length != 0) {
+    if (err.message) {
         req.flash('error', err.message);
-        return res.redirect('/reg');
+        return res.redirect(pathReg);
     }
 
     // 通过验证
-    // TODO: md5 base64 加密
+    // md5 base64 加密
     var md5 = crypto.createHash('md5');
     user.password = md5.update(user.password).digest('base64');
 
-    // TODO: 创建新的 user 对象，用于保存到数据库
+    // 创建新的 user 对象，用于保存到数据库
+    var newUser = new User({
+        'name': user.name,
+        'password': user.password,
+        'mail': user.mail
+    });
 
     // TODO: 保存到数据库
+    newUser.save(function(err) {
+        // Some error happened
+        if (err) {
+            req.flash('error', zhCN.ERR_SAVE_FAIL);
+
+            // Console.log 错误，方便调试
+            console.log(err);
+
+            return res.redirect(pathReg);
+        }
+
+        req.session.user = newUser;
+        req.flash('success', zhCN.SUCCESS_REGISTER);
+        return res.redirect(pathIndex);
+    });
 
 });
 
