@@ -12,6 +12,7 @@ var router = express.Router();
 var validator = require('validator');
 var crypto = require('crypto');
 var User = require('../models/user');
+var helper = require('../helper/check_helper');
 
 /**
  * Path
@@ -67,15 +68,11 @@ router.post('/', function(req, res) {
         'mail': user.mail
     });
 
-    // TODO: 保存到数据库
+    // 保存到数据库
     newUser.save(function(err) {
         // Some error happened
         if (err) {
-            req.flash('error', zhCN.ERR_SAVE_FAIL);
-
-            // Console.log 错误，方便调试
-            console.log(err);
-
+            req.flash('error', helper.checkErrorCode(err));
             return res.redirect(pathReg);
         }
 

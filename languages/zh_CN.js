@@ -15,6 +15,7 @@ var zh_CN = {
     ERR_INVALID_PASSWORD: '密码必须包含数字和字母',
     ERR_NOT_SAME_PASSWORD: '两次输入的密码必须一致',
     ERR_SAVE_FAIL: '保存出错',
+    ERR_DUPLICATE_EMAIL: 'email 已经被使用',
 
     // Successfully message
     SUCCESS_REGISTER: '注册成功'
