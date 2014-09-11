@@ -43,7 +43,7 @@ User.prototype.save = function save(callback) {
              * Mongo 2.4.9，添加索引时，需要添加回调函数
              */
             // 添加 mail 索引，email 唯一的
-            collection.ensureIndex('mail', {unique: true}, function(err) {});
+            collection.ensureIndex('mail', {unique: true}, function() {});
 
             // 把 user 插入到 document 中
             collection.insert(user, {safe: true}, function(err, user) {
