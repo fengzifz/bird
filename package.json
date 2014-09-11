@@ -6,16 +6,15 @@
         "start": "node app.js"
     },
     "dependencies": {
-        "express": "*",
-        "static-favicon": "~1.0.0",
-        "cookie-parser": "~1.0.1",
+        "express": "4.8.7",
+        "static-favicon": "1.0.2",
+        "cookie-parser": "1.0.1",
         "body-parser": "1.0.2",
         "express-session": "1.7.6",
         "connect-flash": "0.1.1",
         "connect-mongo": "0.4.1",
         "nodemailer": "1.2.2",
         "morgan": "1.0.1",
-        "angular": "*",
         "ejs": "1.0.0",
         "validator": "3.17.1",
         "mongodb": "1.4.9"
