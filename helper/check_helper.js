@@ -23,7 +23,8 @@ helper.checkErrorCode = function checkErrorCode(err) {
             msg = zhCN.ERR_DUPLICATE_EMAIL;
             break;
         default:
-            msg = zhCN.ERR_SAVE_FAIL;
+            // msg = zhCN.ERR_SAVE_FAIL;
+            msg = code;
             break;
     }
 
