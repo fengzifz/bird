@@ -17,6 +17,8 @@
         "morgan": "1.0.1",
         "ejs": "1.0.0",
         "validator": "3.17.1",
-        "mongodb": "1.4.9"
+        "mongodb": "1.4.9",
+        "should": "*",
+        "supertest": "*"
     }
 }
