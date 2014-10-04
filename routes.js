@@ -6,7 +6,7 @@
 /**
  * 包依赖
  */
-var sites = require('./routes/index');
+var index = require('./routes/index');
 var users = require('./routes/user');
 var path = require('./configs/path_config');
 
@@ -17,7 +17,7 @@ var path = require('./configs/path_config');
 module.exports = function(app) {
 
     // Homepage
-    app.use(path.home, sites);
+    app.use(path.home, index);
 
     // User
     app.use(path.reg, users);
