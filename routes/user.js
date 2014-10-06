@@ -147,5 +147,7 @@ function checkRegisterInfo(user) {
     return err;
 }
 
+router.checkRegisterInfo = checkRegisterInfo;
+
 // Express 4.x 需要把 router 暴露
 module.exports = router;
