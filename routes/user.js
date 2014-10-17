@@ -137,7 +137,7 @@ router.post('/reg', function(req, res) {
 
 /**
  * 加密密码
- * @param passwrod
+ * @param password
  * @returns {*}
  */
 function hashPassword(password) {
