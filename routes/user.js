@@ -49,6 +49,12 @@ router.post('/login', function(req, res) {
     var pathLogin = path.user + '/login';
 
     // TODO: Check login info
+    var err = checkLoginInfo(user);
+
+    if (err) {
+        req.flash('error', err);
+        return res.redirect(pathLogin);
+    }
 
     // 验证通过
     user.password = hashPassword(user.password);
@@ -143,6 +149,25 @@ router.post('/reg', function(req, res) {
 function hashPassword(password) {
     var md5 = crypto.createHash('md5');
     return md5.update(password).digest('base64');
+}
+
+/**
+ * 检查用户登录信息
+ * @param user
+ * @returns {*}
+ */
+function checkLoginInfo(user) {
+    // 所有信息必须填写
+    if (!user.mail || !user.password) {
+        return zhCN.ERR_SHOULD_ENTER_ALL;
+    }
+
+    // 验证邮箱格式
+    if (!validator.isEmail(user.mail)) {
+        return zhCN.ERR_INVALID_EMAIL;
+    }
+
+    return null;
 }
 
 /**

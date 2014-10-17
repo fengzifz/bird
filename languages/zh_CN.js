@@ -23,7 +23,7 @@ var zh_CN = {
 
     // Successfully message
     SUCCESS_REGISTER: '注册成功',
-    SUCCESS_LOGIN: '注册成功'
-}
+    SUCCESS_LOGIN: '登录成功'
+};
 
 module.exports = zh_CN;
