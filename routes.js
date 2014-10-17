@@ -20,6 +20,7 @@ module.exports = function(app) {
     app.use(path.home, index);
 
     // User
-    app.use(path.reg, users);
+    // Include register and login
+    app.use(path.user, users);
 
-}
+};
