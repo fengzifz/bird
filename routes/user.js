@@ -37,6 +37,52 @@ router.get('/login', function(req, res) {
 });
 
 /**
+ * 登录
+ */
+router.post('/login', function(req, res) {
+    var user = {};
+
+    user.mail = (req.body.mail).trim();
+    user.password = (req.body.password).trim();
+
+    // Login path
+    var pathLogin = path.user + '/login';
+
+    // TODO: Check login info
+
+    // 验证通过
+    user.password = hashPassword(user.password);
+
+    // 查找是否存在这个 user
+    User.get({mail: user.mail}, function(err, doc) {
+
+        // Database error
+        if (err) {
+            req.flash('error', err);
+            return res.redirect(pathLogin);
+        }
+
+        // 用户不存在
+        if (!doc) {
+            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
+            return res.redirect(pathLogin);
+        }
+
+        // 密码错误
+        if (doc.password != user.password) {
+            req.flash('error', zhCN.ERR_PASSWORD_WRONG);
+            return res.redirect(pathLogin);
+        }
+
+        // 验证成功
+        req.session.user = doc;
+        req.flash('success', zhCN.SUCCESS_LOGIN);
+        return res.redirect('/');
+    });
+
+});
+
+/**
  * 提交注册表单
  * md5 加密
  * 邮箱验证
@@ -51,19 +97,21 @@ router.post('/reg', function(req, res) {
     user.password = (req.body.password).trim();
     user.rePassword = (req.body['re-password']).trim();
 
+    // Path
+    var pathReg = path.user + '/reg';
+
     // 检查用户信息
     var err = checkRegisterInfo(user);
 
     // Display message
     if (err) {
         req.flash('error', err);
-        return res.redirect(path.user);
+        return res.redirect(pathReg);
     }
 
     // 通过验证
     // md5 base64 加密
-    var md5 = crypto.createHash('md5');
-    user.password = md5.update(user.password).digest('base64');
+    user.password = hashPassword(user.password);
 
     // 创建新的 user 对象，用于保存到数据库
     var newUser = new User({
@@ -77,7 +125,7 @@ router.post('/reg', function(req, res) {
         // Some error happened
         if (err) {
             req.flash('error', helper.checkErrorCode(err));
-            return res.redirect(path.user);
+            return res.redirect(pathReg);
         }
 
         req.session.user = newUser;
@@ -87,6 +135,15 @@ router.post('/reg', function(req, res) {
 
 });
 
+/**
+ * 加密密码
+ * @param passwrod
+ * @returns {*}
+ */
+function hashPassword(password) {
+    var md5 = crypto.createHash('md5');
+    return md5.update(password).digest('base64');
+}
 
 /**
  * 检查注册信息

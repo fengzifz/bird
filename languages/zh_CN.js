@@ -17,8 +17,13 @@ var zh_CN = {
     ERR_SAVE_FAIL: '保存出错',
     ERR_DUPLICATE_EMAIL: 'email 已经被使用',
 
+    // Login error message
+    ERR_USER_NOT_FOUND: '用户不存在',
+    ERR_PASSWORD_WRONG: '密码错误',
+
     // Successfully message
-    SUCCESS_REGISTER: '注册成功'
+    SUCCESS_REGISTER: '注册成功',
+    SUCCESS_LOGIN: '注册成功'
 }
 
 module.exports = zh_CN;
