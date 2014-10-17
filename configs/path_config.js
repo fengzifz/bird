@@ -7,4 +7,4 @@ var path = {};
 module.exports = path;
 
 path.home = '/';
-path.reg = '/reg';
+path.user = '/user';
