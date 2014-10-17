@@ -24,7 +24,6 @@ module.exports = User;
  * @param callback
  */
 User.get = function get(index, callback) {
-    // TODO: Get index from database
     mongodb.open(function(err, db) {
 
         if (err) {

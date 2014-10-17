@@ -48,7 +48,7 @@ router.post('/login', function(req, res) {
     // Login path
     var pathLogin = path.user + '/login';
 
-    // TODO: Check login info
+    // 检查登录信息
     var err = checkLoginInfo(user);
 
     if (err) {
