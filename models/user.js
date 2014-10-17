@@ -23,7 +23,7 @@ User.prototype.save = function save(callback) {
         name: this.name,
         password: this.password,
         mail: this.mail
-    }
+    };
 
     // 连接数据库
     mongodb.open(function(err, db) {

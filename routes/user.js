@@ -20,10 +20,19 @@ var path = require('../configs/path_config');
  * @param req
  * @param res
  */
-router.get('/', function(req, res) {
+router.get('/reg', function(req, res) {
 
-    res.render('user' + path.reg, {
+    res.render('user/reg', {
         title: zhCN.REGISTER
+    });
+});
+
+/**
+ * 登录页面
+ */
+router.get('/login', function(req, res) {
+    res.render('user/login', {
+        title: zhCN.LOGIN
     });
 });
 
@@ -34,7 +43,7 @@ router.get('/', function(req, res) {
  * @param req
  * @param res
  */
-router.post('/', function(req, res) {
+router.post('/reg', function(req, res) {
     var user = {};
 
     user.mail = (req.body.mail).trim();
@@ -48,7 +57,7 @@ router.post('/', function(req, res) {
     // Display message
     if (err) {
         req.flash('error', err);
-        return res.redirect(path.reg);
+        return res.redirect(path.user);
     }
 
     // 通过验证
@@ -68,7 +77,7 @@ router.post('/', function(req, res) {
         // Some error happened
         if (err) {
             req.flash('error', helper.checkErrorCode(err));
-            return res.redirect(path.reg);
+            return res.redirect(path.user);
         }
 
         req.session.user = newUser;
