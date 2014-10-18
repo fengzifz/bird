@@ -14,6 +14,7 @@ var crypto = require('crypto');
 var User = require('../models/user');
 var helper = require('../helper/check_helper');
 var path = require('../configs/path_config');
+var mail = require('../configs/mail');
 
 // 检查登录状态
 router.get('/reg', checkLogin);
@@ -152,17 +153,10 @@ router.post('/reg', function(req, res) {
         }
 
         // 保存数据库成功后，发送邮件
-        var mail = require('../configs/mail');
-
-        // Send to who
-        mail.mailOptionsReg.to = newUser.mail;
-        mail.mailOptionsReg.html = mail.mailOptionsReg.html.replace(/zaoqila_user/, newUser.name);
-        mail.transporter.sendMail(mail.mailOptionsReg, function(err, info) {
-            if (err) {
-                req.flash('error', zhCN.ERR_SMTP);
-                return res.redirect(pathReg);
-            }
-        });
+        if (sendMail(newUser, 'reg')) {
+            req.flash('success', zhCN.ERR_SMTP);
+            return res.redirect(pathReg);
+        }
 
         req.session.user = newUser;
         req.flash('success', zhCN.SUCCESS_REGISTER);
@@ -170,6 +164,29 @@ router.post('/reg', function(req, res) {
     });
 
 });
+
+function sendMail(user, type) {
+    var opt;
+
+    if (type == 'reg') {
+        mail.mailOptionsReg.to = user.mail;
+        mail.mailOptionsReg.html = mail.mailOptionsReg.html.replace(/zaoqila_user/, user.name);
+
+        opt = mail.mailOptionsReg;
+    } else if (type == 'forgetPwd') {
+        // TODO: Forget password
+    }
+
+    mail.transporter.sendMail(opt, function(err) {
+        if (err) {
+            console.log('error');
+            return true;
+        } else {
+            console.log('success');
+            return null;
+        }
+    });
+}
 
 /**
  * 检查登录
