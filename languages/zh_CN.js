@@ -16,6 +16,7 @@ var zh_CN = {
     ERR_NOT_SAME_PASSWORD: '两次输入的密码必须一致',
     ERR_SAVE_FAIL: '保存出错',
     ERR_DUPLICATE_EMAIL: 'email 已经被使用',
+    ERR_SMTP: 'SMTP 出错，请重试',
 
     // Login error message
     ERR_USER_NOT_FOUND: '用户不存在',

@@ -151,6 +151,19 @@ router.post('/reg', function(req, res) {
             return res.redirect(pathReg);
         }
 
+        // 保存数据库成功后，发送邮件
+        var mail = require('../configs/mail');
+
+        // Send to who
+        mail.mailOptionsReg.to = newUser.mail;
+        mail.mailOptionsReg.html = mail.mailOptionsReg.html.replace(/zaoqila_user/, newUser.name);
+        mail.transporter.sendMail(mail.mailOptionsReg, function(err, info) {
+            if (err) {
+                req.flash('error', zhCN.ERR_SMTP);
+                return res.redirect(pathReg);
+            }
+        });
+
         req.session.user = newUser;
         req.flash('success', zhCN.SUCCESS_REGISTER);
         return res.redirect(path.home);
@@ -184,7 +197,7 @@ function checkLogin(req, res, next) {
 function checkNotLogin(req, res, next) {
     if (!req.session.user) {
         req.flash('success', zhCN.SUCCESS_NOT_LOGIN);
-        return res.redirect('/user/reg');
+        return res.redirect('/user/login');
     }
 
     next();
