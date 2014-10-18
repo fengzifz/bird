@@ -18,6 +18,44 @@ function User(user) {
 // 输出模块
 module.exports = User;
 
+/**
+ * Get index from database
+ * @param index
+ * @param callback
+ */
+User.get = function get(index, callback) {
+    mongodb.open(function(err, db) {
+
+        if (err) {
+            return callback(err);
+        }
+
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.findOne(index, function(err, doc) {
+
+                mongodb.close();
+
+                if (doc) {
+                    var user = new User(doc);
+                    return callback(null, user);
+                }
+
+                return callback(err, null);
+            });
+        });
+    });
+};
+
+
+/**
+ * 保存用户到数据库
+ * @param callback
+ */
 User.prototype.save = function save(callback) {
     var user = {
         name: this.name,
@@ -58,4 +96,4 @@ User.prototype.save = function save(callback) {
             });
         });
     })
-}
+};
