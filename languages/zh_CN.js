@@ -23,7 +23,10 @@ var zh_CN = {
 
     // Successfully message
     SUCCESS_REGISTER: '注册成功',
-    SUCCESS_LOGIN: '登录成功'
+    SUCCESS_LOGIN: '登录成功',
+    SUCCESS_HAVE_LOGIN: '已经登录',
+    SUCCESS_NOT_LOGIN: '请先登录',
+    SUCCESS_LOGOUT: '已经退出'
 };
 
 module.exports = zh_CN;
