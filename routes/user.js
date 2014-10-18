@@ -165,6 +165,11 @@ router.post('/reg', function(req, res) {
 
 });
 
+/**
+ * Send email
+ * @param user
+ * @param type
+ */
 function sendMail(user, type) {
     var opt;
 
