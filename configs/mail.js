@@ -3,16 +3,17 @@
  */
 
 var nodemailer = require('nodemailer');
+var site = require('./site');
 
-var adminMail = 'zaoqila_bird@126.com';
+var adminMail = site.mail;
 
 // create reusable transporter object using SMTP transport
 exports.transporter = nodemailer.createTransport({
-    host: 'smtp.126.com',
-    port: 25,
+    host: site.host,
+    port: site.port,
     auth: {
         user: adminMail,
-        pass: 'fengzifz'
+        pass: site.pass
     }
 });
 
