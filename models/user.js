@@ -10,9 +10,10 @@ var mongodb = require('./db');
  * @constructor
  */
 function User(user) {
-    this.name = user.name;
-    this.password = user.password;
-    this.mail = user.mail;
+
+    // 新建 user 时，才需要 name，password，mail
+    // 更新 user 时，只有 mail 是必须的，name 和 password 是选填
+    this.user = user;
 }
 
 // 输出模块
@@ -57,11 +58,7 @@ User.get = function get(index, callback) {
  * @param callback
  */
 User.prototype.save = function save(callback) {
-    var user = {
-        name: this.name,
-        password: this.password,
-        mail: this.mail
-    };
+    var user = this.user;
 
     // 连接数据库
     mongodb.open(function(err, db) {
@@ -96,4 +93,40 @@ User.prototype.save = function save(callback) {
             });
         });
     })
+};
+
+/**
+ * 更新用户
+ * @param index 例如：{mail: xxx}
+ * @param callback
+ */
+User.prototype.update = function update(index, callback) {
+
+    var user = this.user;
+
+    mongodb.open(function(err, db) {
+
+        if (err) {
+            return callback(err);
+        }
+
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            // 更新
+            collection.update(index, user, {w: 1}, function(err) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+                mongodb.close();
+
+                callback(null);
+            });
+        });
+    });
 };
