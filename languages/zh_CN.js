@@ -6,6 +6,7 @@
 var zh_CN = {
     REGISTER: '注册',
     LOGIN: '登录',
+    FORGET: '忘记密码',
 
     // Error message
     ERR_SHOULD_ENTER_ALL: '请填写全部信息',
@@ -27,7 +28,8 @@ var zh_CN = {
     SUCCESS_LOGIN: '登录成功',
     SUCCESS_HAVE_LOGIN: '已经登录',
     SUCCESS_NOT_LOGIN: '请先登录',
-    SUCCESS_LOGOUT: '已经退出'
+    SUCCESS_LOGOUT: '已经退出',
+    SUCCESS_NEW_PWD: '新的密码已经发送到您的邮箱，请查收'
 };
 
 module.exports = zh_CN;
