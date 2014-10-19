@@ -15,6 +15,7 @@ var User = require('../models/user');
 var helper = require('../helper/check_helper');
 var path = require('../configs/path_config');
 var mail = require('../configs/mail');
+var generatePassword = require('../helper/password_helper');
 
 // 检查登录状态
 router.get('/reg', checkLogin);
@@ -52,6 +53,68 @@ router.get('/logout', function(req, res) {
     // Redirect to login page
     req.flash('success', zhCN.SUCCESS_LOGOUT);
     return res.redirect('/user/login');
+});
+
+/**
+ * 忘记密码
+ */
+router.get('/forget', function(req, res) {
+    res.render('user/forget', {
+        title: zhCN.FORGET
+    });
+});
+
+router.post('/forget', function(req, res) {
+
+    var mail = (req.body.mail).trim(),
+        pathFgt = path.user + '/forget';
+
+    // 验证邮箱格式
+    if (!validator.isEmail(mail)) {
+        req.flash('error', zhCN.ERR_INVALID_EMAIL);
+        return res.redirect(pathFgt);
+    }
+
+    var emailIndex = {mail: (req.body.mail).trim()};
+
+    User.get(emailIndex, function(err, doc) {
+        // Database error
+        if (err) {
+            req.flash('error', err);
+            return res.redirect(pathFgt);
+        }
+
+        // 用户不存在
+        if (!doc) {
+            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
+            return res.redirect(pathFgt);
+        }
+
+        // 生成6位随机密码
+        var password = generatePassword.generateRandomPwd(6);
+
+        // 更新数据库
+        var newUser = new User({
+            name: doc.name,
+            mail: mail,
+            password: hashPassword(password)
+        });
+
+        newUser.update(emailIndex, function(err) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect(pathFgt);
+            }
+
+            // 发送到用户邮箱
+            newUser.password = password;
+            sendMail(newUser, 'fgt');
+
+            req.flash('success', zhCN.SUCCESS_NEW_PWD);
+            return res.redirect(pathFgt);
+
+        });
+    });
 });
 
 /**
@@ -173,21 +236,27 @@ router.post('/reg', function(req, res) {
 function sendMail(user, type) {
     var opt;
 
-    if (type == 'reg') {
-        mail.mailOptionsReg.to = user.mail;
-        mail.mailOptionsReg.html = mail.mailOptionsReg.html.replace(/zaoqila_user/, user.name);
+    console.log(user);
 
-        opt = mail.mailOptionsReg;
-    } else if (type == 'forgetPwd') {
-        // TODO: Forget password
+    if (type == 'reg') {
+        mail.mailOptReg.to = user.mail;
+        mail.mailOptReg.html = mail.mailOptReg.html.replace(/zaoqila_user/, user.name);
+
+        opt = mail.mailOptReg;
+    } else if (type == 'fgt') {
+        mail.mailOptFgt.to = user.mail;
+        mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_user/, user.name);
+        mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_password/, user.password);
+
+        opt = mail.mailOptFgt;
     }
 
     mail.transporter.sendMail(opt, function(err) {
         if (err) {
-            console.log('error');
+            console.log('Send mail fail.');
             return true;
         } else {
-            console.log('success');
+            console.log('Send mail successfully.');
             return null;
         }
     });
