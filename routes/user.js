@@ -236,14 +236,20 @@ router.post('/reg', function(req, res) {
         }
 
         // 保存数据库成功后，发送邮件
-        if (sendMail(newUser, 'reg')) {
-            req.flash('success', zhCN.ERR_SMTP);
-            return res.redirect(pathReg);
-        }
+        var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
+            mailHelper = new MailHelper(mailOpt);
 
-        req.session.user = newUser;
-        req.flash('success', zhCN.SUCCESS_REGISTER);
-        return res.redirect(path.home);
+        mailHelper.send(function(err) {
+            if (err) {
+                req.flash('error', zhCN.ERR_SMTP);
+                return res.redirect(pathReg);
+            }
+
+            req.session.user = newUser;
+            req.flash('success', zhCN.SUCCESS_REGISTER);
+            return res.redirect(path.home);
+        });
+
     });
 
 });
@@ -388,7 +394,6 @@ function checkRegisterInfo(user) {
 }
 
 router.checkRegisterInfo = checkRegisterInfo;
-router.sendMail = sendMail;
 
 // Express 4.x 需要把 router 暴露
 module.exports = router;

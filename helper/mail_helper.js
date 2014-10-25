@@ -16,8 +16,8 @@ Mail.prototype.send = function send(callback) {
         opt;
 
     if (type == 'reg') {
-        mail.mailOptReg.to = user.mail;
-        mail.mailOptReg.html = mail.mailOptReg.html.replace(/zaoqila_user/, user.name);
+        mail.mailOptReg.to = this.opt.mail;
+        mail.mailOptReg.html = mail.mailOptReg.html.replace(/zaoqila_user/, this.opt.name);
 
         opt = mail.mailOptReg;
     } else if (type == 'fgt') {
