@@ -29,13 +29,6 @@ Mail.prototype.send = function send(callback) {
     }
 
     mail.transporter.sendMail(opt, function(err) {
-        if (err) {
-            console.log('Send mail fail.');
-        } else {
-            console.log('Send mail successfully.');
-        }
-        console.log(err);
-
         callback(err);
     });
 
