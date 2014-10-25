@@ -16,6 +16,7 @@ var helper = require('../helper/check_helper');
 var path = require('../configs/path_config');
 var mail = require('../configs/mail');
 var generatePassword = require('../helper/password_helper');
+var MailHelper = require('../helper/mail_helper');
 
 // 检查登录状态
 router.get('/reg', checkLogin);
@@ -64,6 +65,9 @@ router.get('/forget', function(req, res) {
     });
 });
 
+/**
+ * 申请新的密码
+ */
 router.post('/forget', function(req, res) {
 
     var mail = (req.body.mail).trim(),
@@ -95,7 +99,7 @@ router.post('/forget', function(req, res) {
 
         // 更新数据库
         var newUser = new User({
-            name: doc.name,
+            name: doc.user.name,
             mail: mail,
             password: hashPassword(password)
         });
@@ -107,11 +111,26 @@ router.post('/forget', function(req, res) {
             }
 
             // 发送到用户邮箱
-            newUser.password = password;
-            sendMail(newUser, 'fgt');
+            // newUser.password = password;
+            var mailOpt = {
+                mail: newUser.user.mail,
+                name: newUser.user.name,
+                password: password,
+                type: 'fgt'
+            };
 
-            req.flash('success', zhCN.SUCCESS_NEW_PWD);
-            return res.redirect(pathFgt);
+            var mailHelper = new MailHelper(mailOpt);
+
+            mailHelper.send(function(err) {
+
+                if (err) {
+                    req.flash('error', zhCN.ERR_SEND_MAIL_FAIL);
+                    return res.redirect(pathFgt);
+                }
+
+                req.flash('success', zhCN.SUCCESS_NEW_PWD);
+                return res.redirect(pathFgt);
+            });
 
         });
     });
@@ -233,10 +252,9 @@ router.post('/reg', function(req, res) {
  * @param user
  * @param type
  */
+
 function sendMail(user, type) {
     var opt;
-
-    console.log(user);
 
     if (type == 'reg') {
         mail.mailOptReg.to = user.mail;
@@ -257,7 +275,7 @@ function sendMail(user, type) {
             return true;
         } else {
             console.log('Send mail successfully.');
-            return null;
+            return false;
         }
     });
 }
@@ -369,6 +387,7 @@ function checkRegisterInfo(user) {
 }
 
 router.checkRegisterInfo = checkRegisterInfo;
+router.sendMail = sendMail;
 
 // Express 4.x 需要把 router 暴露
 module.exports = router;
