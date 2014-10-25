@@ -255,39 +255,6 @@ router.post('/reg', function(req, res) {
 });
 
 /**
- * Send email
- * @param user
- * @param type
- */
-
-function sendMail(user, type) {
-    var opt;
-
-    if (type == 'reg') {
-        mail.mailOptReg.to = user.mail;
-        mail.mailOptReg.html = mail.mailOptReg.html.replace(/zaoqila_user/, user.name);
-
-        opt = mail.mailOptReg;
-    } else if (type == 'fgt') {
-        mail.mailOptFgt.to = user.mail;
-        mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_user/, user.name);
-        mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_password/, user.password);
-
-        opt = mail.mailOptFgt;
-    }
-
-    mail.transporter.sendMail(opt, function(err) {
-        if (err) {
-            console.log('Send mail fail.');
-            return true;
-        } else {
-            console.log('Send mail successfully.');
-            return false;
-        }
-    });
-}
-
-/**
  * 检查登录
  * @param req
  * @param res
