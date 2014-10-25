@@ -95,13 +95,14 @@ router.post('/forget', function(req, res) {
         }
 
         // 生成6位随机密码
-        var password = generatePassword.generateRandomPwd(6);
+        var password = generatePassword.generateRandomPwd(6),
+            newPassword = hashPassword(password);
 
         // 更新数据库
         var newUser = new User({
             name: doc.user.name,
             mail: mail,
-            password: hashPassword(password)
+            password: newPassword
         });
 
         newUser.update(emailIndex, function(err) {
@@ -175,7 +176,7 @@ router.post('/login', function(req, res) {
         }
 
         // 密码错误
-        if (doc.password != user.password) {
+        if (doc.user.password != user.password) {
             req.flash('error', zhCN.ERR_PASSWORD_WRONG);
             return res.redirect(pathLogin);
         }
