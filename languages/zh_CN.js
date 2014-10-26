@@ -18,6 +18,7 @@ var zh_CN = {
     ERR_SAVE_FAIL: '保存出错',
     ERR_DUPLICATE_EMAIL: 'email 已经被使用',
     ERR_SMTP: 'SMTP 出错，请重试',
+    ERR_SEND_MAIL_FAIL: '发送邮件失败',
 
     // Login error message
     ERR_USER_NOT_FOUND: '用户不存在',

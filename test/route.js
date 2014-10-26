@@ -10,8 +10,16 @@ var path = require('../configs/path_config');
 describe('routes/user.js', function() {
 
     // Register page
-    it ('Register page: /user/ should 200', function(done) {
-        request(app).get(path.user).end(function(err, res) {
+    it ('Register page: /user/reg should 200', function(done) {
+        request(app).get(path.user + '/reg').end(function(err, res) {
+            res.statusCode.should.equal(200);
+            done(err);
+        });
+    });
+
+    // Login page
+    it('Login page: /user/login should 200', function(done) {
+        request(app).get(path.user + '/login').end(function(err, res) {
             res.statusCode.should.equal(200);
             done(err);
         });
