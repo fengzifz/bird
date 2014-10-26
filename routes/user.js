@@ -16,6 +16,7 @@ var helper = require('../helper/check_helper');
 var path = require('../configs/path_config');
 var mail = require('../configs/mail');
 var generatePassword = require('../helper/password_helper');
+var MailHelper = require('../helper/mail_helper');
 
 // 检查登录状态
 router.get('/reg', checkLogin);
@@ -64,6 +65,9 @@ router.get('/forget', function(req, res) {
     });
 });
 
+/**
+ * 申请新的密码
+ */
 router.post('/forget', function(req, res) {
 
     var mail = (req.body.mail).trim(),
@@ -91,13 +95,14 @@ router.post('/forget', function(req, res) {
         }
 
         // 生成6位随机密码
-        var password = generatePassword.generateRandomPwd(6);
+        var password = generatePassword.generateRandomPwd(6),
+            newPassword = hashPassword(password);
 
         // 更新数据库
         var newUser = new User({
-            name: doc.name,
+            name: doc.user.name,
             mail: mail,
-            password: hashPassword(password)
+            password: newPassword
         });
 
         newUser.update(emailIndex, function(err) {
@@ -107,11 +112,26 @@ router.post('/forget', function(req, res) {
             }
 
             // 发送到用户邮箱
-            newUser.password = password;
-            sendMail(newUser, 'fgt');
+            // newUser.password = password;
+            var mailOpt = {
+                mail: newUser.user.mail,
+                name: newUser.user.name,
+                password: password,
+                type: 'fgt'
+            };
 
-            req.flash('success', zhCN.SUCCESS_NEW_PWD);
-            return res.redirect(pathFgt);
+            var mailHelper = new MailHelper(mailOpt);
+
+            mailHelper.send(function(err) {
+
+                if (err) {
+                    req.flash('error', zhCN.ERR_SEND_MAIL_FAIL);
+                    return res.redirect(pathFgt);
+                }
+
+                req.flash('success', zhCN.SUCCESS_NEW_PWD);
+                return res.redirect(pathFgt);
+            });
 
         });
     });
@@ -156,7 +176,7 @@ router.post('/login', function(req, res) {
         }
 
         // 密码错误
-        if (doc.password != user.password) {
+        if (doc.user.password != user.password) {
             req.flash('error', zhCN.ERR_PASSWORD_WRONG);
             return res.redirect(pathLogin);
         }
@@ -216,51 +236,23 @@ router.post('/reg', function(req, res) {
         }
 
         // 保存数据库成功后，发送邮件
-        if (sendMail(newUser, 'reg')) {
-            req.flash('success', zhCN.ERR_SMTP);
-            return res.redirect(pathReg);
-        }
+        var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
+            mailHelper = new MailHelper(mailOpt);
 
-        req.session.user = newUser;
-        req.flash('success', zhCN.SUCCESS_REGISTER);
-        return res.redirect(path.home);
+        mailHelper.send(function(err) {
+            if (err) {
+                req.flash('error', zhCN.ERR_SMTP);
+                return res.redirect(pathReg);
+            }
+
+            req.session.user = newUser;
+            req.flash('success', zhCN.SUCCESS_REGISTER);
+            return res.redirect(path.home);
+        });
+
     });
 
 });
-
-/**
- * Send email
- * @param user
- * @param type
- */
-function sendMail(user, type) {
-    var opt;
-
-    console.log(user);
-
-    if (type == 'reg') {
-        mail.mailOptReg.to = user.mail;
-        mail.mailOptReg.html = mail.mailOptReg.html.replace(/zaoqila_user/, user.name);
-
-        opt = mail.mailOptReg;
-    } else if (type == 'fgt') {
-        mail.mailOptFgt.to = user.mail;
-        mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_user/, user.name);
-        mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_password/, user.password);
-
-        opt = mail.mailOptFgt;
-    }
-
-    mail.transporter.sendMail(opt, function(err) {
-        if (err) {
-            console.log('Send mail fail.');
-            return true;
-        } else {
-            console.log('Send mail successfully.');
-            return null;
-        }
-    });
-}
 
 /**
  * 检查登录
