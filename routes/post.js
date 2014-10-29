@@ -4,13 +4,18 @@
 
 var express = require('express');
 var router = express.Router();
+var checkHelper = require('../helper/check_helper');
+var zhCh = require('../languages/zh_CN');
+
+// Check login
+router.get('/', checkHelper.checkNotLogin);
 
 /**
  * 签到页面
  */
 router.get('/', function(req, res) {
     res.render('post/post', {
-        title: '签到'
+        title: zhCh.title.POST
     });
 });
 

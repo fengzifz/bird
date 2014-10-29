@@ -34,4 +34,8 @@ var zh_CN = {
     SUCCESS_NEW_PWD: '新的密码已经发送到您的邮箱，请查收'
 };
 
+zh_CN.title = {
+    POST: '签到'
+};
+
 module.exports = zh_CN;
