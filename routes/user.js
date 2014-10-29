@@ -180,7 +180,6 @@ router.post('/login', function(req, res) {
             req.flash('error', zhCN.ERR_PASSWORD_WRONG);
             return res.redirect(pathLogin);
         }
-
         // 验证成功
         req.session.user = doc;
         req.flash('success', zhCN.SUCCESS_LOGIN);
