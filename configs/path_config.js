@@ -8,3 +8,4 @@ module.exports = path;
 
 path.home = '/';
 path.user = '/user';
+path.post = '/post';
