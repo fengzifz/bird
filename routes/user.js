@@ -70,8 +70,19 @@ router.get('/forget', function(req, res) {
  */
 router.get('/profile', function(req, res) {
     res.render('user/profile', {
-        title: '用户资料'
+        title: zhCN.title.PROFILE
     })
+});
+
+/**
+ * 修改用户资料
+ * TODO: 暂时添加修改目标时间
+ */
+router.post('/profile', function(req, res) {
+
+
+
+    return res.redirect('/user/profile');
 });
 
 /**
@@ -235,30 +246,45 @@ router.post('/reg', function(req, res) {
         mail: user.mail
     });
 
-    // 保存到数据库
-    newUser.save(function(err) {
-        // Some error happened
+    User.get({name: user.name}, function(err, doc) {
         if (err) {
-            req.flash('error', helper.checkErrorCode(err));
+            req.flash('error', err);
             return res.redirect(pathReg);
         }
 
-        // 保存数据库成功后，发送邮件
-        var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
-            mailHelper = new MailHelper(mailOpt);
+        if (doc) {
+            req.flash('error', '用户名已经存在');
+            return res.redirect(pathReg);
+        }
 
-        mailHelper.send(function(err) {
+        // 保存到数据库
+        newUser.save(function(err) {
+            // Some error happened
+            // Maybe duplicate email
             if (err) {
-                req.flash('error', zhCN.ERR_SMTP);
+                req.flash('error', helper.checkErrorCode(err));
                 return res.redirect(pathReg);
             }
 
-            req.session.user = newUser;
-            req.flash('success', zhCN.SUCCESS_REGISTER);
-            return res.redirect(path.home);
-        });
+            // 保存数据库成功后，发送邮件
+            var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
+                mailHelper = new MailHelper(mailOpt);
 
+            mailHelper.send(function(err) {
+                if (err) {
+                    req.flash('error', zhCN.ERR_SMTP);
+                    return res.redirect(pathReg);
+                }
+
+                req.session.user = newUser;
+                req.flash('success', zhCN.SUCCESS_REGISTER);
+                return res.redirect(path.home);
+            });
+
+        });
     });
+
+
 
 });
 
