@@ -8,10 +8,11 @@ var checkHelper = require('../helper/check_helper');
 var zhCh = require('../languages/zh_CN');
 
 // Check login
-router.get('/', checkHelper.checkNotLogin);
+router.post('/', checkHelper.checkNotLogin);
 
 /**
  * 签到页面
+ * TODO: 列出今天的 post
  */
 router.get('/', function(req, res) {
     res.render('post/post', {
@@ -24,13 +25,7 @@ router.get('/', function(req, res) {
  */
 router.post('/post', function(req, res) {
 
-    var currentUser = req.session.user;
-
-    if (currentUser) {
-        res.header('errorcode', 403);
-        req.flash('error', '没有权限');
-        return res.redirect('/post');
-    }
+    
 
     return res.redirect('/post');
 });

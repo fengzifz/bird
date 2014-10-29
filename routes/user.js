@@ -66,6 +66,15 @@ router.get('/forget', function(req, res) {
 });
 
 /**
+ * 用户资料页面
+ */
+router.get('/profile', function(req, res) {
+    res.render('user/profile', {
+        title: '用户资料'
+    })
+});
+
+/**
  * 申请新的密码
  */
 router.post('/forget', function(req, res) {
