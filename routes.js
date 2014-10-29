@@ -8,6 +8,7 @@
  */
 var index = require('./routes/index');
 var users = require('./routes/user');
+var post = require('./routes/post');
 var path = require('./configs/path_config');
 
 /**
@@ -22,5 +23,8 @@ module.exports = function(app) {
     // User
     // Include register and login
     app.use(path.user, users);
+
+    // Post
+    app.use(path.post, post);
 
 };
