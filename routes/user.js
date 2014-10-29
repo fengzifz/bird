@@ -19,9 +19,9 @@ var generatePassword = require('../helper/password_helper');
 var MailHelper = require('../helper/mail_helper');
 
 // 检查登录状态
-router.get('/reg', checkLogin);
-router.get('/login', checkLogin);
-router.get('/logout', checkNotLogin);
+router.get('/reg', helper.checkLogin);
+router.get('/login', helper.checkLogin);
+router.get('/logout', helper.checkNotLogin);
 
 /**
  * 注册页面
@@ -252,38 +252,6 @@ router.post('/reg', function(req, res) {
     });
 
 });
-
-/**
- * 检查登录
- * @param req
- * @param res
- * @param next
- * @returns {*|Request}
- */
-function checkLogin(req, res, next) {
-    if (req.session.user) {
-        req.flash('success', zhCN.SUCCESS_HAVE_LOGIN);
-        return res.redirect('/');
-    }
-
-    next();
-}
-
-/**
- * 检查未登录
- * @param req
- * @param res
- * @param next
- * @returns {*|Request}
- */
-function checkNotLogin(req, res, next) {
-    if (!req.session.user) {
-        req.flash('success', zhCN.SUCCESS_NOT_LOGIN);
-        return res.redirect('/user/login');
-    }
-
-    next();
-}
 
 /**
  * 加密密码

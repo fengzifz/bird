@@ -29,4 +29,36 @@ helper.checkErrorCode = function checkErrorCode(err) {
     }
 
     return msg;
-}
+};
+
+/**
+ * 检查登录
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*|Request}
+ */
+helper.checkLogin = function checkLogin(req, res, next) {
+    if (req.session.user) {
+        req.flash('success', zhCN.SUCCESS_HAVE_LOGIN);
+        return res.redirect('/');
+    }
+
+    next();
+};
+
+/**
+ * 检查未登录
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*|Request}
+ */
+helper.checkNotLogin = function checkNotLogin(req, res, next) {
+    if (!req.session.user) {
+        req.flash('success', zhCN.SUCCESS_NOT_LOGIN);
+        return res.redirect('/user/login');
+    }
+
+    next();
+};
