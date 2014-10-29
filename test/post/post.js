@@ -34,7 +34,7 @@ describe('Sign in routes/post.js', function() {
         request(app).post(path.post + '/post').end(function(err, res) {
             (err === null).should.equal(true);
             res.statusCode.should.equal(302);
-            //res.header.errorcode.should.equal('403');
+            res.header.location.should.equal(path.post);
             done();
         });
     });
@@ -57,7 +57,7 @@ describe('Sign in routes/post.js', function() {
         // 用户可以设置每天的目标起床时间
         it('User who have login can set goal time', function(done) {
 
-            var req = request(app).post(path.post + '/setgoaltime');
+            var req = request(app).post(path.user + '/setgoaltime');
 
             req.cookies = Cookies;
 
