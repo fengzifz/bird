@@ -31,7 +31,8 @@ var zh_CN = {
     SUCCESS_HAVE_LOGIN: '已经登录',
     SUCCESS_NOT_LOGIN: '请先登录',
     SUCCESS_LOGOUT: '已经退出',
-    SUCCESS_NEW_PWD: '新的密码已经发送到您的邮箱，请查收'
+    SUCCESS_NEW_PWD: '新的密码已经发送到您的邮箱，请查收',
+    SUCCESS_PROFILE_UPDATE: '用户资料更新成功'
 };
 
 zh_CN.title = {

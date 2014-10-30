@@ -115,11 +115,39 @@ router.get('/profile/edit', function(req, res) {
  * 修改用户资料
  * TODO: 暂时添加修改目标时间
  */
-router.post('/profile', function(req, res) {
+router.post('/profile/edit', function(req, res) {
 
+    var user = req.session.user,
+        goalTime = req.body.goaltime,
+        pathEdit = path.user + '/profile/edit',
+        queryIndex = {name: user.name};
 
+    User.get(queryIndex, function(err, doc) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect(pathEdit);
+        }
 
-    return res.redirect('/user/profile');
+        if (!doc) {
+            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
+            return res.redirect(pathEdit);
+        }
+
+        // doc {user: {name: xxx, mail: xxx, ...}}
+        var updateUser = new User(doc.user);
+        updateUser.user.goalTime = goalTime;
+
+        updateUser.update(queryIndex, function(err) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect(pathEdit);
+            }
+
+            req.flash('success', zhCN.SUCCESS_PROFILE_UPDATE);
+            return res.redirect('/user/profile/edit');
+        });
+    });
+
 });
 
 /**
