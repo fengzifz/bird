@@ -72,19 +72,17 @@ router.get('/forget', function(req, res) {
 router.get('/profile', function(req, res) {
 
     var user = req.session.user,
-        data;
+        data = {};
 
     User.get({name: user.name}, function(err, doc) {
 
+        data.title = zhCN.title.PROFILE;
+
         // Get user information
         if (err) {
-            data = null;
+            data.user = null;
         } else {
-            // Data return to view
-            data = {
-                title: zhCN.title.PROFILE,
-                user: doc.user
-            };
+            data.user = doc.user;
         }
 
         res.render('user/profile', data);
@@ -216,6 +214,7 @@ router.post('/login', function(req, res) {
             req.flash('error', zhCN.ERR_PASSWORD_WRONG);
             return res.redirect(pathLogin);
         }
+
         // 验证成功
         req.session.user = doc.user;
         req.flash('success', zhCN.SUCCESS_LOGIN);

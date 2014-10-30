@@ -33,4 +33,12 @@ describe('routes/user.js', function() {
         });
     });
 
+    // Profile page
+    it('Profile: /user/profile should 200', function(done) {
+        request(app).get(path.user + '/profile').end(function(err, res) {
+            res.statusCode.should.equal(200);
+            done(err);
+        });
+    });
+
 });
