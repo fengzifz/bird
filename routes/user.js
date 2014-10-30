@@ -22,6 +22,7 @@ var MailHelper = require('../helper/mail_helper');
 router.get('/reg', helper.checkLogin);
 router.get('/login', helper.checkLogin);
 router.get('/logout', helper.checkNotLogin);
+router.get('/profile', helper.checkNotLogin);
 
 /**
  * 注册页面
@@ -69,9 +70,28 @@ router.get('/forget', function(req, res) {
  * 用户资料页面
  */
 router.get('/profile', function(req, res) {
-    res.render('user/profile', {
-        title: zhCN.title.PROFILE
-    })
+
+    var user = req.session.user.user,
+        pathProfile = path.user + '/profile',
+        data;
+
+
+    User.get({name: user.name}, function(err, doc) {
+
+        // Get user information
+        if (err) {
+            data = null;
+        } else {
+            // Data return to view
+            data = {
+                title: zhCN.title.PROFILE,
+                user: doc.user
+            };
+        }
+
+        res.render('user/profile', data);
+    });
+
 });
 
 /**
@@ -79,8 +99,6 @@ router.get('/profile', function(req, res) {
  * TODO: 暂时添加修改目标时间
  */
 router.post('/profile', function(req, res) {
-
-
 
     return res.redirect('/user/profile');
 });
@@ -283,9 +301,6 @@ router.post('/reg', function(req, res) {
 
         });
     });
-
-
-
 });
 
 /**
