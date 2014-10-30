@@ -36,7 +36,8 @@ var zh_CN = {
 
 zh_CN.title = {
     POST: '签到',
-    PROFILE: '用户资料'
+    PROFILE: '用户资料',
+    PROFILE_EDIT: '用户资料编辑'
 };
 
 module.exports = zh_CN;

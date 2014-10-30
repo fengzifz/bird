@@ -22,7 +22,7 @@ var MailHelper = require('../helper/mail_helper');
 router.get('/reg', helper.checkLogin);
 router.get('/login', helper.checkLogin);
 router.get('/logout', helper.checkNotLogin);
-router.get('/profile', helper.checkNotLogin);
+router.get(/\/profile/, helper.checkNotLogin);
 
 /**
  * 注册页面
@@ -91,10 +91,33 @@ router.get('/profile', function(req, res) {
 });
 
 /**
+ * 用户编辑页面
+ */
+router.get('/profile/edit', function(req, res) {
+    var user = req.session.user,
+        data = {};
+
+    User.get({name: user.name}, function(err, doc) {
+        data.title = zhCN.title.PROFILE_EDIT;
+
+        if (err) {
+            data.user = null;
+        } else {
+            data.user = doc.user;
+        }
+
+        res.render('user/edit', data);
+    });
+
+});
+
+/**
  * 修改用户资料
  * TODO: 暂时添加修改目标时间
  */
 router.post('/profile', function(req, res) {
+
+
 
     return res.redirect('/user/profile');
 });
