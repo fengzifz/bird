@@ -71,10 +71,8 @@ router.get('/forget', function(req, res) {
  */
 router.get('/profile', function(req, res) {
 
-    var user = req.session.user.user,
-        pathProfile = path.user + '/profile',
+    var user = req.session.user,
         data;
-
 
     User.get({name: user.name}, function(err, doc) {
 
@@ -219,7 +217,7 @@ router.post('/login', function(req, res) {
             return res.redirect(pathLogin);
         }
         // 验证成功
-        req.session.user = doc;
+        req.session.user = doc.user;
         req.flash('success', zhCN.SUCCESS_LOGIN);
         return res.redirect('/');
     });
