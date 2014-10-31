@@ -11,6 +11,7 @@ var mongodb = require('./db');
  */
 function Post(post) {
     this.post = post;
+    console.log(this.post);
 }
 
 module.exports = Post;

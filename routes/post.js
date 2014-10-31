@@ -6,6 +6,9 @@ var express = require('express');
 var router = express.Router();
 var checkHelper = require('../helper/check_helper');
 var zhCh = require('../languages/zh_CN');
+var dateHelper = require('../helper/date_helper');
+var Post = require('../models/post');
+var path = require('../configs/path_config');
 
 // Check login
 router.post('/', checkHelper.checkNotLogin);
@@ -23,11 +26,33 @@ router.get('/', function(req, res) {
 /**
  * 登录用户发表签到
  */
-router.post('/post', function(req, res) {
+router.post('/', function(req, res) {
 
-    
+    var user = req.session.user,
+        content = req.body.content,
+        time = dateHelper.getUnixTime(),
+        pathPost = path.post;
 
-    return res.redirect('/post');
+    // TODO: 验证
+    // 过滤 &lt; 和 &gt;
+
+    var post = new Post({
+        name: user.name,
+        content: content,
+        time: time
+    });
+
+    console.log(post);
+
+    post.save(function(err, post) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect(pathPost);
+        }
+
+        req.flash('success', '签到成功');
+        return res.redirect(pathPost);
+    });
 });
 
 /**
