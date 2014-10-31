@@ -57,7 +57,7 @@ describe('Sign in routes/post.js', function() {
         // 用户可以设置每天的目标起床时间
         it('User who have login can set goal time', function(done) {
 
-            var req = request(app).post(path.user + '/setgoaltime');
+            var req = request(app).post(path.user + '/profile/edit');
 
             req.cookies = Cookies;
 
