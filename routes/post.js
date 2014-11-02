@@ -18,9 +18,11 @@ router.post('/', checkHelper.checkNotLogin);
  * TODO: 列出今天的 post
  */
 router.get('/', function(req, res) {
-    res.render('post/post', {
-        title: zhCh.title.POST
-    });
+    res.json({title: zhCh.title.POST});
+
+    //res.render('post/post', {
+    //    title: zhCh.title.POST
+    //});
 });
 
 /**
