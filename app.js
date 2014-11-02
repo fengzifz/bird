@@ -14,6 +14,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
 var flash = require('connect-flash');
+var methodOverride = require('method-override');
 
 var app = express();
 
@@ -24,10 +25,24 @@ app.set('view engine', 'ejs');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(flash());
-app.use(bodyParser());
-// app.use(express.json());
-// app.use(express.urlencoded());
-// app.use(express.methodOverride());
+
+// get all data/stuff of the body (POST) parameters
+// parse application/json
+app.use(bodyParser.json());
+
+// parse application/vnd.api+json as json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+app.use(methodOverride('X-HTTP-Method-Override'));
+
+//app.use(bodyParser());
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded());
+//app.use(express.methodOverride());
 // app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
