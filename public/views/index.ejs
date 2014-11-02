@@ -3,6 +3,8 @@
     <h3>欢迎</h3>
     <h5><%- time %></h5>
 
+    <div ng-view></div>
+
     <div>
         <a href="/user/logout">退出</a>
     </div>
@@ -12,7 +14,7 @@
     </div>
 
     <div>
-        <a href="/post">签到</a>
+        <a href="#/post">签到</a>
     </div>
 
 <%- include footer %>
