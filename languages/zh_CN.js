@@ -20,6 +20,7 @@ var zh_CN = {
     ERR_SMTP: 'SMTP 出错，请重试',
     ERR_SEND_MAIL_FAIL: '发送邮件失败',
     ERR_AUTHORIZATION_FAIL: '权限不够',
+    ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到',
 
     // Login error message
     ERR_USER_NOT_FOUND: '用户不存在',
@@ -39,6 +40,10 @@ zh_CN.title = {
     POST: '签到',
     PROFILE: '用户资料',
     PROFILE_EDIT: '用户资料编辑'
+};
+
+zh_CN.error = {
+    ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到'
 };
 
 module.exports = zh_CN;

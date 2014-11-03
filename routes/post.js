@@ -5,7 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var checkHelper = require('../helper/check_helper');
-var zhCh = require('../languages/zh_CN');
+var lang = require('../languages/zh_CN');
 var dateHelper = require('../helper/date_helper');
 var Post = require('../models/post');
 var path = require('../configs/path_config');
@@ -15,14 +15,23 @@ router.post('/', checkHelper.checkNotLogin);
 
 /**
  * 签到页面
- * TODO: 列出今天的 post
  */
 router.get('/', function(req, res) {
-    res.json({title: zhCh.title.POST});
 
-    //res.render('post/post', {
-    //    title: zhCh.title.POST
-    //});
+    Post.getTodayPosts(function(err, doc) {
+
+        if (err) {
+            return res.send(err);
+        }
+
+        if (doc.length == 0) {
+            return res.json({'error': lang.error.ERR_POSTS_NOT_FOUND_TODAY});
+        }
+
+        res.json(doc);
+
+    });
+
 });
 
 /**

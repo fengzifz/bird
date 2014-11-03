@@ -2,7 +2,8 @@
  * Created by damon on 14/10/31.
  */
 
-var mongodb = require('./db');
+var mongodb = require('./db'),
+    dateHelper = require('../helper/date_helper');
 
 /**
  *
@@ -29,7 +30,7 @@ Post.prototype.save = function save(callback) {
             return callback(err);
         }
 
-        db.collection('posts', function(err,collection) {
+        db.collection('posts', function(err, collection) {
             if (err) {
                 mongodb.close();
                 return callback(err);
@@ -48,6 +49,44 @@ Post.prototype.save = function save(callback) {
     });
 };
 
-Post.get = function get(index, callback) {
+/**
+ * Get today posts
+ * @param callback
+ */
+Post.getTodayPosts = function getTodayPosts(callback) {
 
+    var day = dateHelper.getToday(),
+        month = dateHelper.getMonth(),
+        year = dateHelper.getYear(),
+        start = new Date(year, month, day, 0, 0, 0, 0),
+        end = new Date(year, month, day + 1, 0, 0, 0, 0),
+        index = {'time': {$gt: start, $lt: end}};
+
+    mongodb.open(function(err, db) {
+        if (err) {
+            mongodb.close();
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            // limit: 限制查询数量
+            // skip: 跳过多少条查询数量
+            collection.find(index, {limit: 1, skip: 1}).toArray(function(err, doc) {
+
+                mongodb.close();
+
+                if (err) {
+                    return callback(err);
+                }
+
+                callback(null, doc);
+            });
+
+        });
+    });
 };
