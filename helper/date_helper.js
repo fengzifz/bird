@@ -32,3 +32,30 @@ date.getHour = function getHour(unixTime) {
     return date.getHours();
 };
 
+/**
+ * Get today
+ * @returns {number}
+ */
+date.getToday = function getToday() {
+    var date = new Date();
+    return date.getDate();
+};
+
+/**
+ * Get month
+ * JavaScript month's index is from 0 to 11, we must add 1 to make it from 1 to 12
+ * @returns {number}
+ */
+date.getMonth = function getMonth() {
+    var date = new Date();
+    return date.getMonth() + 1;
+};
+
+/**
+ * Get year
+ * @returns {number}
+ */
+date.getYear = function getYear() {
+    var date = new Date();
+    return date.getFullYear();
+};
