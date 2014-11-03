@@ -37,6 +37,7 @@ var zh_CN = {
 };
 
 zh_CN.title = {
+    WEB_TITLE: '早起啦',
     POST: '签到',
     PROFILE: '用户资料',
     PROFILE_EDIT: '用户资料编辑'

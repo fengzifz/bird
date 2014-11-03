@@ -6,10 +6,16 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
     $routeProvider
 
+        // Home page
+        .when('/', {
+            templateUrl: 'views/home.html',
+            controller: 'HomeController'
+        })
+
         // Post page
         .when('/post', {
-            templateUrl: 'views/post.html',
-            controller: 'MainController'
+            templateUrl: 'views/post/post.html',
+            controller: 'PostController'
         });
 
     //$locationProvider.html5Mode(true);

@@ -51,16 +51,21 @@ Post.prototype.save = function save(callback) {
 
 /**
  * Get today posts
+ * @param skip
  * @param callback
  */
-Post.getTodayPosts = function getTodayPosts(callback) {
+Post.getTodayPosts = function getTodayPosts(skip, callback) {
 
     var day = dateHelper.getToday(),
         month = dateHelper.getMonth(),
         year = dateHelper.getYear(),
         start = new Date(year, month, day, 0, 0, 0, 0),
         end = new Date(year, month, day + 1, 0, 0, 0, 0),
-        index = {'time': {$gt: start, $lt: end}};
+        index = {'time': {$gt: start, $lt: end}},
+        limit = 20,
+        newSkip = skip || limit;
+
+    console.log(newSkip);
 
     mongodb.open(function(err, db) {
         if (err) {
@@ -76,7 +81,7 @@ Post.getTodayPosts = function getTodayPosts(callback) {
 
             // limit: 限制查询数量
             // skip: 跳过多少条查询数量
-            collection.find(index, {limit: 1, skip: 1}).toArray(function(err, doc) {
+            collection.find(index, {limit: limit, skip: newSkip}).toArray(function(err, doc) {
 
                 mongodb.close();
 

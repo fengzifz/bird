@@ -15,17 +15,18 @@ router.post('/', checkHelper.checkNotLogin);
 
 /**
  * 签到页面
+ * 列出今天的签到
  */
-router.get('/', function(req, res) {
+router.get('/list', function(req, res) {
 
-    Post.getTodayPosts(function(err, doc) {
+    Post.getTodayPosts(null, function(err, doc) {
 
         if (err) {
             return res.send(err);
         }
 
         if (doc.length == 0) {
-            return res.json({'error': lang.error.ERR_POSTS_NOT_FOUND_TODAY});
+            return res.json({'message': lang.error.ERR_POSTS_NOT_FOUND_TODAY});
         }
 
         res.json(doc);
