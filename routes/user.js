@@ -24,6 +24,21 @@ router.get('/login', helper.checkLogin);
 router.get('/logout', helper.checkNotLogin);
 router.get(/\/profile/, helper.checkNotLogin);
 
+// =====================================================
+// New api
+router.get('/checkLogin', function(req, res) {
+    var result = {success: false};
+
+    if (req.session.user) {
+        result.success = true;
+    }
+
+    res.json(result);
+
+});
+
+// =====================================================
+
 /**
  * 注册页面
  * @param req

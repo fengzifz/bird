@@ -17,6 +17,7 @@ angular.module('PostController', []).controller('PostController', ['$scope', '$h
 
     $scope.doPost = function() {
 
+        // TODO: post data to server
         console.log($scope.postInput);
 
     }

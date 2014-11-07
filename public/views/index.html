@@ -16,23 +16,25 @@
 </head>
 <body ng-app="app" ng-controller="MainController">
 
-	<!-- Left Menu Start -->
-	<div class="left-menu">
-		<ul>
-			<li><a href="#/">首页</a></li>
-			<li><a href="#/user/profile">用户资料</a></li>
-			<li><a href="#/post" ng-click="getPostView()">签到</a></li>
-		</ul>
-	</div>
-	<!-- Left Menu End -->
+<!-- Left Menu Start -->
+<div class="left-menu">
+	<ul>
+		<li><a href="#/">首页</a></li>
+		<li><a href="#/user/profile">用户资料</a></li>
+		<li><a href="#/post" ng-click="">签到</a></li>
+	</ul>
+</div>
+<!-- Left Menu End -->
 
-	<!-- Right Menu Start -->
-	<div class="main-content">
-		<h1>早起啦</h1>
+<!-- Right Menu Start -->
+<div class="main-content">
+	<h1>早起啦</h1>
 
-		<div ng-view></div>
-	</div>
-	<!-- Right Menu End -->
+	<div ng-view></div>
+</div>
+<!-- Right Menu End -->
+
+<div ng-include src="getView()"></div>
 
 </body>
 </html>
