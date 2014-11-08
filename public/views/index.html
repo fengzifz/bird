@@ -5,8 +5,6 @@
 	<title>早起啦</title>
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
-	<!--<script type="text/javascript" src="/js/lib/sea.js"></script>-->
-	<!--<script type="text/javascript" src="/js/lib/sea-config.js"></script>-->
 	<script type="text/javascript" src="/js/lib/angular.js"></script>
 	<script type="text/javascript" src="/js/lib/angular-route.min.js"></script>
 	<script type="text/javascript" src="/js/controllers/MainController.js"></script>
@@ -33,25 +31,13 @@
 <div class="main-content">
 	<h1>早起啦</h1>
 
+	<div class="alert alert-{{ alertClass }}">{{ alertMessage }}</div>
+
 	<div ng-view></div>
 </div>
 <!-- Right Menu End -->
 
 <div ng-include src="getView()"></div>
-
-<script type="text/javascript">
-//	var dependence = [
-//		'angular',
-//		'angular-route',
-//		'MainController',
-//		'PostController',
-//		'HomeController',
-//		'LoginController',
-//		'appRoutes',
-//		'app'
-//	];
-//	seajs.use(dependence);
-</script>
 
 </body>
 </html>

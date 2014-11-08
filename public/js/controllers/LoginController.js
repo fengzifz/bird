@@ -3,28 +3,33 @@
  */
 
 
-angular.module('LoginController', []).controller('LoginController', ['$scope', '$http', function($scope, $http) {
+angular
+    .module('LoginController', [])
+    .controller('LoginController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
 
-    $scope.login = function() {
+        $scope.login = function() {
 
-        var loginInfo = {
-            mail: $scope.mail,
-            password: $scope.password
-        };
+            var loginInfo = {
+                mail: $scope.mail,
+                password: $scope.password
+            };
 
-        console.log(loginInfo);
+            console.log(loginInfo);
 
-        $http({
-            url: '/user/login',
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify(loginInfo)
-        }).success(function(data) {
-            console.log(data);
-        }).error(function(err) {
-            console.log(err);
-        });
-    }
+            $http({
+                url: '/user/login',
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(loginInfo)
+            }).success(function(data) {
+
+                // data: {code: xxx, error: true/false, codeName: xxx, description: xxx}
+                $rootScope.$broadcast('changeViewAfterLogin', data);
+
+            }).error(function(err) {
+                console.log(err);
+            });
+        }
 
 
 }]);

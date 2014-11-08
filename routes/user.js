@@ -63,7 +63,6 @@ router.post('/login', function(req, res) {
     user.password = hashPassword(user.password);
 
     // 查找是否存在这个 user
-    // response: {error: xxx, code: xxx, description: xxx}
     User.get({mail: user.mail}, function(err, doc) {
 
         // Database error
