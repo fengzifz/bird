@@ -22,10 +22,6 @@ var zh_CN = {
     ERR_AUTHORIZATION_FAIL: '权限不够',
     ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到',
 
-    // Login error message
-    ERR_USER_NOT_FOUND: '用户不存在',
-    ERR_PASSWORD_WRONG: '密码错误',
-
     // Successfully message
     SUCCESS_REGISTER: '注册成功',
     SUCCESS_LOGIN: '登录成功',
@@ -44,7 +40,16 @@ zh_CN.title = {
 };
 
 zh_CN.error = {
-    ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到'
+    ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到',
+    ERR_DATABASE: '数据库出错',
+    ERR_USER_NOT_FOUND: '用户不存在',
+    ERR_PASSWORD_WRONG: '密码错误',
+    ERR_MUST_ENTER_ALL: '请填写全部信息',
+    ERR_INVALID_EMAIL: '错误的邮箱格式'
+};
+
+zh_CN.message = {
+    MSG_SUCCESS_LOGIN: '登录成功'
 };
 
 module.exports = zh_CN;

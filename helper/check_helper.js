@@ -3,6 +3,8 @@
  */
 
 var zhCN = require('../languages/zh_CN');
+var validator = require('validator');
+var outputHelper = require('../helper/output_helper');
 
 var helper = {};
 
@@ -61,4 +63,23 @@ helper.checkNotLogin = function checkNotLogin(req, res, next) {
     }
 
     next();
+};
+
+/**
+ * 检查用户登录信息
+ * @param user
+ * @returns {*}
+ */
+helper.checkLoginInfo = function checkLoginInfo(user) {
+    // 所有信息必须填写
+    if (!user.mail || !user.password) {
+        return outputHelper.outputMsg(3);
+    }
+
+    // 验证邮箱格式
+    if (!validator.isEmail(user.mail)) {
+        return outputHelper.outputMsg(4);
+    }
+
+    return null;
 };

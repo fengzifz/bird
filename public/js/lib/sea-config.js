@@ -4,17 +4,21 @@
  */
 
 var pathLib = 'lib/',
-    pathController = 'controller/';
+    pathController = 'controller/',
+    pathService = 'services/';
 
 seajs.config({
-    base: '/js/',
+    base: '/public/js/',
     alias: {
         'angular'                   : pathLib + 'angular.js',
         'angular-route'             : pathLib + 'angular-route.js',
         'MainController'            : pathController + 'MainController.js',
         'HomeController'            : pathController + 'HomeController.js',
         'LoginController'           : pathController + 'LoginController.js',
-        'PostController'            : pathController + 'PostController.js'
+        'PostController'            : pathController + 'PostController.js',
+        'MainService'               : pathService + 'MainService.js',
+        'appRoutes'                 : 'appRoutes.js',
+        'app'                       : 'app.js'
     },
     preload:[
         'angular',

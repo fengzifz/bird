@@ -23,7 +23,7 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
             }
         })
         .error(function(err) {
-
+            console.log(err);
         });
 
 

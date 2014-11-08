@@ -1,6 +1,7 @@
 
 /*
  * GET users listing.
+ * res.json(): {success: 0, message: xxxxxx}
  */
 
 /**
@@ -12,20 +13,25 @@ var router = express.Router();
 var validator = require('validator');
 var crypto = require('crypto');
 var User = require('../models/user');
-var helper = require('../helper/check_helper');
+var checkHelper = require('../helper/check_helper');
 var path = require('../configs/path_config');
 var mail = require('../configs/mail');
 var generatePassword = require('../helper/password_helper');
 var MailHelper = require('../helper/mail_helper');
+var outputHelper = require('../helper/output_helper');
 
 // 检查登录状态
-router.get('/reg', helper.checkLogin);
-router.get('/login', helper.checkLogin);
-router.get('/logout', helper.checkNotLogin);
-router.get(/\/profile/, helper.checkNotLogin);
+router.get('/reg', checkHelper.checkLogin);
+router.get('/login', checkHelper.checkLogin);
+router.get('/logout', checkHelper.checkNotLogin);
+router.get(/\/profile/, checkHelper.checkNotLogin);
 
 // =====================================================
 // New api
+
+/**
+ * Check login status
+ */
 router.get('/checkLogin', function(req, res) {
     var result = {success: false};
 
@@ -34,6 +40,51 @@ router.get('/checkLogin', function(req, res) {
     }
 
     res.json(result);
+
+});
+
+/**
+ * Login
+ */
+router.post('/login', function(req, res) {
+    var user = {};
+
+    user.mail = (req.body.mail).trim();
+    user.password = (req.body.password).trim();
+
+    // 检查登录信息
+    var err = checkHelper.checkLoginInfo(user);
+
+    if (err) {
+        return res.json(err);
+    }
+
+    // 验证通过
+    user.password = hashPassword(user.password);
+
+    // 查找是否存在这个 user
+    // response: {error: xxx, code: xxx, description: xxx}
+    User.get({mail: user.mail}, function(err, doc) {
+
+        // Database error
+        if (err) {
+            return res.json(outputHelper.outputMsg(0));
+        }
+
+        // 用户不存在
+        if (!doc) {
+            return res.json(outputHelper.outputMsg(1));
+        }
+
+        // 密码错误
+        if (doc.user.password != user.password) {
+            return res.json(outputHelper.outputMsg(2));
+        }
+
+        // 验证成功
+        req.session.user = doc.user;
+        return res.json(outputHelper.outputMsg(1000));
+    });
 
 });
 
@@ -237,57 +288,7 @@ router.post('/forget', function(req, res) {
     });
 });
 
-/**
- * 登录
- */
-router.post('/login', function(req, res) {
-    var user = {};
 
-    user.mail = (req.body.mail).trim();
-    user.password = (req.body.password).trim();
-
-    // Login path
-    var pathLogin = path.user + '/login';
-
-    // 检查登录信息
-    var err = checkLoginInfo(user);
-
-    if (err) {
-        req.flash('error', err);
-        return res.redirect(pathLogin);
-    }
-
-    // 验证通过
-    user.password = hashPassword(user.password);
-
-    // 查找是否存在这个 user
-    User.get({mail: user.mail}, function(err, doc) {
-
-        // Database error
-        if (err) {
-            req.flash('error', err);
-            return res.redirect(pathLogin);
-        }
-
-        // 用户不存在
-        if (!doc) {
-            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
-            return res.redirect(pathLogin);
-        }
-
-        // 密码错误
-        if (doc.user.password != user.password) {
-            req.flash('error', zhCN.ERR_PASSWORD_WRONG);
-            return res.redirect(pathLogin);
-        }
-
-        // 验证成功
-        req.session.user = doc.user;
-        req.flash('success', zhCN.SUCCESS_LOGIN);
-        return res.redirect('/');
-    });
-
-});
 
 /**
  * 提交注册表单
@@ -381,19 +382,19 @@ function hashPassword(password) {
  * @param user
  * @returns {*}
  */
-function checkLoginInfo(user) {
-    // 所有信息必须填写
-    if (!user.mail || !user.password) {
-        return zhCN.ERR_SHOULD_ENTER_ALL;
-    }
-
-    // 验证邮箱格式
-    if (!validator.isEmail(user.mail)) {
-        return zhCN.ERR_INVALID_EMAIL;
-    }
-
-    return null;
-}
+//function checkLoginInfo(user) {
+//    // 所有信息必须填写
+//    if (!user.mail || !user.password) {
+//        return zhCN.ERR_SHOULD_ENTER_ALL;
+//    }
+//
+//    // 验证邮箱格式
+//    if (!validator.isEmail(user.mail)) {
+//        return zhCN.ERR_INVALID_EMAIL;
+//    }
+//
+//    return null;
+//}
 
 /**
  * 检查注册信息

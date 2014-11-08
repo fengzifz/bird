@@ -3,4 +3,14 @@
  * Created by damon on 14/11/2.
  */
 
-angular.module('app', ['ngRoute', 'appRoutes', 'MainController', 'HomeController', 'PostController']);
+
+var dependence = [
+    'ngRoute',
+    'appRoutes',
+    'MainController',
+    'HomeController',
+    'PostController',
+    'LoginController'
+];
+
+angular.module('app', dependence);
