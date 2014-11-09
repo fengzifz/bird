@@ -10,7 +10,8 @@ var dependence = [
     'MainController',
     'HomeController',
     'PostController',
-    'LoginController'
+    'LoginController',
+    'ui.bootstrap'
 ];
 
 angular.module('app', dependence);

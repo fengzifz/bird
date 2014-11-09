@@ -39,10 +39,33 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
             changeView(postPath);
         }
 
-        changeAlertMsg(data.error, data.description);
-
+        addAlert(data);
     });
 
+    /**
+     * Add alert
+     * @param data
+     */
+    function addAlert(data) {
+
+        $scope.alerts = [];
+
+        var type = 'success';
+
+        if (data.error) {
+            type = 'danger';
+        }
+
+        $scope.alerts.push({type: type, msg: data.description});
+    }
+
+    /**
+     * Close alert
+     * @param index
+     */
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
 
     /**
      * Display login module or post module
@@ -64,7 +87,7 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
         var cls;
 
         if (error) {
-            cls = 'danger';
+            cls = 'danger animated bounceOutLeft';
         } else {
             cls = 'success';
         }
