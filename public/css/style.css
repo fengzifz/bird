@@ -1,8 +1,75 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    position: relative;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+/* Zao Qi La Style */
+
+/* Bottom Module Style */
+.module-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Header Style */
+#header {
+    background-color: #4b97d8;
+    height: 40px;
+    padding: 5px 20px;
+}
+
+.icon-left-menu {
+    color: #fff;
+    font-size: 24px;
+}
+
+.module-bottom {
+    background-color: #4b97d8;
+    padding: 20px;
+}
+
+.input-field {
+    width: 100%;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+.input-field input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid #b6b6b6;
+    margin: 10px 0;
+}
+
+.button-wrap {
+    width: 100%;
+    padding: 0 25px;
+    margin-top: 20px;
+}
+
+.module-bottom button {
+    background-color: #4b97d8;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    color: #fff;
+}
+
+.module-bottom h3 {
+    margin-top: 0;
+    text-align: center;
+    color: #fff;
+    font-weight: normal;
 }

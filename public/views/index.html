@@ -20,6 +20,24 @@
 </head>
 <body ng-app="app" ng-controller="MainController">
 
+	<!-- Header Start -->
+	<div id="header">
+		<div class="glyphicon glyphicon-th-list icon-left-menu"></div>
+	</div>
+	<!-- Header End -->
+
+	<!-- Right Column Start -->
+	<div class="main-content container">
+
+		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+		<div ng-view></div>
+
+		<div class="module-bottom" ng-include src="getView()"></div>
+
+	</div>
+	<!-- Right Menu End -->
+
 	<!-- Left Menu Start -->
 	<div class="left-menu">
 		<ul>
@@ -30,17 +48,6 @@
 	</div>
 	<!-- Left Menu End -->
 
-	<!-- Right Menu Start -->
-	<div class="main-content">
-		<h1>早起啦</h1>
-
-		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-
-		<div ng-view></div>
-	</div>
-	<!-- Right Menu End -->
-
-	<div class="module-bottom" ng-include src="getView()"></div>
 
 </body>
 </html>
