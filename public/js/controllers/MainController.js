@@ -42,6 +42,23 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
         addAlert(data);
     });
 
+    $scope.slideMenu = function() {
+        var clsNameActive = 'leftMenuActive',
+            clsNameAnimation = 'animation-push-right',
+            btnLeftMenu = angular.element(document.querySelector('#btn-left-menu')),
+            leftMenu = angular.element(document.querySelector('.main-content')),
+            isLeftMenuActiveCls = btnLeftMenu.hasClass(clsNameActive);
+
+        if (!isLeftMenuActiveCls) {
+            btnLeftMenu.addClass(clsNameActive);
+            leftMenu.addClass(clsNameAnimation);
+        } else {
+            btnLeftMenu.removeClass(clsNameActive);
+            leftMenu.removeClass(clsNameAnimation);
+        }
+
+    };
+
     /**
      * Add alert
      * @param data

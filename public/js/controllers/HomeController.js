@@ -10,7 +10,7 @@ angular.module('HomeController', []).controller('HomeController', ['$scope', '$h
      */
     $http({method: 'GET', url: '/post/list'})
         .success(function(data) {
-            console.log(data);
+            $scope.data = data;
         })
         .error(function(err) {
             console.log(err);

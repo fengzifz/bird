@@ -1,20 +1,32 @@
-<div ng-controller="LoginController">
+<div class="module-wrap module-user" ng-controller="LoginController">
 
-	<div class="module-login">
-		<h3>登录</h3>
-		<div class="input-field">
-			<input ng-model="mail" class="" type="text" name="mail" placeholder="请输入邮箱" />
+	<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 
-			<div class="line"></div>
+	<!-- Login Start -->
+	<!--<div class="module-inner module-login">-->
+		<!--<h3>登录</h3>-->
+		<!--<div class="input-field">-->
+			<!--<input ng-model="mail" class="" type="text" name="mail" placeholder="请输入邮箱" />-->
 
-			<input ng-model="password" class="" type="password" name="password" placeholder="请输入密码" />
-		</div>
+			<!--<div class="line"></div>-->
 
-		<div class="button-wrap">
-			<button ng-click="login()" class="btn btn-block">登录</button>
-		</div>
-	</div>
+			<!--<input ng-model="password" class="" type="password" name="password" placeholder="请输入密码" />-->
+		<!--</div>-->
 
+		<!--<div class="button-wrap">-->
+			<!--<button ng-click="login()" class="btn btn-block">登录</button>-->
+		<!--</div>-->
+	<!--</div>-->
+	<!-- Login End -->
+
+	<!-- Register Start -->
+	<!--<div class="module-inner module-register">-->
+		<!--<h3>注册</h3>-->
+		<!--<div class="input-field">-->
+			<!--Register module-->
+		<!--</div>-->
+	<!--</div>-->
+	<!-- Register End -->
 
 	<!--<div class="form-group">-->
 		<!--<input ng-model="mail" autofocus="true" class="form-control" type="text" name="mail" placeholder="请输入邮箱" />-->
