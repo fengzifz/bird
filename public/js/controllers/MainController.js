@@ -19,7 +19,7 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
             var isLogin = data.success,
                 templatePath = logoutLeftMenu;
 
-
+            // 是否隐藏 退出 按钮
             $scope.logoutHidden = 'hidden';
 
             if (isLogin) {
