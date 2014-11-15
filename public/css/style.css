@@ -2,6 +2,7 @@ html,
 body {
     height: 100%;
     width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -16,7 +17,7 @@ a {
 
 /* Bottom Module Style */
 .module-bottom {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -165,11 +166,11 @@ a {
 
 /* ====== CSS3 Animation ====== */
 .transition-push {
-    transition: transform 0.2s ease-in 0.1s;
-    -webkit-transition: -webkit-transform 0.2s ease-in 0.1s;
-    -moz-transition: -moz-transform 0.2s ease-in 0.1s;
+    transition: transform 0.1s ease-out 0.1s;
+    -webkit-transition: -webkit-transform 0.1s ease-out 0.1s;
+    -moz-transition: -moz-transform 0.1s ease-out 0.1s;
 }
 
 .animation-push-right {
-    transform: translateX(60%);
+    transform: translateX(50%);
 }

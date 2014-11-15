@@ -24,11 +24,10 @@
 	<!-- Left Menu Start -->
 	<div class="left-menu">
 		<h1>早起啦</h1>
-		<ul>
-			<li><a href="#/" class="home current"><span class="glyphicon glyphicon-home"></span>首页</a></li>
-			<li><a href="#/user/profile" class="profile"><span class="glyphicon glyphicon-user"></span>用户资料</a></li>
+		<ul ng-include src="getLeftMenu()">
+
 		</ul>
-		<a href="#/user/logout" class="logout"><span class="glyphicon glyphicon-off"></span>退出</a>
+		<a href="#/user/logout" class="logout {{ logoutHidden }}"><span class="glyphicon glyphicon-off"></span>退出</a>
 	</div>
 	<!-- Left Menu End -->
 
@@ -45,7 +44,7 @@
 
 		<div class="main-view" ng-view></div>
 
-		<div id="module-bottom" class="module-bottom" ng-include src="getView()"></div>
+		<div id="module-bottom" class="module-bottom transition-push" ng-include src="getView()"></div>
 
 	</div>
 	<!-- Right Menu End -->

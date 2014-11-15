@@ -6,7 +6,9 @@
 angular.module('MainController', []).controller('MainController', ['$scope', '$http', function($scope, $http) {
 
     var loginPath = 'views/user/login.html',
-        postPath = 'views/post/post.html';
+        postPath = 'views/post/post.html',
+        loginLeftMenu = 'views/menu/left_menu_login.html',
+        logoutLeftMenu = 'views/menu/left_menu_logout.html';
 
     /**
      * Display which template
@@ -15,13 +17,18 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
         .success(function(data) {
 
             var isLogin = data.success,
-                templatePath = loginPath;
+                templatePath = logoutLeftMenu;
+
+
+            $scope.logoutHidden = 'hidden';
 
             if (isLogin) {
-                templatePath = postPath;
+                templatePath = loginLeftMenu;
+                changeView(postPath);
+                $scope.logoutHidden = '';
             }
 
-            changeView(templatePath);
+            changeLeftMenu(templatePath);
         })
         .error(function(err) {
             console.log(err);
@@ -42,6 +49,9 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
         addAlert(data);
     });
 
+    /**
+     * 左菜单 CSS 类名切换
+     */
     $scope.slideMenu = function() {
         var clsNameActive = 'leftMenuActive',
             clsNameAnimation = 'animation-push-right',
@@ -91,6 +101,16 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
     function changeView(viewPath) {
         $scope.getView = function() {
             return viewPath;
+        }
+    }
+
+    /**
+     * 返回 left menu 模板路径
+     * @param leftMenuPath
+     */
+    function changeLeftMenu(leftMenuPath) {
+        $scope.getLeftMenu = function() {
+            return leftMenuPath;
         }
     }
 
