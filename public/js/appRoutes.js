@@ -22,6 +22,12 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/user/forget', {
             templateUrl: 'views/user/forget.html',
             controller: 'ForgetController'
+        })
+
+        // Register page
+        .when('/user/reg', {
+            templateUrl: 'views/user/reg.html',
+            controller: 'RegisterController'
         });
 
     //$locationProvider.html5Mode(true);
