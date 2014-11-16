@@ -11,6 +11,7 @@ var dependence = [
     'HomeController',
     'PostController',
     'LoginController',
+    'ForgetController',
     'ui.bootstrap'
 ];
 

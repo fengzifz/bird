@@ -14,7 +14,14 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
         // Login Page
         .when('/user/login', {
-            templateUrl: 'views/user/login.html'
+            templateUrl: 'views/user/login.html',
+            controller: 'LoginController'
+        })
+
+        // Forget page
+        .when('/user/forget', {
+            templateUrl: 'views/user/forget.html',
+            controller: 'ForgetController'
         });
 
     //$locationProvider.html5Mode(true);

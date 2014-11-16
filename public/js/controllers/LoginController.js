@@ -30,18 +30,18 @@ angular
         };
 
         // ====== Animation ======
-        var listenEle = document.getElementById('module-bottom');
-
-        var mc = new Hammer(listenEle);
-
-        // let the pan gesture support all directions.
-        // this will block the vertical scrolling on a touch-device while on the element
-        mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-
-        // listen to events...
-        mc.on("panleft panright panup pandown tap press", function(ev) {
-            // myElement.textContent = ev.type +" gesture detected.";
-            console.log(ev.type);
-        });
+        //var listenEle = document.getElementById('module-bottom');
+        //
+        //var mc = new Hammer(listenEle);
+        //
+        //// let the pan gesture support all directions.
+        //// this will block the vertical scrolling on a touch-device while on the element
+        //mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        //
+        //// listen to events...
+        //mc.on("panleft panright panup pandown tap press", function(ev) {
+        //    // myElement.textContent = ev.type +" gesture detected.";
+        //    console.log(ev.type);
+        //});
 
 }]);
