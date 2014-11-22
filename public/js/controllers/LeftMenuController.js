@@ -4,7 +4,7 @@
 
 angular
     .module('LeftMenuController', [])
-    .controller('LeftMenuController', ['$scope', '$http', '$location', '$rootScope', function($scope, $http, $location, $rootScope) {
+    .controller('LeftMenuController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
         // Active the current menu
         var url = $location.url();
@@ -30,8 +30,17 @@ angular
 
             activeLeftMenu(url);
 
+            // Remove "leftMenuActive" class name on <div#btn-left-menu>
+            // Remove "animation-push-right" class name on <div.main-content>
+            angular.element(document.querySelector('.main-content')).removeClass('animation-push-right');
+            angular.element(ducument.querySelector('#btn-left-menu')).removeClass('leftMenuActive');
+
         });
 
+        /**
+         * Active left menu
+         * @param url
+         */
         function activeLeftMenu(url) {
             // Get last uri
             var urlArr = url.split('/'),

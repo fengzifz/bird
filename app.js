@@ -72,7 +72,7 @@ app.use(function(req, res, next) {
 // 路由配置
 routes(app);
 
-http.createServer(app).listen(app.get('port'), '10.1.202.12', function(){
+http.createServer(app).listen(app.get('port'), '192.168.1.196', function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
