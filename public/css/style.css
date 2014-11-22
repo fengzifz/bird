@@ -135,12 +135,17 @@ a {
     border-bottom: 1px solid #fff;
 }
 
-.left-menu a {
+.left-menu a,
+.left-menu a:hover,
+.left-menu a:focus,
+.left-menu a:visited,
+.left-menu a:active {
     color: #fff;
     font-size: 16px;
+    text-decoration: none;
 }
 
-.left-menu li a.current {
+.left-menu li.current a {
     color: #4b97d8;
 }
 
