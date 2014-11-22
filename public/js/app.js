@@ -13,6 +13,7 @@ var dependence = [
     'LoginController',
     'ForgetController',
     'RegisterController',
+    'LeftMenuController',
     'ui.bootstrap'
 ];
 

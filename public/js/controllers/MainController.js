@@ -3,134 +3,135 @@
  */
 
 
-angular.module('MainController', []).controller('MainController', ['$scope', '$http', function($scope, $http) {
+angular.
+    module('MainController', []).
+    controller('MainController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
-    var loginPath = 'views/user/login.html',
-        postPath = 'views/post/post.html',
-        loginLeftMenu = 'views/menu/left_menu_login.html',
-        logoutLeftMenu = 'views/menu/left_menu_logout.html';
+        var loginPath = 'views/user/login.html',
+            postPath = 'views/post/post.html',
+            loginLeftMenu = 'views/menu/left_menu_login.html',
+            logoutLeftMenu = 'views/menu/left_menu_logout.html';
 
-    /**
-     * Display which template
-     */
-    $http({method: 'GET', url: '/user/checkLogin'})
-        .success(function(data) {
+        /**
+         * Display which template
+         */
+        $http({method: 'GET', url: '/user/checkLogin'})
+            .success(function(data) {
 
-            var isLogin = data.success,
-                templatePath = logoutLeftMenu;
+                var isLogin = data.success,
+                    templatePath = logoutLeftMenu;
 
-            // 是否隐藏 退出 按钮
-            $scope.logoutHidden = 'hidden';
+                // 是否隐藏 退出 按钮
+                $scope.logoutHidden = 'hidden';
 
-            if (isLogin) {
-                templatePath = loginLeftMenu;
+                if (isLogin) {
+                    templatePath = loginLeftMenu;
+                    changeView(postPath);
+                    $scope.logoutHidden = '';
+                }
+
+                changeLeftMenu(templatePath);
+            })
+            .error(function(err) {
+                console.log(err);
+            });
+
+        /**
+         * 登录成功后，改变 ng-include 里面的 html
+         * `changeViewAfterLogin` 是由 `LoginController` 那里广播过来的
+         */
+        $scope.$on('changeViewAfterLogin', function(event, data) {
+
+            // Display post module
+            if (!data.error) {
                 changeView(postPath);
-                $scope.logoutHidden = '';
             }
 
-            changeLeftMenu(templatePath);
-        })
-        .error(function(err) {
-            console.log(err);
+            addAlert(data);
         });
 
+        /**
+         * 左菜单 CSS 类名切换
+         */
+        $scope.slideMenu = function() {
+            var clsNameActive = 'leftMenuActive',
+                clsNameAnimation = 'animation-push-right',
+                btnLeftMenu = angular.element(document.querySelector('#btn-left-menu')),
+                leftMenu = angular.element(document.querySelector('.main-content')),
+                isLeftMenuActiveCls = btnLeftMenu.hasClass(clsNameActive);
 
-    /**
-     * 登录成功后，改变 ng-include 里面的 html
-     * `changeViewAfterLogin` 是由 `LoginController` 那里广播过来的
-     */
-    $scope.$on('changeViewAfterLogin', function(event, data) {
+            if (!isLeftMenuActiveCls) {
+                btnLeftMenu.addClass(clsNameActive);
+                leftMenu.addClass(clsNameAnimation);
+            } else {
+                btnLeftMenu.removeClass(clsNameActive);
+                leftMenu.removeClass(clsNameAnimation);
+            }
 
-        // Display post module
-        if (!data.error) {
-            changeView(postPath);
+        };
+
+        /**
+         * Add alert
+         * @param data
+         */
+        function addAlert(data) {
+
+            $scope.alerts = [];
+
+            var type = 'success';
+
+            if (data.error) {
+                type = 'danger';
+            }
+
+            $scope.alerts.push({type: type, msg: data.description});
         }
 
-        addAlert(data);
-    });
+        /**
+         * Close alert
+         * @param index
+         */
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
 
-    /**
-     * 左菜单 CSS 类名切换
-     */
-    $scope.slideMenu = function() {
-        var clsNameActive = 'leftMenuActive',
-            clsNameAnimation = 'animation-push-right',
-            btnLeftMenu = angular.element(document.querySelector('#btn-left-menu')),
-            leftMenu = angular.element(document.querySelector('.main-content')),
-            isLeftMenuActiveCls = btnLeftMenu.hasClass(clsNameActive);
-
-        if (!isLeftMenuActiveCls) {
-            btnLeftMenu.addClass(clsNameActive);
-            leftMenu.addClass(clsNameAnimation);
-        } else {
-            btnLeftMenu.removeClass(clsNameActive);
-            leftMenu.removeClass(clsNameAnimation);
+        /**
+         * Display login module or post module
+         * @param viewPath
+         */
+        function changeView(viewPath) {
+            $scope.getView = function() {
+                return viewPath;
+            }
         }
 
-    };
-
-    /**
-     * Add alert
-     * @param data
-     */
-    function addAlert(data) {
-
-        $scope.alerts = [];
-
-        var type = 'success';
-
-        if (data.error) {
-            type = 'danger';
+        /**
+         * 返回 left menu 模板路径
+         * @param leftMenuPath
+         */
+        function changeLeftMenu(leftMenuPath) {
+            $scope.getLeftMenu = function() {
+                return leftMenuPath;
+            }
         }
 
-        $scope.alerts.push({type: type, msg: data.description});
-    }
 
-    /**
-     * Close alert
-     * @param index
-     */
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-    };
+        /**
+         * Change the error message css class
+         * @param error
+         * @param message
+         */
+        function changeAlertMsg(error, message) {
+            var cls;
 
-    /**
-     * Display login module or post module
-     * @param viewPath
-     */
-    function changeView(viewPath) {
-        $scope.getView = function() {
-            return viewPath;
-        }
-    }
+            if (error) {
+                cls = 'danger animated bounceOutLeft';
+            } else {
+                cls = 'success';
+            }
 
-    /**
-     * 返回 left menu 模板路径
-     * @param leftMenuPath
-     */
-    function changeLeftMenu(leftMenuPath) {
-        $scope.getLeftMenu = function() {
-            return leftMenuPath;
-        }
-    }
-
-
-    /**
-     * Change the error message css class
-     * @param error
-     * @param message
-     */
-    function changeAlertMsg(error, message) {
-        var cls;
-
-        if (error) {
-            cls = 'danger animated bounceOutLeft';
-        } else {
-            cls = 'success';
+            $scope.alertClass = cls;
+            $scope.alertMessage = message;
         }
 
-        $scope.alertClass = cls;
-        $scope.alertMessage = message;
-    }
-
-}]);
+    }]);
