@@ -1,0 +1,12 @@
+<div ng-controller="PostController">
+	<div class="form-group">
+		<p>还能输入 {{ actualLength }} 字</p>
+		<textarea
+				maxlength="{{ maxLength }}"
+				ng-change="countLength()"
+				ng-model="postInput"
+				class="form-control"
+				placeholder="不超过50字"></textarea>
+	</div>
+	<button class="btn btn-primary btn-block" ng-click="doPost()">发表</button>
+</div>
