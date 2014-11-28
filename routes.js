@@ -18,7 +18,7 @@ var path = require('./configs/path_config');
 module.exports = function(app) {
 
     // Homepage
-    app.use(path.home, index);
+    //app.use(path.home, index);
 
     // User
     // Include register and login
@@ -26,5 +26,9 @@ module.exports = function(app) {
 
     // Post
     app.use(path.post, post);
+
+    app.get('*', function(req, res) {
+        res.sendfile('./public/views/index.html'); // load our public/index.html file
+    });
 
 };

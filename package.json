@@ -19,6 +19,7 @@
         "validator": "3.17.1",
         "mongodb": "1.4.9",
         "should": "*",
-        "supertest": "*"
+        "supertest": "*",
+        "method-override": "2.3.0"
     }
 }

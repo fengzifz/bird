@@ -4,30 +4,67 @@
 
 var express = require('express');
 var router = express.Router();
+var checkHelper = require('../helper/check_helper');
+var lang = require('../languages/zh_CN');
+var dateHelper = require('../helper/date_helper');
+var Post = require('../models/post');
+var path = require('../configs/path_config');
+
+// Check login
+router.post('/', checkHelper.checkNotLogin);
 
 /**
  * 签到页面
+ * 列出今天的签到
  */
-router.get('/', function(req, res) {
-    res.render('post/post', {
-        title: '签到'
+router.get('/list', function(req, res) {
+
+    Post.getTodayPosts(null, function(err, doc) {
+
+        if (err) {
+            return res.send(err);
+        }
+
+        if (doc.length == 0) {
+            return res.json({'message': lang.error.ERR_POSTS_NOT_FOUND_TODAY});
+        }
+
+        res.json(doc);
+
     });
+
 });
 
 /**
  * 登录用户发表签到
  */
-router.post('/post', function(req, res) {
+router.post('/', function(req, res) {
 
-    var currentUser = req.session.user;
+    var user = req.session.user,
+        content = req.body.content,
+        time = dateHelper.getUnixTime(),
+        pathPost = path.post;
 
-    if (currentUser) {
-        res.header('errorcode', 403);
-        req.flash('error', '没有权限');
-        return res.redirect('/post');
-    }
+    // TODO: 验证
+    // 过滤 &lt; 和 &gt;
 
-    return res.redirect('/post');
+    var post = new Post({
+        name: user.name,
+        content: content,
+        time: time
+    });
+
+    console.log(post);
+
+    post.save(function(err, post) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect(pathPost);
+        }
+
+        req.flash('success', '签到成功');
+        return res.redirect(pathPost);
+    });
 });
 
 /**

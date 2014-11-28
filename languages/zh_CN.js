@@ -20,10 +20,7 @@ var zh_CN = {
     ERR_SMTP: 'SMTP 出错，请重试',
     ERR_SEND_MAIL_FAIL: '发送邮件失败',
     ERR_AUTHORIZATION_FAIL: '权限不够',
-
-    // Login error message
-    ERR_USER_NOT_FOUND: '用户不存在',
-    ERR_PASSWORD_WRONG: '密码错误',
+    ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到',
 
     // Successfully message
     SUCCESS_REGISTER: '注册成功',
@@ -31,7 +28,28 @@ var zh_CN = {
     SUCCESS_HAVE_LOGIN: '已经登录',
     SUCCESS_NOT_LOGIN: '请先登录',
     SUCCESS_LOGOUT: '已经退出',
-    SUCCESS_NEW_PWD: '新的密码已经发送到您的邮箱，请查收'
+    SUCCESS_NEW_PWD: '新的密码已经发送到您的邮箱，请查收',
+    SUCCESS_PROFILE_UPDATE: '用户资料更新成功'
+};
+
+zh_CN.title = {
+    WEB_TITLE: '早起啦',
+    POST: '签到',
+    PROFILE: '用户资料',
+    PROFILE_EDIT: '用户资料编辑'
+};
+
+zh_CN.error = {
+    ERR_POSTS_NOT_FOUND_TODAY: '今天暂时没有人签到',
+    ERR_DATABASE: '数据库出错',
+    ERR_USER_NOT_FOUND: '用户不存在',
+    ERR_PASSWORD_WRONG: '密码错误',
+    ERR_MUST_ENTER_ALL: '请填写全部信息',
+    ERR_INVALID_EMAIL: '错误的邮箱格式'
+};
+
+zh_CN.message = {
+    MSG_SUCCESS_LOGIN: '登录成功'
 };
 
 module.exports = zh_CN;
