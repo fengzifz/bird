@@ -26,7 +26,7 @@ angular.
 
                 if (isLogin) {
                     templatePath = loginLeftMenu;
-                    changeView(postPath);
+                    displayPostModule(postPath);
                     $scope.logoutHidden = '';
                 }
 
@@ -40,15 +40,21 @@ angular.
          * 登录成功后，改变 ng-include 里面的 html
          * `changeViewAfterLogin` 是由 `LoginController` 那里广播过来的
          */
-        $scope.$on('changeViewAfterLogin', function(event, data) {
+        $scope.$on('haveLogin', function(event, data) {
 
             // Display post module
             if (!data.error) {
-                changeView(postPath);
+                displayPostModule(postPath);
             }
 
+            // Display alert message
             addAlert(data);
         });
+
+        // TODO: 页面显示控制
+        function redirect(isLogin) {
+
+        }
 
         /**
          * 左菜单 CSS 类名切换
@@ -99,7 +105,7 @@ angular.
          * Display login module or post module
          * @param viewPath
          */
-        function changeView(viewPath) {
+        function displayPostModule(viewPath) {
             $scope.getView = function() {
                 return viewPath;
             }
