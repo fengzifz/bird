@@ -7,22 +7,22 @@
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/css/animate.css" />
-	<script type="text/javascript" src="/js/lib/angular.js"></script>
-	<script type="text/javascript" src="/js/lib/angular-route.min.js"></script>
-	<script type="text/javascript" src="/js/lib/ui-bootstrap-0.11.2.js"></script>
+
+
 	<!--<script type="text/javascript" src="/js/lib/hammer.js"></script>-->
-	<script type="text/javascript" src="/js/controllers/MainController.js"></script>
-	<script type="text/javascript" src="/js/controllers/HomeController.js"></script>
-	<script type="text/javascript" src="/js/controllers/PostController.js"></script>
-	<script type="text/javascript" src="/js/controllers/LoginController.js"></script>
-	<script type="text/javascript" src="/js/controllers/ForgetController.js"></script>
-	<script type="text/javascript" src="/js/controllers/RegisterController.js"></script>
-	<script type="text/javascript" src="/js/controllers/LeftMenuController.js"></script>
-	<script type="text/javascript" src="/js/services/MainService.js"></script>
-	<script type="text/javascript" src="/js/appRoutes.js"></script>
-	<script type="text/javascript" src="/js/app.js"></script>
+	<!--<script type="text/javascript" src="/js/controllers/MainController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/controllers/HomeController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/controllers/PostController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/controllers/LoginController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/controllers/ForgetController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/controllers/RegisterController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/controllers/LeftMenuController.js"></script>-->
+	<!--<script type="text/javascript" src="/js/services/MainService.js"></script>-->
+	<!--<script type="text/javascript" src="/js/appRoutes.js"></script>-->
+
+
 </head>
-<body ng-app="app" ng-controller="MainController">
+<body>
 
 	<!-- Left Menu Start -->
 	<div class="left-menu" >
@@ -45,7 +45,7 @@
 		</div>
 		<!-- Header End -->
 
-		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+		<!--<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>-->
 
 		<div class="main-view" ng-view></div>
 
@@ -56,3 +56,14 @@
 
 </body>
 </html>
+<script type="text/javascript" src="/js/lib/sea.js"></script>
+<script type="text/javascript" src="/js/lib/sea-config.js"></script>
+<script type="text/javascript" src="/js/lib/angular.js"></script>
+<script type="text/javascript" src="/js/lib/angular-route.min.js"></script>
+<script type="text/javascript" src="/js/lib/ui-bootstrap-0.11.2.js"></script>
+<script type="text/javascript" src="/js/lib/angular-ngSea.js"></script>
+<script type="text/javascript">
+	seajs.use(['app'], function(app) {
+		angular.bootstrap(document, ['app']);
+	});
+</script>

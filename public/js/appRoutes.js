@@ -2,34 +2,44 @@
  * Created by damon on 14/11/2.
  */
 
-angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-    $routeProvider
+define(function(require, exports, module) {
 
-        // Home page
-        .when('/', {
-            templateUrl: 'views/home.html',
-            controller: 'HomeController'
-        })
+    var app = require('app');
 
-        // Login Page
-        .when('/user/login', {
-            templateUrl: 'views/user/login.html',
-            controller: 'LoginController'
-        })
+    app.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-        // Forget page
-        .when('/user/forget', {
-            templateUrl: 'views/user/forget.html',
-            controller: 'ForgetController'
-        })
+        $routeProvider
 
-        // Register page
-        .when('/user/reg', {
-            templateUrl: 'views/user/reg.html',
-            controller: 'RegisterController'
-        });
+            // Home page
+            .when('/', {
+                templateUrl: 'views/home.html',
+                controller: 'HomeController'
+            })
 
-    //$locationProvider.html5Mode(true);
+            // Login Page
+            .when('/user/login', {
+                templateUrl: 'views/user/login.html',
+                controller: 'LoginController'
+            })
 
-}]);
+            // Forget page
+            .when('/user/forget', {
+                templateUrl: 'views/user/forget.html',
+                controller: 'ForgetController'
+            })
+
+            // Register page
+            .when('/user/reg', {
+                templateUrl: 'views/user/reg.html',
+                controller: 'RegisterController'
+            });
+
+        //$locationProvider.html5Mode(true);
+
+    }]);
+
+    module.exports = app;
+
+});
+
