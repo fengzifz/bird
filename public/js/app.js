@@ -5,25 +5,9 @@
 
 define(function(require, exports, module) {
 
-    var dependence = [
-        'ngSea',
-        'ngRoute'
-        //'appRoutes',
-        //'MainController',
-        //'HomeController',
-        //'PostController',
-        //'LoginController',
-        //'ForgetController',
-        //'RegisterController',
-        //'LeftMenuController',
-        //'ui.bootstrap'
-    ];
+    var app = angular.module('app', ['ngSea']);
 
-    var app = angular.module('app', dependence);
-
-    console.log(1);
-
-    require('appRoutes');
+    require('appRoutes')(app);
 
     app.run(['$rootScope', '$ngSea', function ($rootScope, $ngSea) {
 
