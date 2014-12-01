@@ -45,7 +45,10 @@ zh_CN.error = {
     ERR_USER_NOT_FOUND: '用户不存在',
     ERR_PASSWORD_WRONG: '密码错误',
     ERR_MUST_ENTER_ALL: '请填写全部信息',
-    ERR_INVALID_EMAIL: '错误的邮箱格式'
+    ERR_INVALID_EMAIL: '错误的邮箱格式',
+    ERR_INVALID_USERNAME: '用户名只能使用字母、数字和下划线',
+    ERR_INVALID_PASSWORD: '密码必须包含数字和字母，长度至少 6 位',
+    ERR_RE_PASSWORD_NOT_SAME: '两次输入的密码不一致'
 };
 
 zh_CN.message = {

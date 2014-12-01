@@ -10,6 +10,10 @@ var codes = {
     2: 'ERR_PASSWORD_WRONG',
     3: 'ERR_MUST_ENTER_ALL',
     4: 'ERR_INVALID_EMAIL',
+    5: 'ERR_INVALID_USERNAME',
+    6: 'ERR_INVALID_PASSWORD',
+    7: 'ERR_RE_PASSWORD_NOT_SAME',
+    8: 'ERR_MUST_ENTER_ALL',
     403: 'ERR_AUTHORIZATION_FAIL',
 
     // Message code

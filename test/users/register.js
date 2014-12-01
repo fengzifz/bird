@@ -11,6 +11,7 @@ var msg = require('../../languages/zh_CN');
 
 describe('post routes/user.js', function() {
 
+    // Check Register information
     describe('checkRegisterInfo', function() {
 
         it('Invalid email', function(done) {
@@ -22,8 +23,14 @@ describe('post routes/user.js', function() {
                 rePassword: '1q2w3e4r'
             };
 
-            users.checkRegisterInfo(user).should.equal(msg.ERR_INVALID_EMAIL);
-            done();
+            request(app).post(path.user + '/reg')
+                .send(user)
+                .end(function(err, res) {
+                    (err === null).should.be.true;
+                    res.body.code.should.equal(4);
+                    done();
+                });
+
         });
 
         it('Empty field', function(done) {
@@ -35,8 +42,14 @@ describe('post routes/user.js', function() {
                 rePassword: '1q2w3e4r'
             };
 
-            users.checkRegisterInfo(user).should.equal(msg.ERR_SHOULD_ENTER_ALL);
-            done();
+            request(app).post(path.user + '/reg')
+                .send(user)
+                .end(function(err, res) {
+                    (err === null).should.be.true;
+                    res.body.code.should.equal(8);
+                    done();
+                });
+
         });
 
         it('Username only can use A-Za-z, 0-9 and _', function(done) {
@@ -48,8 +61,14 @@ describe('post routes/user.js', function() {
                 rePassword: '1q2w3e4r'
             };
 
-            users.checkRegisterInfo(user).should.equal(msg.ERR_INVALID_USERNAME);
-            done();
+            request(app).post(path.user + '/reg')
+                .send(user)
+                .end(function(err, res) {
+                    (err === null).should.be.true;
+                    res.body.code.should.equal(5);
+                    done();
+                });
+
         });
 
         it('Password must contains number and letter.', function(done) {
@@ -61,8 +80,14 @@ describe('post routes/user.js', function() {
                 rePassword: '111111'
             };
 
-            users.checkRegisterInfo(user).should.equal(msg.ERR_INVALID_PASSWORD);
-            done();
+            request(app).post(path.user + '/reg')
+                .send(user)
+                .end(function(err, res) {
+                    (err === null).should.be.true;
+                    res.body.code.should.equal(6);
+                    done();
+                });
+
         });
 
         it('Not match re-password', function(done) {
@@ -74,12 +99,18 @@ describe('post routes/user.js', function() {
                 rePassword: '2w1q3e4r'
             };
 
-            //console.log(users.checkRegisterInfo(user));
+            request(app).post(path.user + '/reg')
+                .send(user)
+                .end(function(err, res) {
+                    (err === null).should.be.true;
+                    res.body.code.should.equal(7);
+                    done();
+                });
 
-            users.checkRegisterInfo(user).should.equal(msg.ERR_NOT_SAME_PASSWORD);
-            done();
         });
 
     });
+
+
 
 });

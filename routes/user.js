@@ -102,6 +102,88 @@ router.post('/login', function(req, res) {
 
 });
 
+/**
+ * 提交注册表单
+ * md5 加密
+ * 邮箱验证
+ * @param req
+ * @param res
+ */
+router.post('/reg', function(req, res) {
+    var user = {};
+
+    user.mail = (req.body.mail).trim();
+    user.name = (req.body.name).trim();
+    user.password = (req.body.password).trim();
+    user.rePassword = (req.body['rePassword']).trim();
+
+    // Path
+    var pathReg = path.user + '/reg';
+
+    // 检查用户信息
+    var err = checkHelper.checkRegisterInfo(user);
+
+    // Display message
+    // Invalid email: 4
+    // Invalid username: 5
+    // Invalid password: 6 (Password must contain number and letter)
+    // Re-Password should be same with password: 7
+    // Must enter all text field: 8
+    // TODO: Register successfully: 1003
+    if (err) {
+        return res.json(err);
+    }
+
+    // 通过验证
+    // md5 base64 加密
+    user.password = hashPassword(user.password);
+
+    // 创建新的 user 对象，用于保存到数据库
+    var newUser = new User({
+        name: user.name,
+        password: user.password,
+        mail: user.mail
+    });
+
+    User.get({name: user.name}, function(err, doc) {
+        if (err) {
+            req.flash('error', err);
+            return res.redirect(pathReg);
+        }
+
+        if (doc) {
+            req.flash('error', '用户名已经存在');
+            return res.redirect(pathReg);
+        }
+
+        // 保存到数据库
+        newUser.save(function(err) {
+            // Some error happened
+            // Maybe duplicate email
+            if (err) {
+                req.flash('error', helper.checkErrorCode(err));
+                return res.redirect(pathReg);
+            }
+
+            // 保存数据库成功后，发送邮件
+            var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
+                mailHelper = new MailHelper(mailOpt);
+
+            mailHelper.send(function(err) {
+                if (err) {
+                    req.flash('error', zhCN.ERR_SMTP);
+                    return res.redirect(pathReg);
+                }
+
+                req.session.user = newUser;
+                req.flash('success', zhCN.SUCCESS_REGISTER);
+                return res.redirect(path.home);
+            });
+
+        });
+    });
+});
+
 // =====================================================
 
 /**
@@ -304,82 +386,82 @@ router.post('/forget', function(req, res) {
 
 
 
-/**
- * 提交注册表单
- * md5 加密
- * 邮箱验证
- * @param req
- * @param res
- */
-router.post('/reg', function(req, res) {
-    var user = {};
-
-    user.mail = (req.body.mail).trim();
-    user.name = (req.body.name).trim();
-    user.password = (req.body.password).trim();
-    user.rePassword = (req.body['re-password']).trim();
-
-    // Path
-    var pathReg = path.user + '/reg';
-
-    // 检查用户信息
-    var err = checkRegisterInfo(user);
-
-    // Display message
-    if (err) {
-        req.flash('error', err);
-        return res.redirect(pathReg);
-    }
-
-    // 通过验证
-    // md5 base64 加密
-    user.password = hashPassword(user.password);
-
-    // 创建新的 user 对象，用于保存到数据库
-    var newUser = new User({
-        name: user.name,
-        password: user.password,
-        mail: user.mail
-    });
-
-    User.get({name: user.name}, function(err, doc) {
-        if (err) {
-            req.flash('error', err);
-            return res.redirect(pathReg);
-        }
-
-        if (doc) {
-            req.flash('error', '用户名已经存在');
-            return res.redirect(pathReg);
-        }
-
-        // 保存到数据库
-        newUser.save(function(err) {
-            // Some error happened
-            // Maybe duplicate email
-            if (err) {
-                req.flash('error', helper.checkErrorCode(err));
-                return res.redirect(pathReg);
-            }
-
-            // 保存数据库成功后，发送邮件
-            var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
-                mailHelper = new MailHelper(mailOpt);
-
-            mailHelper.send(function(err) {
-                if (err) {
-                    req.flash('error', zhCN.ERR_SMTP);
-                    return res.redirect(pathReg);
-                }
-
-                req.session.user = newUser;
-                req.flash('success', zhCN.SUCCESS_REGISTER);
-                return res.redirect(path.home);
-            });
-
-        });
-    });
-});
+///**
+// * 提交注册表单
+// * md5 加密
+// * 邮箱验证
+// * @param req
+// * @param res
+// */
+//router.post('/reg', function(req, res) {
+//    var user = {};
+//
+//    user.mail = (req.body.mail).trim();
+//    user.name = (req.body.name).trim();
+//    user.password = (req.body.password).trim();
+//    user.rePassword = (req.body['re-password']).trim();
+//
+//    // Path
+//    var pathReg = path.user + '/reg';
+//
+//    // 检查用户信息
+//    var err = checkRegisterInfo(user);
+//
+//    // Display message
+//    if (err) {
+//        req.flash('error', err);
+//        return res.redirect(pathReg);
+//    }
+//
+//    // 通过验证
+//    // md5 base64 加密
+//    user.password = hashPassword(user.password);
+//
+//    // 创建新的 user 对象，用于保存到数据库
+//    var newUser = new User({
+//        name: user.name,
+//        password: user.password,
+//        mail: user.mail
+//    });
+//
+//    User.get({name: user.name}, function(err, doc) {
+//        if (err) {
+//            req.flash('error', err);
+//            return res.redirect(pathReg);
+//        }
+//
+//        if (doc) {
+//            req.flash('error', '用户名已经存在');
+//            return res.redirect(pathReg);
+//        }
+//
+//        // 保存到数据库
+//        newUser.save(function(err) {
+//            // Some error happened
+//            // Maybe duplicate email
+//            if (err) {
+//                req.flash('error', helper.checkErrorCode(err));
+//                return res.redirect(pathReg);
+//            }
+//
+//            // 保存数据库成功后，发送邮件
+//            var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
+//                mailHelper = new MailHelper(mailOpt);
+//
+//            mailHelper.send(function(err) {
+//                if (err) {
+//                    req.flash('error', zhCN.ERR_SMTP);
+//                    return res.redirect(pathReg);
+//                }
+//
+//                req.session.user = newUser;
+//                req.flash('success', zhCN.SUCCESS_REGISTER);
+//                return res.redirect(path.home);
+//            });
+//
+//        });
+//    });
+//});
 
 /**
  * 加密密码
