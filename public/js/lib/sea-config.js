@@ -12,11 +12,11 @@ seajs.config({
     alias: {
         'app'                       : 'app.js',
         'MainController'            : pathController + 'MainController.js',
-        'HomeController'            : pathController + 'HomeController.js',
+        //'HomeController'            : pathController + 'HomeController.js',
         'LoginController'           : pathController + 'LoginController.js',
         'PostController'            : pathController + 'PostController.js',
-        'MainService'               : pathService + 'MainService.js',
-        'appRoutes'                 : 'appRoutes.js'
+        'MainService'               : pathService + 'MainService.js'
+        //'appRoutes'                 : 'appRoutes.js'
     },
     preload:[
         'app',

@@ -6,7 +6,7 @@
 define(function(require, exports, module) {
 
     // Inject ngSea
-    var app = angular.module('app', ['ngSea']);
+    var app = angular.module('app', ['ngSea', 'MainController', 'LeftMenuController']);
 
     // Inject appRoutes
     require('appRoutes')(app);

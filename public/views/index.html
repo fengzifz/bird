@@ -7,12 +7,32 @@
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/css/animate.css" />
-</head>
-<body>
 
+	<script src="/js/lib/sea.js"></script>
+	<script src="/js/lib/sea-config.js"></script>
+	<script src="/js/lib/angular.js"></script>
+	<script src="/js/lib/angular-ngSea.js"></script>
+	<script src="/js/controllers/LeftMenuController.js"></script>
+	<script src="/js/controllers/MainController.js"></script>
+	<script>
+		seajs.on('error', function(module) {
+			if (module.status != 5) {
+				console.error('seajs error: ', module);
+			}
+		});
+
+		seajs.use(['app'], function(app) {
+			// Bootstrap app
+			angular.bootstrap(document, ['app']);
+		});
+	</script>
+
+</head>
+
+<body ng-controller="MainController">
 
 <!-- Left Menu Start -->
-<div class="left-menu" >
+<div class="left-menu">
 	<div ng-click="clickMenu()">
 		<h1>早起啦</h1>
 		<div ng-include src="getLeftMenu()">
@@ -34,7 +54,7 @@
 
 	<!--<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>-->
 
-	<div><a href="#/t1">t1</a> <a href="#/t2">t2</a> </div>
+	<!--<div><a href="#/t1">t1</a> <a href="#/t2">t2</a> </div>-->
 
 	<div class="main-view" ng-view></div>
 
@@ -43,25 +63,5 @@
 </div>
 <!-- Right Menu End -->
 
-<script src="/js/lib/sea.js"></script>
-<script src="/js/lib/sea-config.js"></script>
-<script src="/js/lib/angular.js"></script>
-<script src="/js/lib/angular-ngSea.js"></script>
-<script>
-	// seajs config
-//	seajs.config({
-//		base: '/js/app/mod/'
-//	});
-
-	seajs.on('error', function(module) {
-		if (module.status!=5) {
-			console.error('seajs error: ', module);
-		}
-	});
-
-	seajs.use(['app'], function(app) {
-		angular.bootstrap(document, ['app']);
-	});
-</script>
 </body>
 </html>

@@ -1,17 +1,12 @@
 /**
  * Created by damon on 14/11/1.
  */
-define(function(require, exports, module) {
 
-    'use strict';
-    console.log(1);
+'use strict';
 
-    module.exports = function(app) {
+angular.module('MainController', []).controller('MainController', ['$scope', '$http', '$location',
 
-
-    app.
-        module('MainController', []).
-        controller('MainController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+        function($scope, $http) {
 
             var loginPath = 'views/user/login.html',
                 postPath = 'views/post/post.html',
@@ -71,6 +66,8 @@ define(function(require, exports, module) {
                     btnLeftMenu = angular.element(document.querySelector('#btn-left-menu')),
                     leftMenu = angular.element(document.querySelector('.main-content')),
                     isLeftMenuActiveCls = btnLeftMenu.hasClass(clsNameActive);
+
+                console.log(111111);
 
                 if (!isLeftMenuActiveCls) {
                     btnLeftMenu.addClass(clsNameActive);
@@ -146,9 +143,6 @@ define(function(require, exports, module) {
                 $scope.alertMessage = message;
             }
 
-        }]);
+    }]);
 
-    }
-
-});
 
