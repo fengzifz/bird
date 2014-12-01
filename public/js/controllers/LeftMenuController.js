@@ -16,9 +16,9 @@ angular
         activeLeftMenu(url);
 
         // Left menu click action
-        // Angular 1.0.8 use `onClick` event
+        // Angular 1.0.8 use `bind` event
         // Angular 1.2.x use `on` event
-        leftMenuBtn.onclick = function() {
+        leftMenuBtn.bind('click', function() {
             var ngMe = angular.element(this),
                 parent = ngMe.parent(),
                 url;
@@ -36,7 +36,7 @@ angular
             // Remove "animation-push-right" class name on <div.main-content>
             angular.element(document.querySelector('.main-content')).removeClass('animation-push-right');
             angular.element(document.querySelector('#btn-left-menu')).removeClass('leftMenuActive');
-        };
+        });
 
         /**
          * Active left menu
