@@ -2,12 +2,20 @@
  * Created by damon on 14/11/16.
  */
 
-angular
-    .module('ForgetController', [])
-    .controller('ForgetController', ['$scope', '$http', function($scope, $http) {
+define(function(require, exports, module) {
 
-        $scope.forget = function() {
+    module.exports = function(app) {
 
-        }
+        app.register.controller('ForgetController', ['$scope', '$http',
 
-    }]);
+            function($scope, $http) {
+                $scope.forget = function() {
+                    // TODO: forget password
+                }
+            }
+
+        ]);
+
+    }
+
+});
