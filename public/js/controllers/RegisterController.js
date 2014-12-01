@@ -2,12 +2,22 @@
  * Created by damon on 14/11/16.
  */
 
-angular
-    .module('RegisterController', [])
-    .controller('RegisterController', ['$scope', '$http', function($scope, $http) {
+define(function(require, exports, module) {
 
-        $scope.register = function() {
+    module.exports = function(app) {
 
-        }
+        app.register.controller('RegisterController', ['$scope', '$http',
 
-    }]);
+            function($scope, $http) {
+
+                $scope.register = function() {
+                    // TODO: register
+                }
+
+            }
+
+        ]);
+
+    };
+
+});

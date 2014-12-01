@@ -1,58 +1,68 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
+<head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<title>早起啦</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="/css/style.css" />
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/css/animate.css" />
-	<script type="text/javascript" src="/js/lib/angular.js"></script>
-	<script type="text/javascript" src="/js/lib/angular-route.min.js"></script>
-	<script type="text/javascript" src="/js/lib/ui-bootstrap-0.11.2.js"></script>
-	<!--<script type="text/javascript" src="/js/lib/hammer.js"></script>-->
-	<script type="text/javascript" src="/js/controllers/MainController.js"></script>
-	<script type="text/javascript" src="/js/controllers/HomeController.js"></script>
-	<script type="text/javascript" src="/js/controllers/PostController.js"></script>
-	<script type="text/javascript" src="/js/controllers/LoginController.js"></script>
-	<script type="text/javascript" src="/js/controllers/ForgetController.js"></script>
-	<script type="text/javascript" src="/js/controllers/RegisterController.js"></script>
-	<script type="text/javascript" src="/js/controllers/LeftMenuController.js"></script>
-	<script type="text/javascript" src="/js/services/MainService.js"></script>
-	<script type="text/javascript" src="/js/appRoutes.js"></script>
-	<script type="text/javascript" src="/js/app.js"></script>
+
+	<script src="/js/lib/sea.js"></script>
+	<script src="/js/lib/sea-config.js"></script>
+	<script src="/js/lib/angular.js"></script>
+	<script src="/js/lib/angular-ngSea.js"></script>
+	<script src="/js/controllers/LeftMenuController.js"></script>
+	<script src="/js/controllers/MainController.js"></script>
+	<script src="/js/controllers/PostController.js"></script>
+	<script>
+		seajs.on('error', function(module) {
+			if (module.status != 5) {
+				console.error('seajs error: ', module);
+			}
+		});
+
+		seajs.use(['app'], function(app) {
+			// Bootstrap app
+			angular.bootstrap(document, ['app']);
+		});
+	</script>
+
 </head>
-<body ng-app="app" ng-controller="MainController">
 
-	<!-- Left Menu Start -->
-	<div class="left-menu" >
-		<div ng-click="clickMenu()">
-			<h1>早起啦</h1>
-			<div ng-include src="getLeftMenu()">
+<body ng-controller="MainController">
 
-			</div>
-			<a href="#/user/logout" class="logout {{ logoutHidden }}"><span class="glyphicon glyphicon-log-out"></span>退出</a>
+<!-- Left Menu Start -->
+<div class="left-menu">
+	<div ng-click="clickMenu()">
+		<h1>早起啦</h1>
+		<div ng-include src="getLeftMenu()">
+
 		</div>
+		<a href="#/user/logout" class="logout {{ logoutHidden }}"><span class="glyphicon glyphicon-log-out"></span>退出</a>
 	</div>
-	<!-- Left Menu End -->
+</div>
+<!-- Left Menu End -->
 
-	<!-- Right Column Start -->
-	<div class="main-content transition-push">
+<!-- Right Column Start -->
+<div class="main-content transition-push">
 
-		<!-- Header Start -->
-		<div id="header">
-			<div id="btn-left-menu" class="glyphicon glyphicon-th-list icon-left-menu" ng-click="slideMenu()"></div>
-		</div>
-		<!-- Header End -->
-
-		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-
-		<div class="main-view" ng-view></div>
-
-		<div id="module-bottom" class="module-bottom transition-push" ng-include src="getView()"></div>
-
+	<!-- Header Start -->
+	<div id="header">
+		<div id="btn-left-menu" class="glyphicon glyphicon-th-list icon-left-menu" ng-click="slideMenu()"></div>
 	</div>
-	<!-- Right Menu End -->
+	<!-- Header End -->
+
+	<!--<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>-->
+
+	<!--<div><a href="#/t1">t1</a> <a href="#/t2">t2</a> </div>-->
+
+	<div class="main-view" ng-view></div>
+
+	<div id="module-bottom" class="module-bottom transition-push" ng-include src="getView()"></div>
+
+</div>
+<!-- Right Menu End -->
 
 </body>
 </html>

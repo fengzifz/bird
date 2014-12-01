@@ -2,34 +2,49 @@
  * Created by damon on 14/11/2.
  */
 
-angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-    $routeProvider
+define(function(require, exports, module) {
 
-        // Home page
-        .when('/', {
-            templateUrl: 'views/home.html',
-            controller: 'HomeController'
-        })
+    module.exports = function (app) {
 
-        // Login Page
-        .when('/user/login', {
-            templateUrl: 'views/user/login.html',
-            controller: 'LoginController'
-        })
+        app.config(['$routeProvider', function ($routeProvider) {
 
-        // Forget page
-        .when('/user/forget', {
-            templateUrl: 'views/user/forget.html',
-            controller: 'ForgetController'
-        })
+            $routeProvider
 
-        // Register page
-        .when('/user/reg', {
-            templateUrl: 'views/user/reg.html',
-            controller: 'RegisterController'
-        });
+                // Home page
+                .when('/', {
+                    templateUrl: 'views/home.html',
+                    controller: 'HomeController',
+                    controllerUrl: 'controllers/HomeController'
+                })
 
-    //$locationProvider.html5Mode(true);
+                // Login Page
+                .when('/user/login', {
+                    templateUrl: 'views/user/login.html',
+                    controller: 'LoginController',
+                    controllerUrl: 'controllers/LoginController'
+                })
 
-}]);
+                // Forget page
+                .when('/user/forget', {
+                    templateUrl: 'views/user/forget.html',
+                    controller: 'ForgetController',
+                    controllerUrl: 'controllers/ForgetController'
+                })
+
+                // Register page
+                .when('/user/reg', {
+                    templateUrl: 'views/user/reg.html',
+                    controller: 'RegisterController',
+                    controllerUrl: 'controllers/RegisterController'
+                })
+
+                .otherwise({
+                    redirectTo: '/'
+                });
+
+            //$locationProvider.html5Mode(true);
+
+        }]);
+    };
+}
