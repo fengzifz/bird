@@ -2,34 +2,26 @@
  * Created by damon on 14/11/3.
  */
 
-define(function(require, exports, module) {
+angular.module('PostController', []).controller('PostController', ['$scope', '$http',
 
-    module.exports = function(app) {
+    function($scope, $http) {
+        $scope.maxLength = 50;
 
-        app.register.controller('PostController', ['$scope', '$http',
+        // The object should bind with dom using director `ng-model`
+        $scope.postInput = '';
 
-            function($scope, $http) {
-                $scope.maxLength = 50;
+        $scope.actualLength = $scope.maxLength;
 
-                // The object should bind with dom using director `ng-model`
-                $scope.postInput = '';
+        $scope.countLength = function() {
+            $scope.actualLength = $scope.maxLength - $scope.postInput.length;
+        };
 
-                $scope.actualLength = $scope.maxLength;
+        $scope.doPost = function() {
 
-                $scope.countLength = function() {
-                    $scope.actualLength = $scope.maxLength - $scope.postInput.length;
-                };
+            // TODO: post data to server
+            console.log($scope.postInput);
 
-                $scope.doPost = function() {
+        }
+    }
 
-                    // TODO: post data to server
-                    console.log($scope.postInput);
-
-                }
-            }
-
-        ]);
-
-    };
-
-});
+]);

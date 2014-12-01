@@ -5,8 +5,16 @@
 
 define(function(require, exports, module) {
 
-    // Inject ngSea
-    var app = angular.module('app', ['ngSea', 'MainController', 'LeftMenuController']);
+    // Dependence modules
+    var dependence = [
+        'ngSea',
+        'MainController',
+        'LeftMenuController',
+        'PostController'
+    ];
+
+    // Instance ngSea module
+    var app = angular.module('app', dependence);
 
     // Inject appRoutes
     require('appRoutes')(app);
