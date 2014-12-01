@@ -124,12 +124,15 @@ router.post('/reg', function(req, res) {
     var err = checkHelper.checkRegisterInfo(user);
 
     // Display message
+    // Below is the code:
     // Invalid email: 4
     // Invalid username: 5
     // Invalid password: 6 (Password must contain number and letter)
     // Re-Password should be same with password: 7
     // Must enter all text field: 8
-    // TODO: Register successfully: 1003
+    // The mail have already exist: 9
+    // Send mail fail: 10
+    // Register successfully: 1003
     if (err) {
         return res.json(err);
     }
@@ -146,14 +149,14 @@ router.post('/reg', function(req, res) {
     });
 
     User.get({name: user.name}, function(err, doc) {
+        // Database err
         if (err) {
-            req.flash('error', err);
-            return res.redirect(pathReg);
+            return res.json(outputHelper.outputMsg(0));
         }
 
+        // User have already exist
         if (doc) {
-            req.flash('error', '用户名已经存在');
-            return res.redirect(pathReg);
+            return res.json(outputHelper.outputMsg(9));
         }
 
         // 保存到数据库
@@ -161,8 +164,7 @@ router.post('/reg', function(req, res) {
             // Some error happened
             // Maybe duplicate email
             if (err) {
-                req.flash('error', helper.checkErrorCode(err));
-                return res.redirect(pathReg);
+                return res.json(outputHelper.outputMsg(11000));
             }
 
             // 保存数据库成功后，发送邮件
@@ -170,14 +172,13 @@ router.post('/reg', function(req, res) {
                 mailHelper = new MailHelper(mailOpt);
 
             mailHelper.send(function(err) {
+                // Mail err
                 if (err) {
-                    req.flash('error', zhCN.ERR_SMTP);
-                    return res.redirect(pathReg);
+                    return res.json(outputHelper.outputMsg(9000));
                 }
 
                 req.session.user = newUser;
-                req.flash('success', zhCN.SUCCESS_REGISTER);
-                return res.redirect(path.home);
+                return res.json(outputHelper.outputMsg(1003));
             });
 
         });

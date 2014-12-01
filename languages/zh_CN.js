@@ -48,13 +48,18 @@ zh_CN.error = {
     ERR_INVALID_EMAIL: '错误的邮箱格式',
     ERR_INVALID_USERNAME: '用户名只能使用字母、数字和下划线',
     ERR_INVALID_PASSWORD: '密码必须包含数字和字母，长度至少 6 位',
-    ERR_RE_PASSWORD_NOT_SAME: '两次输入的密码不一致'
+    ERR_RE_PASSWORD_NOT_SAME: '两次输入的密码不一致',
+    ERR_MAIL_HAVE_EXIST: '邮箱已经存在',
+    ERR_SEND_MAIL_FAIL: '发送邮件失败',
+    ERR_DUPLICATE_KEY: '重复的键值',
+    ERR_MAIL_SERVER: '邮件服务器出错，请重试'
 };
 
 zh_CN.message = {
     MSG_SUCCESS_LOGIN: '登录成功',
     MSG_NOT_LOGIN: '没有登录',
-    MSG_HAVE_LOGIN: '已经登录'
+    MSG_HAVE_LOGIN: '已经登录',
+    MSG_REGISTER_SUCCESSFULLY: '注册成功'
 };
 
 module.exports = zh_CN;
