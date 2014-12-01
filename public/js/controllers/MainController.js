@@ -67,8 +67,6 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
                     leftMenu = angular.element(document.querySelector('.main-content')),
                     isLeftMenuActiveCls = btnLeftMenu.hasClass(clsNameActive);
 
-                console.log(111111);
-
                 if (!isLeftMenuActiveCls) {
                     btnLeftMenu.addClass(clsNameActive);
                     leftMenu.addClass(clsNameAnimation);
