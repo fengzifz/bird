@@ -31,11 +31,22 @@ router.get(/\/profile/, checkHelper.checkNotLogin);
 
 /**
  * Check login status
+ *
+ * Response
+ * Not login: {code: 1001, codeName: "MSG_NOT_LOGIN", error: false, description: "没有登录", success: false}
+ * Have login: {code: 1002, codeName: "MSG_HAVE_LOGIN", error: false, description: "已经登录", success: true}
+ *
  */
 router.get('/checkLogin', function(req, res) {
-    var result = {success: false};
 
+    // Mark it as not login first...
+    var result = outputHelper.outputMsg(1001);
+
+    result.success = false;
+
+    // Have login...
     if (req.session.user) {
+        result = outputHelper.outputMsg(1002);
         result.success = true;
     }
 
@@ -45,6 +56,10 @@ router.get('/checkLogin', function(req, res) {
 
 /**
  * Login
+ *
+ * Response: {code: 1000, codeName: "MSG_SUCCESS_LOGIN", error: false, description: "登录成功"}
+ *
+ * Please ref. /config/codes.js to check the `code`
  */
 router.post('/login', function(req, res) {
     var user = {};

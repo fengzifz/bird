@@ -12,8 +12,10 @@ var codes = {
     4: 'ERR_INVALID_EMAIL',
     403: 'ERR_AUTHORIZATION_FAIL',
 
-    // Success code
-    1000: 'MSG_SUCCESS_LOGIN'
+    // Message code
+    1000: 'MSG_SUCCESS_LOGIN',
+    1001: 'MSG_NOT_LOGIN',
+    1002: 'MSG_HAVE_LOGIN'
 };
 
 module.exports = codes;

@@ -49,7 +49,9 @@ zh_CN.error = {
 };
 
 zh_CN.message = {
-    MSG_SUCCESS_LOGIN: '登录成功'
+    MSG_SUCCESS_LOGIN: '登录成功',
+    MSG_NOT_LOGIN: '没有登录',
+    MSG_HAVE_LOGIN: '已经登录'
 };
 
 module.exports = zh_CN;
