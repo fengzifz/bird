@@ -103,9 +103,12 @@ router.post('/login', function(req, res) {
 });
 
 /**
- * 提交注册表单
+ * 注册
  * md5 加密
  * 邮箱验证
+ *
+ * Response: {code: xxx, codeName: xxx, error: true / false, description: xxx}
+ *
  * @param req
  * @param res
  */
