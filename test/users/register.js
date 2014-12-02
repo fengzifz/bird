@@ -3,11 +3,11 @@
  */
 
 require('should');
-var request = require('supertest');
-var app = require('../../app');
-var path = require('../../configs/path_config');
-var users = require('../../routes/user');
-var msg = require('../../languages/zh_CN');
+var request = require('supertest'),
+    app = require('../../app'),
+    path = require('../../configs/path_config'),
+    users = require('../../routes/user'),
+    User = require('../../models/user.js');
 
 describe('post routes/user.js', function() {
 
@@ -109,6 +109,53 @@ describe('post routes/user.js', function() {
 
         });
 
+    });
+
+    // TODO: Register unit test
+    describe('Register /user/reg', function() {
+
+        // User have already exist
+        // 1. Register a new user
+        // 2. Use the email to register again
+        // 3. After testing, delete the user
+        describe('The mail have already exist', function() {
+            var user = {
+                mail: 'example@example.com',
+                name: 'Damon Testing',
+                password: '1q2w3e4r',
+                rePassword: '1q2w3e4r'
+            };
+
+            before(function(done) {
+                request(app).post(path.user + '/reg')
+                    .send(user)
+                    .end(function(err, res) {
+                        // Register successfully
+                        done();
+                    });
+            });
+
+            it('The mail have already exist', function(done) {
+                request(app).post(path.user + '/reg')
+                    .send(user)
+                    .end(function(err, res) {
+                        (err === null).should.be.true;
+                        res.body.code.should.equal(9);
+                        done();
+                    });
+            });
+
+            after(function(done) {
+                User.deleteDoc({mail: 'example@example.com'}, function(err, doc) {
+                    done();
+                });
+            });
+
+        });
+
+        // Register successfully
+        // 1. Register a new user
+        // 2. After testing, delete the user
     });
 
 
