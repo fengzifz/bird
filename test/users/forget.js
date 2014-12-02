@@ -11,7 +11,7 @@ var request = require('supertest'),
 
 describe('Forget password unit test: /routes/user.js', function() {
 
-    // TODO: Invalid mail
+    // Invalid mail
     it('Invalid mail', function(done) {
         request(app).post(path.user + '/forget')
             .send({mail: 'NotMail'})
@@ -22,7 +22,7 @@ describe('Forget password unit test: /routes/user.js', function() {
             });
     });
 
-    // TODO: Mail not found
+    // Mail not found
     it('Mail not found', function(done) {
         request(app).post(path.user + '/forget')
             .send({mail: 'example@notFound.com'})
@@ -33,7 +33,7 @@ describe('Forget password unit test: /routes/user.js', function() {
             });
     });
 
-    // TODO: Send new password successfully
+    // Send new password successfully
     describe('Send new password successfully test case', function() {
         var user = {
             mail: 'example@example.com',
