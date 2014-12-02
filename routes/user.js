@@ -20,6 +20,7 @@ var generatePassword = require('../helper/password_helper');
 var MailHelper = require('../helper/mail_helper');
 var outputHelper = require('../helper/output_helper');
 
+// TODO: Delete these codes after testing
 // 检查登录状态
 router.get('/reg', checkHelper.checkLogin);
 router.get('/login', checkHelper.checkLogin);
@@ -188,9 +189,84 @@ router.post('/reg', function(req, res) {
     });
 });
 
+
+/**
+ * 申请新的密码
+ *
+ * Response codes:
+ * 4 - Invalid mail
+ * 0 - Database error
+ * 1 - User not found
+ * 9000 - Mail server error
+ * 1004 - Send new password successfully
+ */
+router.post('/forget', function(req, res) {
+
+    var mail = (req.body.mail).trim(),
+        pathFgt = path.user + '/forget';
+
+    // 验证邮箱格式
+    if (!validator.isEmail(mail)) {
+        return res.json(outputHelper.outputMsg(4));
+    }
+
+    var emailIndex = {mail: (req.body.mail).trim()};
+
+    User.get(emailIndex, function(err, doc) {
+        // Database error
+        if (err) {
+            return res.json(outputHelper.outputMsg(0));
+        }
+
+        // 用户不存在
+        if (!doc) {
+            return res.json(outputHelper.outputMsg(1));
+        }
+
+        // 生成6位随机密码
+        var password = generatePassword.generateRandomPwd(6),
+            newPassword = hashPassword(password);
+
+        // 更新数据库
+        var newUser = new User({
+            name: doc.user.name,
+            mail: mail,
+            password: newPassword
+        });
+
+        newUser.update(emailIndex, function(err) {
+            if (err) {
+                return res.json(outputHelper.outputMsg(0));
+            }
+
+            // 发送到用户邮箱
+            // newUser.password = password;
+            var mailOpt = {
+                mail: newUser.user.mail,
+                name: newUser.user.name,
+                password: password,
+                type: 'fgt'
+            };
+
+            var mailHelper = new MailHelper(mailOpt);
+
+            mailHelper.send(function(err) {
+
+                if (err) {
+                    return res.json(outputHelper.outputMsg(9000));
+                }
+
+                return res.json(outputHelper.outputMsg(1004));
+            });
+
+        });
+    });
+});
+
 // =====================================================
 
 /**
+ * TODO: Delete when finish testing
  * 注册页面
  * @param req
  * @param res
@@ -202,6 +278,7 @@ router.get('/reg', function(req, res) {
 });
 
 /**
+ * TODO: Delete when finish testing
  * 登录页面
  */
 router.get('/login', function(req, res) {
@@ -224,6 +301,7 @@ router.get('/logout', function(req, res) {
 });
 
 /**
+ * TODO: Delete when finish testing
  * 忘记密码
  */
 router.get('/forget', function(req, res) {
@@ -316,77 +394,77 @@ router.post('/profile/edit', function(req, res) {
 
 });
 
-/**
- * 申请新的密码
- */
-router.post('/forget', function(req, res) {
-
-    var mail = (req.body.mail).trim(),
-        pathFgt = path.user + '/forget';
-
-    // 验证邮箱格式
-    if (!validator.isEmail(mail)) {
-        req.flash('error', zhCN.ERR_INVALID_EMAIL);
-        return res.redirect(pathFgt);
-    }
-
-    var emailIndex = {mail: (req.body.mail).trim()};
-
-    User.get(emailIndex, function(err, doc) {
-        // Database error
-        if (err) {
-            req.flash('error', err);
-            return res.redirect(pathFgt);
-        }
-
-        // 用户不存在
-        if (!doc) {
-            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
-            return res.redirect(pathFgt);
-        }
-
-        // 生成6位随机密码
-        var password = generatePassword.generateRandomPwd(6),
-            newPassword = hashPassword(password);
-
-        // 更新数据库
-        var newUser = new User({
-            name: doc.user.name,
-            mail: mail,
-            password: newPassword
-        });
-
-        newUser.update(emailIndex, function(err) {
-            if (err) {
-                req.flash('error', err);
-                return res.redirect(pathFgt);
-            }
-
-            // 发送到用户邮箱
-            // newUser.password = password;
-            var mailOpt = {
-                mail: newUser.user.mail,
-                name: newUser.user.name,
-                password: password,
-                type: 'fgt'
-            };
-
-            var mailHelper = new MailHelper(mailOpt);
-
-            mailHelper.send(function(err) {
-
-                if (err) {
-                    req.flash('error', zhCN.ERR_SEND_MAIL_FAIL);
-                    return res.redirect(pathFgt);
-                }
-
-                req.flash('success', zhCN.SUCCESS_NEW_PWD);
-                return res.redirect(pathFgt);
-            });
-
-        });
-    });
-});
+///**
+// * 申请新的密码
+// */
+//router.post('/forget', function(req, res) {
+//
+//    var mail = (req.body.mail).trim(),
+//        pathFgt = path.user + '/forget';
+//
+//    // 验证邮箱格式
+//    if (!validator.isEmail(mail)) {
+//        req.flash('error', zhCN.ERR_INVALID_EMAIL);
+//        return res.redirect(pathFgt);
+//    }
+//
+//    var emailIndex = {mail: (req.body.mail).trim()};
+//
+//    User.get(emailIndex, function(err, doc) {
+//        // Database error
+//        if (err) {
+//            req.flash('error', err);
+//            return res.redirect(pathFgt);
+//        }
+//
+//        // 用户不存在
+//        if (!doc) {
+//            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
+//            return res.redirect(pathFgt);
+//        }
+//
+//        // 生成6位随机密码
+//        var password = generatePassword.generateRandomPwd(6),
+//            newPassword = hashPassword(password);
+//
+//        // 更新数据库
+//        var newUser = new User({
+//            name: doc.user.name,
+//            mail: mail,
+//            password: newPassword
+//        });
+//
+//        newUser.update(emailIndex, function(err) {
+//            if (err) {
+//                req.flash('error', err);
+//                return res.redirect(pathFgt);
+//            }
+//
+//            // 发送到用户邮箱
+//            // newUser.password = password;
+//            var mailOpt = {
+//                mail: newUser.user.mail,
+//                name: newUser.user.name,
+//                password: password,
+//                type: 'fgt'
+//            };
+//
+//            var mailHelper = new MailHelper(mailOpt);
+//
+//            mailHelper.send(function(err) {
+//
+//                if (err) {
+//                    req.flash('error', zhCN.ERR_SEND_MAIL_FAIL);
+//                    return res.redirect(pathFgt);
+//                }
+//
+//                req.flash('success', zhCN.SUCCESS_NEW_PWD);
+//                return res.redirect(pathFgt);
+//            });
+//
+//        });
+//    });
+//});
 
 
 

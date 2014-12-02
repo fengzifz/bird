@@ -23,6 +23,7 @@ var codes = {
     1001: 'MSG_NOT_LOGIN',
     1002: 'MSG_HAVE_LOGIN',
     1003: 'MSG_REGISTER_SUCCESSFULLY',
+    1004: 'MSG_SEND_NEW_PASSWORD',
 
     // Mongo DB err
     11000: 'ERR_DUPLICATE_KEY',
