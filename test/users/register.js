@@ -175,7 +175,7 @@ describe('Register unit test: routes/user.js', function() {
             });
 
             after(function(done) {
-                User.deleteDoc({mail: 'example@example.com'}, function(err, eoc) {
+                User.deleteDoc({mail: 'example@example.com'}, function(err, doc) {
                     done();
                 });
             });
