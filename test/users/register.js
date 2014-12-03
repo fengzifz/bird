@@ -9,7 +9,7 @@ var request = require('supertest'),
     users = require('../../routes/user'),
     User = require('../../models/user.js');
 
-describe('post routes/user.js', function() {
+describe('Register unit test: routes/user.js', function() {
 
     // Check Register information
     describe('checkRegisterInfo', function() {
@@ -156,6 +156,32 @@ describe('post routes/user.js', function() {
         // Register successfully
         // 1. Register a new user
         // 2. After testing, delete the user
+        describe('Register successfully', function() {
+            var user = {
+                mail: 'example@example.com',
+                name: 'Damon',
+                password: '1q2w3e4r',
+                rePassword: '1q2w3e4r'
+            };
+
+            it('Register successfully', function(done) {
+                request(app).post(path.user + '/reg')
+                    .send(user)
+                    .end(function(err, res) {
+                        (err === null).should.be.true;
+                        res.body.code.should.equal(1003);
+                        done();
+                    });
+            });
+
+            after(function(done) {
+                User.deleteDoc({mail: 'example@example.com'}, function(err, eoc) {
+                    done();
+                });
+            });
+        });
+
+
     });
 
 
