@@ -111,7 +111,7 @@ describe('Register unit test: routes/user.js', function() {
 
     });
 
-    // TODO: Register unit test
+    // Register unit test
     describe('Register /user/reg', function() {
 
         // User have already exist
