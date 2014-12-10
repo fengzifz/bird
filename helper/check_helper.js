@@ -83,3 +83,52 @@ helper.checkLoginInfo = function checkLoginInfo(user) {
 
     return null;
 };
+
+/**
+ * 检查注册信息
+ *
+ * Invalid email: 4
+ * Invalid username: 5
+ * Invalid password: 6 (Password must contain number and letter)
+ * Re-Password should be same with password: 7
+ * Must enter all text field: 8
+ * Register successfully: 1003
+ *
+ * @param user
+ * @returns {{}}
+ */
+helper.checkRegisterInfo = function checkRegisterInfo(user) {
+
+    // 所有信息必须填写
+    for (var p in user) {
+        if (user[p] == null || user[p] == undefined || user[p] == '') {
+            return outputHelper.outputMsg(8);
+        }
+    }
+
+    // 验证邮件格式
+    if (!validator.isEmail(user.mail)) {
+        return outputHelper.outputMsg(4);
+    }
+
+    // 用户名只能使用字母、数字和下划线
+    var usernamePatt = /([a-zA-Z0-9]|[_])$/;
+    if (!validator.matches(user.name, usernamePatt)) {
+        return outputHelper.outputMsg(5);
+    }
+
+    // 密码必须包含数字和字母
+    // 密码长度至少6位
+    var alphaAndNumeric = /[A-Za-z][0-9]|[0-9][A-Za-z]/;
+    if (!alphaAndNumeric.test(user.password) || user.password.length < 6) {
+        return outputHelper.outputMsg(6);
+    }
+
+    // 密码要一致
+    if (user.password != user.rePassword) {
+        return outputHelper.outputMsg(7);
+    }
+
+    return null;
+
+};
