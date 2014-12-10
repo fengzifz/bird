@@ -20,6 +20,37 @@ function User(user) {
 module.exports = User;
 
 /**
+ * Delete document
+ * @param index
+ * @param callback
+ */
+User.deleteDoc = function deleteDoc(index, callback) {
+    mongodb.open(function(err, db) {
+        if (err) {
+            return callback(err);
+        }
+
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.findAndRemove(index, function(err, doc) {
+                mongodb.close();
+
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(null, doc);
+            });
+
+        });
+    });
+};
+
+/**
  * Get index from database
  * @param index
  * @param callback
