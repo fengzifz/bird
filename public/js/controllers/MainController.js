@@ -68,6 +68,9 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
 
                 // Change url without reloading
                 $location.path('/#', false);
+
+                // Display logout button
+                $scope.logoutHidden = '';
             }
 
             /**
