@@ -24,9 +24,6 @@ define(function(require, exports, module) {
                         data: JSON.stringify(loginInfo)
                     }).success(function(data) {
 
-                        // TODO: Remove it after testing.
-                        console.log(data);
-
                         var msg = {};
 
                         msg.error = false;
@@ -40,7 +37,6 @@ define(function(require, exports, module) {
                         }
 
                         $rootScope.$broadcast('alterMsg', msg);
-
 
                     }).error(function(err) {
                         console.log(err);
