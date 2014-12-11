@@ -24,6 +24,7 @@ define(function(require, exports, module) {
                         data: JSON.stringify(loginInfo)
                     }).success(function(data) {
 
+                        // TODO: Remove it after testing.
                         console.log(data);
 
                         // data: {code: xxx, error: true/false, codeName: xxx, description: xxx}

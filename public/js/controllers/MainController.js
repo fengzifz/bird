@@ -40,15 +40,27 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
             /**
              * 登录成功后，改变 ng-include 里面的 html
              * `changeViewAfterLogin` 是由 `LoginController` 那里广播过来的
+             * @param event Object Browser event
+             * @param data Object {error: true / false, description: xxx}
              */
             $scope.$on('haveLogin', function(event, data) {
 
-                // Display post module
                 if (!data.error) {
+                    // Display post module
                     displayPostModule(postPath);
+
+                    // Change left menu
+                    changeLeftMenu(loginLeftMenu);
                 }
 
                 // Display alert message
+                addAlert(data);
+            });
+
+            /**
+             * Change message when receive a broadcast
+             */
+            $scope.$on('alterMsg', function(event, data) {
                 addAlert(data);
             });
 
