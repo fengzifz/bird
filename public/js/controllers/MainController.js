@@ -80,11 +80,6 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
                 addAlert(data);
             });
 
-            // TODO: 页面显示控制
-            function redirect(isLogin) {
-
-            }
-
             /**
              * 左菜单 CSS 类名切换
              */
