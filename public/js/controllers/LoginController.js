@@ -27,8 +27,20 @@ define(function(require, exports, module) {
                         // TODO: Remove it after testing.
                         console.log(data);
 
-                        // data: {code: xxx, error: true/false, codeName: xxx, description: xxx}
-                        $rootScope.$broadcast('haveLogin', data);
+                        var msg = {};
+
+                        msg.error = false;
+                        msg.description = data.description;
+
+                        if (data.error) {
+                            msg.error = true;
+                        } else {
+                            // data: {code: xxx, error: true/false, codeName: xxx, description: xxx}
+                            $rootScope.$broadcast('haveLogin', msg);
+                        }
+
+                        $rootScope.$broadcast('alterMsg', msg);
+
 
                     }).error(function(err) {
                         console.log(err);

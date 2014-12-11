@@ -32,8 +32,6 @@ define(function(require, exports, module) {
                         header: {'Content-Type': 'application/json'},
                         data: JSON.stringify(regInfo)
                     }).success(function(data) {
-                        // TODO: Remove it after testing
-                        console.log(data);
 
                         // Message
                         var msg = {};
@@ -46,10 +44,12 @@ define(function(require, exports, module) {
                         if (data.error) {
                             msg.error = true;
                         } else {
-                            // TODO: 1. Change left menu; 2. Change main view
+                            // Tell MainController to do something after login or register successfully.
                             $rootScope.$broadcast('haveLogin', msg);
                         }
 
+                        // Tell MainController to display message
+                        // No matter login / register successfully or not, we always display the message
                         $rootScope.$broadcast('alterMsg', msg);
 
                     }).error(function(err) {
