@@ -6,7 +6,7 @@
 
 angular.module('MainController', []).controller('MainController', ['$scope', '$http', '$location',
 
-        function($scope, $http) {
+        function($scope, $http, $location) {
 
             var loginPath = 'views/user/login.html',
                 postPath = 'views/post/post.html',
@@ -40,22 +40,45 @@ angular.module('MainController', []).controller('MainController', ['$scope', '$h
             /**
              * 登录成功后，改变 ng-include 里面的 html
              * `changeViewAfterLogin` 是由 `LoginController` 那里广播过来的
+             * @param event Object Browser event
+             * @param data Object {error: true / false, description: xxx}
              */
             $scope.$on('haveLogin', function(event, data) {
 
-                // Display post module
                 if (!data.error) {
-                    displayPostModule(postPath);
+                    afterLogin();
                 }
 
                 // Display alert message
                 addAlert(data);
             });
 
-            // TODO: 页面显示控制
-            function redirect(isLogin) {
+            /**
+             * After login or register, we do:
+             * 1. Display the post module
+             * 2. Change left menu
+             * 3. Redirect to homepage without reloading the page
+             */
+            function afterLogin() {
+                // Display post module
+                displayPostModule(postPath);
 
+                // Change left menu
+                changeLeftMenu(loginLeftMenu);
+
+                // Change url without reloading
+                $location.path('/#', false);
+
+                // Display logout button
+                $scope.logoutHidden = '';
             }
+
+            /**
+             * Change message when receive a broadcast
+             */
+            $scope.$on('alterMsg', function(event, data) {
+                addAlert(data);
+            });
 
             /**
              * 左菜单 CSS 类名切换
