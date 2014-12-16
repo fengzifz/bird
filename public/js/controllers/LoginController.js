@@ -24,10 +24,19 @@ define(function(require, exports, module) {
                         data: JSON.stringify(loginInfo)
                     }).success(function(data) {
 
-                        console.log(data);
+                        var msg = {};
 
-                        // data: {code: xxx, error: true/false, codeName: xxx, description: xxx}
-                        $rootScope.$broadcast('haveLogin', data);
+                        msg.error = false;
+                        msg.description = data.description;
+
+                        if (data.error) {
+                            msg.error = true;
+                        } else {
+                            // data: {code: xxx, error: true/false, codeName: xxx, description: xxx}
+                            $rootScope.$broadcast('haveLogin', msg);
+                        }
+
+                        $rootScope.$broadcast('alterMsg', msg);
 
                     }).error(function(err) {
                         console.log(err);
