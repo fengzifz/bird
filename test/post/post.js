@@ -2,270 +2,202 @@
  * Created by damon on 14/10/26.
  */
 
-var should = require('should');
-var request = require('supertest');
-var app = require('../../app');
-var path = require('../../configs/path_config');
-var user = require('../../routes/user');
-var post = require('../../routes/');
+var should = require('should'),
+    request = require('supertest'),
+    app = require('../../app'),
+    path = require('../../configs/path_config'),
+    user = require('../../routes/user'),
+    post = require('../../routes/'),
+    User = require('../../models/user');
 
 /**
- * TODO: 要实现的接口
- * getGoalTimeByMail();
- * deletePostsByMail();
- * getTodayPostsByMail();
- * addPost();
- *
+ * TODO: Step 1
+ * addPost()
+ * deletePostByName()
+ * deleteTodayPostByName()
+ * getTodayPost()
  */
 
-describe('Sign in routes/post.js', function() {
+/**
+ * TODO: Step 2
+ * 1. User only can post before goal time
+ *
+ * Think the API...
+ */
 
-    // 打开 post 页面，http 返回 200
-    // TODO: 移到去 test/route.js
-    it('Post page: should be 200', function(done) {
-        request(app).get(path.post).end(function(err, res) {
-            res.statusCode.should.equal(200);
-            done();
+
+describe('Post unit test routes/post.js', function() {
+    // TODO: Post successfully
+
+    describe('Login user post successfully', function() {
+        // Register a test user
+        var cookie,
+            registerUser = {
+                mail: 'aaa@aaa.com',
+                name: 'Damon aaa',
+                password: '1q2w3e4r',
+                rePassword: '1q2w3e4r'
+            },
+            loginUser = {
+                mail: registerUser.mail,
+                password: registerUser.password
+            },
+            postMsg = {content: 'Damon post test'};
+
+        // Register
+        before(function(done) {
+            request(app).post(path.user + '/reg')
+                .send(registerUser)
+                .end(function(err, res) {
+                    done();
+                });
         });
-    });
 
-    // 未登录的用户，不能 post
-    it('Guest can not post', function(done) {
-        request(app).post(path.post + '/post').end(function(err, res) {
-            (err === null).should.equal(true);
-            res.statusCode.should.equal(302);
-            res.header.location.should.equal(path.post);
-            done();
-        });
-    });
-
-    describe('Login test cases', function() {
-
-        var Cookies;
-
-        // 登录
+        // Login and set the session
         before(function(done) {
             request(app).post(path.user + '/login')
-                .send({'mail': '398846606@qq.com', 'password': '3bSVcm'})
-                .expect(200)
+                .send(loginUser)
                 .end(function(err, res) {
-                    Cookies = res.headers['set-cookie'].pop().split(';')[0];
-                    done();
-                });
-        });
-
-        // 用户可以设置每天的目标起床时间
-        it('User who have login can set goal time', function(done) {
-
-            var req = request(app).post(path.user + '/profile/edit');
-
-            req.cookies = Cookies;
-
-            req.end(function(err, res) {
-                (err === null).should.equal(true);
-                res.statusCode.should.equal(302);
-                res.text.should.containEql(''); // 设置成功
-                done();
-            });
-
-        });
-
-        // 用户每天只能在目标时间之前签到
-        // 小于目标时间，可以签到
-        // 大于目标时间，不能签到
-        describe('Post routes/post.js', function() {
-
-            var goalTime;
-
-            // TODO: Get user goal time
-            before(function(done) {
-                // TODO: 实现 getGoalTimeByMail()
-                goalTime = post.getGoalTimeByMail('398846606@qq.com');
-
-                done();
-            });
-
-            // 在目标时间之前，可以 post
-            it('User can post before the goal time', function(done) {
-
-                var postContent = {timestamp: goalTime - 1000, content: 'Post testing.', mail: '398846606@qq.com'},
-                    req = request(app).post(path.post);
-
-                req.cookies = Cookies;
-
-                req.send(postContent).end(function(err, res) {
-                    (err === null).should.equal(true);
-                    res.statusCode.should.equal(302);
-                    res.text.should.containEql(''); // TODO: 发表成功
-                });
-
-            });
-
-            // 在目标时间之后，不能 post
-            it('User can not post after the goal time', function(done) {
-                var postContent = {time: goalTime + 1000, content: 'Post testing.', mail: '398846606@qq.com'},
-                    req = request(app).post(path.post);
-
-                req.cookies = Cookies;
-
-                req.send(postContent).end(function(err, res) {
-                    (err === null).should.equal(true);
-                    res.statusCode.should.equal(302);
-                    res.text.should.containEql(''); // TODO: 已经超过目标时间
-                });
-            });
-
-            // 删除测试数据
-            after(function(done) {
-                // TODO: deletePostsByMail()
-                post.deletePostsByMail('398846606@qq.com');
-                done();
-            });
-
-        });
-
-        // 用户每天只能签到两次
-        describe('Post routes/post.js', function() {
-
-            var todayPosts,
-                testMail = '398846606@qq.com',
-                goalTime,
-                newPost;
-
-            before(function(done) {
-
-                todayPosts = post.getTodayPostsByMail(testMail);
-
-                goalTime = post.getGoalTimeByMail(testMail);
-
-                newPost = {timestamp: goalTime - 1000, content: 'New post.', mail: testMail};
-
-                if (todayPosts) {
-
-                    var postLen = todayPosts.length;
-
-                    // 如果只有一条 post，则添加一条
-                    if (postLen == 1) {
-                        todayPosts = post.addPost(newPost);
+                    if (res.body.code.should.equal(1000)) {
+                        cookie = res.headers['set-cookie'].pop().split(';')[0];
                     }
-
-                } else {
-                    // 如果没有 post，则添加两条
-                    // 第一条 post
-                    newPost.timestamp = goalTime - 2000;
-                    post.addPost(newPost);
-
-                    // 第二条 post
-                    newPost.timestamp = goalTime + 1000;
-                    post.addPost(newPost);
-                }
-            });
-
-            it('User can only post two times before goal time.', function(done) {
-                var req = request(app).post(path.post);
-
-                req.cookies = Cookies;
-
-                req.send(newPost).end(function(err, res) {
-                    (err === null).should.equal(true);
-                    res.statusCode.should.equal(302);
-                    res.text.should.containEql(''); // 一天只能发表两条
                     done();
                 });
-            });
+        });
 
-            after(function(done) {
-                post.deletePostsByMail('398846606@qq.com');
+        it('Post successfully', function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            // Respond code:
+            // 1005: Post successfully
+            // 1006: Delete post successfully
+            // 11: Post have reached two times
+            req.send(postMsg).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.code.should.equal(1005);
                 done();
             });
 
         });
 
-        // 用户每天两次的签到时间间隔不能小于 5 分钟
-        describe('Post routes/post.js', function() {
-            var goalTime,
-                testMail = '398846606@qq.com',
-                newPost = {timestamp: null, content: 'Post testing.', mail: testMail},
-                todayPosts;
-
-            describe('User can post', function() {
-                before(function(done) {
-                    // Get goal time
-                    goalTime = post.getGoalTimeByMail(testMail);
-
-                    // Check if have post today
-                    todayPosts = post.getTodayPostsByMail(testMail);
-
-                    // 如果今天没有 post，则添加一条
-                    if (!todayPosts) {
-                        newPost.timestamp = goalTime - 2000;
-                        post.addPost(newPost);
-                    }
-
+        // After testing, delete test data, including test account and test post.
+        // Notice: Name / email is unique when user register, so we can delete post by username
+        // Delete post
+        after(function(done) {
+            request(app).post(path.post + '/deleteTodayPostByName')
+                .send(registerUser)
+                .end(function(done) {
                     done();
                 });
+        });
 
-                // 两次 post 的时间大于 5 分钟时，可以 post 第二条
-                it('User can post the second post after 5min which the time user post the first post at.', function(done) {
-                    var req = request(app).post(path.post);
-
-                    req.cookies = Cookies;
-
-                    req.send(newPost).post(path.post).end(function(err, res) {
-                        (err === null).should.equal(true);
-                        res.statusCode.should.equal(302);
-                        res.text.should.containEql(''); // 发表成功
-                        done();
-                    });
-
-                });
-
-                after(function(done) {
-                    post.deletePostsByMail(testMail);
-                    done();
-                });
+        // Delete user
+        after(function(done) {
+            User.deleteDoc({mail: registerUser.mail}, function(err, doc) {
+                 done();
             });
-
-
-            describe('User can not post', function() {
-                before(function(done) {
-                    // Get goal time
-                    goalTime = post.getGoalTimeByMail(testMail);
-
-                    // Check if have post today
-                    todayPosts = post.getTodayPostsByMail(testMail);
-
-                    // 如果今天没有 post，则添加一条
-                    if (!todayPosts) {
-                        newPost.timestamp = goalTime - 2000;
-                        post.addPost(newPost);
-                    }
-
-                    done();
-                });
-
-                // 两次 post 的时间小于 5 分钟时，不能 post 第二条
-                it('User can not post the second post if the time internal is less than 5 min.', function(done) {
-                    var req = request(app).post(path.post);
-
-                    req.cookies = Cookies;
-
-                    req.send(newPost).post(path.post).end(function(err, res) {
-                        (err === null).should.equal(true);
-                        res.statusCode.should.equal(302);
-                        res.text.should.containEql(''); // 5分钟
-                        done();
-                    });
-                });
-
-                after(function(done) {
-                    post.deletePostsByMail(testMail);
-                    done();
-                });
-            });
-
         });
 
     });
 
+    // TODO: User only can post 2 times everyday
+    describe('User only can post 2 times everyday', function() {
+        var cookie,
+            registerUser = {
+                email: 'damon@damon.com',
+                name: 'Damon chen',
+                password: '1q2w3e4r',
+                rePassword: '1q2w3e4r'
+            },
+            loginUser = {
+                email: registerUser.email,
+                password: registerUser.password
+            },
+            postMsg1 = {content: 'Damon post test 1.'},
+            postMsg2 = {content: 'Damon post test 2.'},
+            postMsg3 = {content: 'Damon post test 3.'};
+
+        // Register a testing user.
+        before(function(done) {
+            request(app).post(path.user + '/reg')
+                .send(registerUser)
+                .end(function(err, res) {
+                    done();
+                });
+        });
+
+        // Login
+        before(function(done) {
+            request(app).post(path.user + '/login')
+                .send(loginUser)
+                .end(function(err, res) {
+                    if (res.body.code.should.equal(1000)) {
+                        cookie = res.headers['set-cookie'].pop().split(';')[0];
+                    }
+                    done();
+                });
+        });
+
+        // Post 1 time
+        before(function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            req.send(postMsg1).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.code.should.equal(1005);
+                done();
+            });
+
+        });
+
+        // Post 2 time
+        before(function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            req.send(postMsg2).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.code.should.equal(1005);
+                done();
+            });
+        });
+
+        it('User only can post 2 times everyday', function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            req.send(postMsg3).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.code.should.equal(11);
+                done();
+            });
+        });
+
+        // Delete test posts and user.
+        // Delete posts
+        after(function(done) {
+            request(app).post(path.post + '/deleteTodayPostByName')
+                .end(function(err, res) {
+                    done();
+                });
+        });
+
+        // Delete user
+        after(function(done) {
+            User.deleteDoc({mail: loginUser.mail}, function(err, res) {
+                done();
+            });
+        });
+
+    });
 });
