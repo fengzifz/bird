@@ -60,7 +60,10 @@ zh_CN.message = {
     MSG_NOT_LOGIN: '没有登录',
     MSG_HAVE_LOGIN: '已经登录',
     MSG_REGISTER_SUCCESSFULLY: '注册成功',
-    MSG_SEND_NEW_PASSWORD: '新的密码已经发送到你的邮箱'
+    MSG_SEND_NEW_PASSWORD: '新的密码已经发送到你的邮箱',
+    MSG_EMPTY_POST: '没有人签到',
+    MSG_GET_POST_SUCCESSFULLY: '成功获取今天的签到内容',
+    MSG_POST_SUCCESSFULLY: '签到成功'
 };
 
 module.exports = zh_CN;

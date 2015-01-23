@@ -50,6 +50,47 @@ Post.prototype.save = function save(callback) {
 };
 
 /**
+ * Get user today post by username
+ * @param user
+ * @param callback
+ */
+Post.getTodayPostsByUser = function getTodayPostsByUser(user, callback) {
+    var day = dateHelper.getToday(),
+        month = dateHelper.getMonth(),
+        year = dateHelper.getYear(),
+        start = new Date(year, month, day, 0, 0, 0, 0),
+        end = new Date(year, month, day + 1, 0, 0, 0, 0),
+        index = {'time': {$gt: start, $lt: end}, 'name': user};
+
+    mongodb.open(function(err, db) {
+        if (err) {
+            mongodb.close();
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.find(index).toArray(function(err, doc) {
+
+                mongodb.close();
+
+                if (err) {
+                    return callback(err);
+                }
+
+                callback(null, doc);
+            });
+
+        });
+    });
+
+};
+
+/**
  * Get today posts
  * @param skip
  * @param callback
@@ -64,8 +105,6 @@ Post.getTodayPosts = function getTodayPosts(skip, callback) {
         index = {'time': {$gt: start, $lt: end}},
         limit = 20,
         newSkip = skip || limit;
-
-    console.log(newSkip);
 
     mongodb.open(function(err, db) {
         if (err) {
