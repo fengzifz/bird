@@ -12,7 +12,6 @@ var mongodb = require('./db'),
  */
 function Post(post) {
     this.post = post;
-    console.log(this.post);
 }
 
 module.exports = Post;
@@ -44,6 +43,34 @@ Post.prototype.save = function save(callback) {
                 }
 
                 callback(null, post);
+            });
+        });
+    });
+};
+
+Post.deleteTodayPostsByUser = function deleteTodayPostsByUser(user, callback) {
+    var today = dateHelper.getTodayRange(),
+        index = {'time': {$gt: today.start, $lt: today.end}, 'name': user};
+
+    mongodb.open(function(err, db) {
+        if (err) {
+            mongodb.close();
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.findAndRemove(index, function(err, doc) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+                callback(null, doc);
             });
         });
     });

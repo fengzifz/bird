@@ -17,6 +17,7 @@ var codes = {
     9: 'ERR_MAIL_HAVE_EXIST',
     10: 'ERR_SEND_MAIL_FAIL',
     11: 'ERR_POST_REACH_TWO_TIMES',
+    12: 'ERR_RECORD_NOT_FOUND',
     403: 'ERR_AUTHORIZATION_FAIL',
 
     // Message code
@@ -29,6 +30,7 @@ var codes = {
     1006: 'MSG_DEL_POST_SUCCESSFULLY',
     1007: 'MSG_EMPTY_POST',
     1008: 'MSG_GET_POST_SUCCESSFULLY',
+    1009: 'MSG_DEL_USER_SUCCESSFULLY',
 
     // Mongo DB err
     11000: 'ERR_DUPLICATE_KEY',

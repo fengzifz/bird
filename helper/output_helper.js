@@ -29,6 +29,10 @@ module.exports = {
             desc = lang.message[codeName];
         }
 
+        if (!desc) {
+            desc = lang.other['LANG_DEFAULT'] + ': ' + codeName;
+        }
+
         return {
             code: code,
             codeName: codeName,

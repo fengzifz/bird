@@ -27,6 +27,7 @@ module.exports = User;
 User.deleteDoc = function deleteDoc(index, callback) {
     mongodb.open(function(err, db) {
         if (err) {
+            mongodb.close();
             return callback(err);
         }
 
@@ -37,9 +38,9 @@ User.deleteDoc = function deleteDoc(index, callback) {
             }
 
             collection.findAndRemove(index, function(err, doc) {
-                mongodb.close();
 
                 if (err) {
+                    mongodb.close();
                     return callback(err);
                 }
 
