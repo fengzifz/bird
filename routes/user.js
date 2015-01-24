@@ -58,7 +58,7 @@ router.get('/checkLogin', function(req, res) {
 router.post('/login', function(req, res) {
     var user = {};
 
-    user.mail = (req.body.mail).trim();
+    user.email = (req.body.email).trim();
     user.password = (req.body.password).trim();
 
     // 检查登录信息
@@ -109,7 +109,7 @@ router.post('/login', function(req, res) {
 router.post('/reg', function(req, res) {
     var user = {};
 
-    user.mail = (req.body.mail).trim();
+    user.email = (req.body.email).trim();
     user.name = (req.body.name).trim();
     user.password = (req.body.password).trim();
     user.rePassword = (req.body['rePassword']).trim();
@@ -142,7 +142,7 @@ router.post('/reg', function(req, res) {
     var newUser = new User({
         name: user.name,
         password: user.password,
-        mail: user.mail
+        email: user.email
     });
 
     User.get({name: user.name}, function(err, doc) {
@@ -256,11 +256,10 @@ router.post('/forget', function(req, res) {
     });
 });
 
-router.get('/deleteUserByEmail/:email', function(req, res) {
-    var email = req.params.email,
+router.post('/deleteUserByEmail', function(req, res) {
+    var email = req.body.email,
         index = {email: email};
 
-    console.log(44444444444444);
     User.deleteDoc(index, function(err, doc) {
         // DB err
         if (err) {

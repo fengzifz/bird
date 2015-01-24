@@ -24,7 +24,7 @@ describe('Login test: /routes/user.js', function() {
     describe('User have login test case', function() {
         var cookie,
             user = {
-                mail: 'ccc@ccc.com',
+                email: 'ccc@ccc.com',
                 name: 'Damon ccc',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
@@ -44,7 +44,7 @@ describe('Login test: /routes/user.js', function() {
         // Login and set session
         before(function(done) {
             request(app).post(path.user + '/login')
-                .send({'mail': 'ccc@ccc.com', 'password': '1q2w3e4r'})
+                .send({'email': 'ccc@ccc.com', 'password': '1q2w3e4r'})
                 .end(function(err, res) {
 
                     if (res.body.code.should.equal(1000)) {
@@ -69,7 +69,7 @@ describe('Login test: /routes/user.js', function() {
         });
 
         after(function(done) {
-            User.deleteDoc({mail: 'ccc@ccc.com'}, function(err, doc) {
+            User.deleteDoc({email: 'ccc@ccc.com'}, function(err, doc) {
                 done();
             });
         });
@@ -77,10 +77,10 @@ describe('Login test: /routes/user.js', function() {
 
     it('No such user', function(done) {
         request(app).post(path.user + '/login')
-            .send({mail: 'example@example.com', password: '111111'})
+            .send({email: 'example@example.com', password: '111111'})
             .end(function(err, res) {
                 (err === null).should.be.true;
-                res.body.code.should.equal(1);
+                res.body.codeName.should.equal('ERR_USER_NOT_FOUND');
                 done();
             });
     });
@@ -89,7 +89,7 @@ describe('Login test: /routes/user.js', function() {
     describe('Wrong password test case', function() {
 
         var user = {
-            mail: 'aaa@aaa.com',
+            email: 'aaa@aaa.com',
             name: 'Damon aaa',
             password: '1q2w3e4r',
             rePassword: '1q2w3e4r'
@@ -107,7 +107,7 @@ describe('Login test: /routes/user.js', function() {
         // Wrong password test
         it('Wrong password', function(done) {
             request(app).post(path.user + '/login')
-                .send({mail: 'aaa@aaa.com', password: '111111'})
+                .send({email: 'aaa@aaa.com', password: '111111'})
                 .end(function(err, res) {
                     (err === null).should.be.true;
                     res.body.code.should.equal(2);
@@ -117,7 +117,7 @@ describe('Login test: /routes/user.js', function() {
 
         // Delete test data
         after(function(done) {
-            User.deleteDoc({mail: 'aaa@aaa.com'}, function(err, doc) {
+            User.deleteDoc({email: 'aaa@aaa.com'}, function(err, doc) {
                 done();
             });
         });
@@ -126,7 +126,7 @@ describe('Login test: /routes/user.js', function() {
     // Login successfully
     describe('Login successfully test', function() {
         var user = {
-            mail: 'bbb@bbb.com',
+            email: 'bbb@bbb.com',
             name: 'Damon bbb',
             password: '1q2w3e4r',
             rePassword: '1q2w3e4r'
@@ -144,7 +144,7 @@ describe('Login test: /routes/user.js', function() {
         // Login successfully test.
         it('Login successfully', function(done) {
             request(app).post(path.user + '/login')
-                .send({mail: 'bbb@bbb.com', password: '1q2w3e4r'})
+                .send({email: 'bbb@bbb.com', password: '1q2w3e4r'})
                 .end(function(err, res) {
                     (err === null).should.be.true;
                     res.body.code.should.equal(1000);
@@ -154,7 +154,7 @@ describe('Login test: /routes/user.js', function() {
 
         // After testing, delete test data
         after(function(done) {
-            User.deleteDoc({mail: 'bbb@bbb.com'}, function() {
+            User.deleteDoc({email: 'bbb@bbb.com'}, function() {
                 done();
             });
         });

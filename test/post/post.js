@@ -91,23 +91,24 @@ describe('Post unit test routes/post.js', function() {
             request(app).post(path.post + '/deleteTodayPostByUser')
                 .send({name: registerUser.name})
                 .end(function(err, res) {
-                    console.log(res.body.codeName);
+                    (err === null).should.be.true;
                     done();
                 });
         });
 
-        //// Delete user
-        //after(function(done) {
-        //    console.log('============= after 2 ===========');
-        //    request(app).get(path.user + '/deleteUserByEmail/' + registerUser.mail)
-        //        .end(function(err, res) {
-        //            console.log('======---------==========: ' + registerUser.name);
-        //            done();
-        //        });
-        //    //User.deleteDoc({mail: registerUser.mail}, function(err, doc) {
-        //    //     done();
-        //    //});
-        //});
+        // Delete user
+        after(function(done) {
+            console.log('============= after 2 ===========');
+            request(app).post(path.user + '/deleteUserByEmail')
+                .send({email: registerUser.mail})
+                .end(function(err, res) {
+                    console.log('======---------==========: ' + registerUser.name);
+                    done();
+                });
+            //User.deleteDoc({mail: registerUser.mail}, function(err, doc) {
+            //     done();
+            //});
+        });
 
     });
 

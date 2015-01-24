@@ -39,8 +39,9 @@ User.deleteDoc = function deleteDoc(index, callback) {
 
             collection.findAndRemove(index, function(err, doc) {
 
+                mongodb.close();
+
                 if (err) {
-                    mongodb.close();
                     return callback(err);
                 }
 
@@ -60,6 +61,7 @@ User.get = function get(index, callback) {
     mongodb.open(function(err, db) {
 
         if (err) {
+            mongodb.close();
             return callback(err);
         }
 
@@ -96,6 +98,7 @@ User.prototype.save = function save(callback) {
     mongodb.open(function(err, db) {
         // 连接出错，丢给 callback 处理
         if (err) {
+            db.close();
             return callback(err);
         }
 
