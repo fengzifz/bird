@@ -14,10 +14,10 @@ describe('Forget password unit test: /routes/user.js', function() {
     // Invalid mail
     it('Invalid mail', function(done) {
         request(app).post(path.user + '/forget')
-            .send({mail: 'NotMail'})
+            .send({email: 'NotMail'})
             .end(function(err, res) {
                 (err === null).should.be.true;
-                res.body.code.should.equal(4);
+                res.body.codeName.should.equal('ERR_INVALID_EMAIL');
                 done();
             });
     });
@@ -25,10 +25,10 @@ describe('Forget password unit test: /routes/user.js', function() {
     // Mail not found
     it('Mail not found', function(done) {
         request(app).post(path.user + '/forget')
-            .send({mail: 'example@notFound.com'})
+            .send({email: 'example@notFound.com'})
             .end(function(err, res) {
                 (err === null).should.be.true;
-                res.body.code.should.equal(1);
+                res.body.codeName.should.equal('ERR_USER_NOT_FOUND');
                 done();
             });
     });
@@ -36,7 +36,7 @@ describe('Forget password unit test: /routes/user.js', function() {
     // Send new password successfully
     describe('Send new password successfully test case', function() {
         var user = {
-            mail: 'example@example.com',
+            email: '398846606@qq.com',
             name: 'Damon mail test',
             password: '1q2w3e4r',
             rePassword: '1q2w3e4r'
@@ -54,21 +54,20 @@ describe('Forget password unit test: /routes/user.js', function() {
         // Test
         it('Send new password successfully', function(done) {
             request(app).post(path.user + '/forget')
-                .send({mail: user.mail})
+                .send({email: user.email})
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(1004);
+                    res.body.codeName.should.equal('MSG_SEND_NEW_PASSWORD');
                     done();
                 });
         });
 
         // Delete test data after testing
         after(function(done) {
-            User.deleteDoc({mail: user.mail}, function(err, doc) {
+            User.deleteDoc({email: user.email}, function(err, doc) {
                 done();
             });
         });
     });
-
 
 });

@@ -12,7 +12,6 @@ var mongodb = require('./db'),
  */
 function Post(post) {
     this.post = post;
-    console.log(this.post);
 }
 
 module.exports = Post;
@@ -49,6 +48,73 @@ Post.prototype.save = function save(callback) {
     });
 };
 
+Post.deleteTodayPostsByUser = function deleteTodayPostsByUser(user, callback) {
+    var today = dateHelper.getTodayRange(),
+        index = {'time': {$gt: today.start, $lt: today.end}, 'name': user};
+
+    mongodb.open(function(err, db) {
+        if (err) {
+            mongodb.close();
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.remove(index, function(err, doc) {
+
+                mongodb.close();
+
+                if (err) {
+                    return callback(err);
+                }
+
+                callback(null, doc);
+            });
+        });
+    });
+};
+
+/**
+ * Get user today post by username
+ * @param user
+ * @param callback
+ */
+Post.getTodayPostsByUser = function getTodayPostsByUser(user, callback) {
+    var today = dateHelper.getTodayRange(),
+        index = {'time': {$gt: today.start, $lt: today.end}, 'name': user};
+
+    mongodb.open(function(err, db) {
+        if (err) {
+            mongodb.close();
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.find(index).toArray(function(err, doc) {
+
+                mongodb.close();
+
+                if (err) {
+                    return callback(err);
+                }
+
+                callback(null, doc);
+            });
+
+        });
+    });
+
+};
+
 /**
  * Get today posts
  * @param skip
@@ -64,8 +130,6 @@ Post.getTodayPosts = function getTodayPosts(skip, callback) {
         index = {'time': {$gt: start, $lt: end}},
         limit = 20,
         newSkip = skip || limit;
-
-    console.log(newSkip);
 
     mongodb.open(function(err, db) {
         if (err) {

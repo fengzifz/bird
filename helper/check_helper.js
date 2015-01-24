@@ -72,12 +72,12 @@ helper.checkNotLogin = function checkNotLogin(req, res, next) {
  */
 helper.checkLoginInfo = function checkLoginInfo(user) {
     // 所有信息必须填写
-    if (!user.mail || !user.password) {
+    if (!user.email || !user.password) {
         return outputHelper.outputMsg(3);
     }
 
     // 验证邮箱格式
-    if (!validator.isEmail(user.mail)) {
+    if (!validator.isEmail(user.email)) {
         return outputHelper.outputMsg(4);
     }
 
@@ -107,7 +107,7 @@ helper.checkRegisterInfo = function checkRegisterInfo(user) {
     }
 
     // 验证邮件格式
-    if (!validator.isEmail(user.mail)) {
+    if (!validator.isEmail(user.email)) {
         return outputHelper.outputMsg(4);
     }
 

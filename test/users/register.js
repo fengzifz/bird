@@ -17,7 +17,7 @@ describe('Register unit test: routes/user.js', function() {
         it('Invalid email', function(done) {
 
             var user = {
-                mail: 'damon.chen',
+                email: 'damon.chen',
                 name: 'Damon Chen',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
@@ -27,7 +27,7 @@ describe('Register unit test: routes/user.js', function() {
                 .send(user)
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(4);
+                    res.body.codeName.should.equal('ERR_INVALID_EMAIL');
                     done();
                 });
 
@@ -36,7 +36,7 @@ describe('Register unit test: routes/user.js', function() {
         it('Empty field', function(done) {
 
             var user = {
-                mail: 'damon.chen@damon.com',
+                email: 'damon.chen@damon.com',
                 name: '',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
@@ -46,7 +46,7 @@ describe('Register unit test: routes/user.js', function() {
                 .send(user)
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(8);
+                    res.body.codeName.should.equal('ERR_MUST_ENTER_ALL');
                     done();
                 });
 
@@ -55,7 +55,7 @@ describe('Register unit test: routes/user.js', function() {
         it('Username only can use A-Za-z, 0-9 and _', function(done) {
 
             var user = {
-                mail: 'damon.chen@damon.com',
+                email: 'damon.chen@damon.com',
                 name: 'damon<',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
@@ -65,7 +65,7 @@ describe('Register unit test: routes/user.js', function() {
                 .send(user)
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(5);
+                    res.body.codeName.should.equal('ERR_INVALID_USERNAME');
                     done();
                 });
 
@@ -74,7 +74,7 @@ describe('Register unit test: routes/user.js', function() {
         it('Password must contains number and letter.', function(done) {
 
             var user = {
-                mail: 'damon.chen@damon.com',
+                email: 'damon.chen@damon.com',
                 name: 'damon',
                 password: '111111',
                 rePassword: '111111'
@@ -84,7 +84,7 @@ describe('Register unit test: routes/user.js', function() {
                 .send(user)
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(6);
+                    res.body.codeName.should.equal('ERR_INVALID_PASSWORD');
                     done();
                 });
 
@@ -93,7 +93,7 @@ describe('Register unit test: routes/user.js', function() {
         it('Not match re-password', function(done) {
 
             var user = {
-                mail: 'damon.chen@damon.com',
+                email: 'damon.chen@damon.com',
                 name: 'Damon chen',
                 password: '1q2w3e4r',
                 rePassword: '2w1q3e4r'
@@ -103,7 +103,7 @@ describe('Register unit test: routes/user.js', function() {
                 .send(user)
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(7);
+                    res.body.codeName.should.equal('ERR_RE_PASSWORD_NOT_SAME');
                     done();
                 });
 
@@ -120,7 +120,7 @@ describe('Register unit test: routes/user.js', function() {
         // 3. After testing, delete the user
         describe('The mail have already exist', function() {
             var user = {
-                mail: 'example@example.com',
+                email: 'example@example.com',
                 name: 'Damon Testing',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
@@ -140,13 +140,13 @@ describe('Register unit test: routes/user.js', function() {
                     .send(user)
                     .end(function(err, res) {
                         (err === null).should.be.true;
-                        res.body.code.should.equal(9);
+                        res.body.codeName.should.equal('ERR_MAIL_HAVE_EXIST');
                         done();
                     });
             });
 
             after(function(done) {
-                User.deleteDoc({mail: 'example@example.com'}, function(err, doc) {
+                User.deleteDoc({email: 'example@example.com'}, function(err, doc) {
                     done();
                 });
             });
@@ -158,7 +158,7 @@ describe('Register unit test: routes/user.js', function() {
         // 2. After testing, delete the user
         describe('Register successfully', function() {
             var user = {
-                mail: 'example@example.com',
+                email: 'example@example.com',
                 name: 'Damon',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
@@ -169,13 +169,13 @@ describe('Register unit test: routes/user.js', function() {
                     .send(user)
                     .end(function(err, res) {
                         (err === null).should.be.true;
-                        res.body.code.should.equal(1003);
+                        res.body.codeName.should.equal('MSG_REGISTER_SUCCESSFULLY');
                         done();
                     });
             });
 
             after(function(done) {
-                User.deleteDoc({mail: 'example@example.com'}, function(err, doc) {
+                User.deleteDoc({email: 'example@example.com'}, function(err, doc) {
                     done();
                 });
             });

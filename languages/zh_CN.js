@@ -52,7 +52,8 @@ zh_CN.error = {
     ERR_MAIL_HAVE_EXIST: '邮箱已经存在',
     ERR_SEND_MAIL_FAIL: '发送邮件失败',
     ERR_DUPLICATE_KEY: '重复的键值',
-    ERR_MAIL_SERVER: '邮件服务器出错，请重试'
+    ERR_MAIL_SERVER: '邮件服务器出错，请重试',
+    ERR_RECORD_NOT_FOUND: '没有找到对应的记录'
 };
 
 zh_CN.message = {
@@ -60,7 +61,14 @@ zh_CN.message = {
     MSG_NOT_LOGIN: '没有登录',
     MSG_HAVE_LOGIN: '已经登录',
     MSG_REGISTER_SUCCESSFULLY: '注册成功',
-    MSG_SEND_NEW_PASSWORD: '新的密码已经发送到你的邮箱'
+    MSG_SEND_NEW_PASSWORD: '新的密码已经发送到你的邮箱',
+    MSG_EMPTY_POST: '没有人签到',
+    MSG_GET_POST_SUCCESSFULLY: '成功获取今天的签到内容',
+    MSG_POST_SUCCESSFULLY: '签到成功'
+};
+
+zh_CN.other = {
+    LANG_DEFAULT: '没有对应的翻译'
 };
 
 module.exports = zh_CN;

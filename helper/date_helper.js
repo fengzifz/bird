@@ -15,6 +15,15 @@ date.getUnixTime = function getUnixTime() {
 };
 
 /**
+ * Get unix timestamp by date object
+ * @param d
+ * @returns {number}
+ */
+date.getUnixTimeByDate = function getUnixTimeByDate(d) {
+    return Math.round(d.getTime() / 1000);
+};
+
+/**
  * Get Milli seconds timestamp
  * @returns {number}
  */
@@ -58,4 +67,23 @@ date.getMonth = function getMonth() {
 date.getYear = function getYear() {
     var date = new Date();
     return date.getFullYear();
+};
+
+/**
+ * Get today range
+ * new Date(year, month, day); // The `month` is start at 0
+ * @returns {{start: Date, end: Date}}
+ */
+date.getTodayRange = function getTodayDate() {
+    var day = date.getToday(),
+        month = date.getMonth(),
+        year = date.getYear(),
+        start = date.getUnixTimeByDate(new Date(year, month - 1, day, 0, 0, 0, 0)),
+        end = date.getUnixTimeByDate(new Date(year, month - 1, day + 1, 0, 0, 0, 0));
+
+    return {
+        start: start,
+        end: end
+    };
+
 };
