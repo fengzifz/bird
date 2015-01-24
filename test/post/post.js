@@ -34,16 +34,16 @@ describe('Post unit test routes/post.js', function() {
         // Register a test user
         var cookie,
             registerUser = {
-                mail: 'aaa@aaa.com',
+                email: 'aaa@aaa.com',
                 name: 'Damon aaa',
                 password: '1q2w3e4r',
                 rePassword: '1q2w3e4r'
             },
             loginUser = {
-                mail: registerUser.mail,
+                email: registerUser.email,
                 password: registerUser.password
             },
-            postMsg = {content: 'Damon post test2'};
+            postMsg = {content: 'Damon post test4'};
 
         // Register
         before(function(done) {
@@ -59,7 +59,7 @@ describe('Post unit test routes/post.js', function() {
             request(app).post(path.user + '/login')
                 .send(loginUser)
                 .end(function(err, res) {
-                    if (res.body.code.should.equal(1000)) {
+                    if (res.body.codeName.should.equal('MSG_SUCCESS_LOGIN')) {
                         cookie = res.headers['set-cookie'].pop().split(';')[0];
                     }
                     done();
@@ -78,7 +78,7 @@ describe('Post unit test routes/post.js', function() {
             // 11: Post have reached two times
             req.send(postMsg).end(function(err, res) {
                 (err === null).should.be.true;
-                res.body.code.should.equal(1005);
+                res.body.codeName.should.equal('MSG_POST_SUCCESSFULLY');
                 done();
             });
 
@@ -88,130 +88,118 @@ describe('Post unit test routes/post.js', function() {
         // Notice: Name / email is unique when user register, so we can delete post by username
         // Delete post
         after(function(done) {
-            request(app).post(path.post + '/deleteTodayPostByUser')
-                .send({name: registerUser.name})
-                .end(function(err, res) {
-                    (err === null).should.be.true;
-                    done();
-                });
+            Post.deleteTodayPostsByUser(registerUser.name, function(err, doc) {
+                (err === null).should.be.true;
+                done();
+            });
         });
 
         // Delete user
         after(function(done) {
-            console.log('============= after 2 ===========');
-            request(app).post(path.user + '/deleteUserByEmail')
-                .send({email: registerUser.mail})
-                .end(function(err, res) {
-                    console.log('======---------==========: ' + registerUser.name);
-                    done();
-                });
-            //User.deleteDoc({mail: registerUser.mail}, function(err, doc) {
-            //     done();
-            //});
+            User.deleteDoc({email: registerUser.email}, function(err, doc) {
+                (err === null).should.be.true;
+                done();
+            });
         });
 
     });
 
-    // TODO: User only can post 2 times everyday
-    //describe('User only can post 2 times everyday', function() {
-    //    var cookie,
-    //        registerUser = {
-    //            email: 'damon@damon.com',
-    //            name: 'Damon chen654',
-    //            password: '1q2w3e4r',
-    //            rePassword: '1q2w3e4r'
-    //        },
-    //        loginUser = {
-    //            email: registerUser.email,
-    //            password: registerUser.password
-    //        },
-    //        postMsg1 = {content: 'Damon post test 1.'},
-    //        postMsg2 = {content: 'Damon post test 2.'},
-    //        postMsg3 = {content: 'Damon post test 3.'};
-    //
-    //    // Register a testing user.
-    //    before(function(done) {
-    //        request(app).post(path.user + '/reg')
-    //            .send(registerUser)
-    //            .end(function(err, res) {
-    //                done();
-    //            });
-    //    });
-    //
-    //    // Login
-    //    before(function(done) {
-    //        request(app).post(path.user + '/login')
-    //            .send(loginUser)
-    //            .end(function(err, res) {
-    //                if (res.body.code.should.equal(1000)) {
-    //                    cookie = res.headers['set-cookie'].pop().split(';')[0];
-    //                }
-    //                done();
-    //            });
-    //    });
-    //
-    //    // Post 1 time
-    //    before(function(done) {
-    //        var req = request(app).post(path.post);
-    //
-    //        // Set cookie
-    //        req.cookies = cookie;
-    //
-    //        req.send(postMsg1).end(function(err, res) {
-    //            (err === null).should.be.true;
-    //            res.body.code.should.equal(1005);
-    //            done();
-    //        });
-    //
-    //    });
-    //
-    //    // Post 2 time
-    //    before(function(done) {
-    //        var req = request(app).post(path.post);
-    //
-    //        // Set cookie
-    //        req.cookies = cookie;
-    //
-    //        req.send(postMsg2).end(function(err, res) {
-    //            (err === null).should.be.true;
-    //            res.body.code.should.equal(1005);
-    //            done();
-    //        });
-    //    });
-    //
-    //    it('User only can post 2 times everyday', function(done) {
-    //        var req = request(app).post(path.post);
-    //
-    //        // Set cookie
-    //        req.cookies = cookie;
-    //
-    //        req.send(postMsg3).end(function(err, res) {
-    //            (err === null).should.be.true;
-    //            res.body.code.should.equal(11);
-    //            done();
-    //        });
-    //    });
-    //
-    //    // Delete test posts and user.
-    //    // Delete posts
-    //    after(function(done) {
-    //        request(app).get(path.post + '/deleteTodayPostByUser/' + registerUser.name)
-    //            .end(function(err, res) {
-    //                done();
-    //            });
-    //        //request(app).post(path.post + '/deleteTodayPostByUser/' + registerUser.name)
-    //        //    .end(function(err, res) {
-    //        //        done();
-    //        //    });
-    //    });
-    //
-    //    // Delete user
-    //    after(function(done) {
-    //        request(app).get(path.user + '/deleteUserByEmail/' + registerUser.mail)
-    //            .end(function(err, res) {
-    //                done();
-    //            });
-    //    });
-    //
-    //});
+    // User only can post 2 times everyday
+    describe('User only can post 2 times everyday', function() {
+        var cookie,
+            registerUser = {
+                email: 'damon@damon.com',
+                name: 'Damon chen654',
+                password: '1q2w3e4r',
+                rePassword: '1q2w3e4r'
+            },
+            loginUser = {
+                email: registerUser.email,
+                password: registerUser.password
+            },
+            postMsg1 = {content: 'Damon post test 1.'},
+            postMsg2 = {content: 'Damon post test 2.'},
+            postMsg3 = {content: 'Damon post test 3.'};
+
+        // Register a testing user.
+        before(function(done) {
+            request(app).post(path.user + '/reg')
+                .send(registerUser)
+                .end(function(err, res) {
+                    done();
+                });
+        });
+
+        // Login
+        before(function(done) {
+            request(app).post(path.user + '/login')
+                .send(loginUser)
+                .end(function(err, res) {
+                    if (res.body.codeName.should.equal('MSG_SUCCESS_LOGIN')) {
+                        cookie = res.headers['set-cookie'].pop().split(';')[0];
+                    }
+                    done();
+                });
+        });
+
+        // Post 1 time
+        before(function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            req.send(postMsg1).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.codeName.should.equal('MSG_POST_SUCCESSFULLY');
+                done();
+            });
+
+        });
+
+        // Post 2 time
+        before(function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            req.send(postMsg2).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.codeName.should.equal('MSG_POST_SUCCESSFULLY');
+                done();
+            });
+        });
+
+        it('User only can post 2 times everyday', function(done) {
+            var req = request(app).post(path.post);
+
+            // Set cookie
+            req.cookies = cookie;
+
+            req.send(postMsg3).end(function(err, res) {
+                (err === null).should.be.true;
+                res.body.codeName.should.equal('ERR_POST_REACH_TWO_TIMES');
+                done();
+            });
+        });
+
+        // Delete test posts and user.
+        // Delete posts
+        after(function(done) {
+            Post.deleteTodayPostsByUser(registerUser.name, function(err, doc) {
+                (err === null).should.be.true;
+                done();
+            });
+        });
+
+        // Delete user
+        after(function(done) {
+            User.deleteDoc({email: registerUser.email}, function(err, doc) {
+                (err === null).should.be.true;
+                done();
+            });
+        });
+
+    });
 });

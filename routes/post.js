@@ -71,7 +71,7 @@ router.post('/', function(req, res) {
             return res.json(outputHelper.outputMsg(0));
         }
 
-        if (doc.length > 2) {
+        if (doc.length >= 2) {
             return res.json(outputHelper.outputMsg(11));
         }
 

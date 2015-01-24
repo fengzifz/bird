@@ -64,9 +64,11 @@ Post.deleteTodayPostsByUser = function deleteTodayPostsByUser(user, callback) {
                 return callback(err);
             }
 
-            collection.findAndRemove(index, function(err, doc) {
+            collection.remove(index, function(err, doc) {
+
+                mongodb.close();
+
                 if (err) {
-                    mongodb.close();
                     return callback(err);
                 }
 
@@ -82,12 +84,8 @@ Post.deleteTodayPostsByUser = function deleteTodayPostsByUser(user, callback) {
  * @param callback
  */
 Post.getTodayPostsByUser = function getTodayPostsByUser(user, callback) {
-    var day = dateHelper.getToday(),
-        month = dateHelper.getMonth(),
-        year = dateHelper.getYear(),
-        start = new Date(year, month, day, 0, 0, 0, 0),
-        end = new Date(year, month, day + 1, 0, 0, 0, 0),
-        index = {'time': {$gt: start, $lt: end}, 'name': user};
+    var today = dateHelper.getTodayRange(),
+        index = {'time': {$gt: today.start, $lt: today.end}, 'name': user};
 
     mongodb.open(function(err, db) {
         if (err) {
