@@ -256,27 +256,6 @@ router.post('/forget', function(req, res) {
     });
 });
 
-router.post('/deleteUserByEmail', function(req, res) {
-    var email = req.body.email,
-        index = {email: email};
-
-    User.deleteDoc(index, function(err, doc) {
-        // DB err
-        if (err) {
-            console.log(11111111111);
-            return res.json(outputHelper.outputMsg(0));
-        }
-
-        // User not found
-        if (!doc) {
-            console.log(22222222222222);
-            return res.json(outputHelper.outputMsg(1));
-        }
-
-        return res.json(outputHelper.outputMsg(1009));
-    });
-});
-
 // =====================================================
 
 /**

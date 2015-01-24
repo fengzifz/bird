@@ -93,24 +93,6 @@ router.post('/', function(req, res) {
 
 });
 
-router.post('/deleteTodayPostByUser', function(req, res) {
-    // Get user from session
-    var name = req.body.name;
-
-    Post.deleteTodayPostsByUser(name, function(err, num) {
-        // DB error
-        if (err) {
-            return res.json(outputHelper.outputMsg(0));
-        }
-
-        if (!num) {
-            return res.json(outputHelper.outputMsg(12));
-        }
-
-        return res.json(outputHelper.outputMsg(1006));
-    });
-});
-
 // ********** New API end **********
 
 // Check login
