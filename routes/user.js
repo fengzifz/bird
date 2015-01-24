@@ -165,7 +165,7 @@ router.post('/reg', function(req, res) {
             }
 
             // 保存数据库成功后，发送邮件
-            var mailOpt = {name: user.name, mail: user.mail, type: 'reg'},
+            var mailOpt = {name: user.name, email: user.email, type: 'reg'},
                 mailHelper = new MailHelper(mailOpt);
 
             mailHelper.send(function(err) {
