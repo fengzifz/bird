@@ -16,12 +16,12 @@ Mail.prototype.send = function send(callback) {
         opt;
 
     if (type == 'reg') {
-        mail.mailOptReg.to = this.opt.mail;
+        mail.mailOptReg.to = this.opt.email;
         mail.mailOptReg.html = mail.mailOptReg.html.replace(/zaoqila_user/, this.opt.name);
 
         opt = mail.mailOptReg;
     } else if (type == 'fgt') {
-        mail.mailOptFgt.to = this.opt.mail;
+        mail.mailOptFgt.to = this.opt.email;
         mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_user/, this.opt.name);
         mail.mailOptFgt.html = mail.mailOptFgt.html.replace(/zaoqila_password/, this.opt.password);
 
