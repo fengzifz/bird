@@ -15,7 +15,7 @@ describe('Login test: /routes/user.js', function() {
     it('User not login', function(done) {
         request(app).get(path.user + '/checkLogin').end(function(err, res) {
             (err === null).should.be.true;
-            res.body.code.should.equal(1001);
+            res.body.codeName.should.equal('MSG_NOT_LOGIN');
             done();
         });
     });
@@ -47,7 +47,7 @@ describe('Login test: /routes/user.js', function() {
                 .send({'email': 'ccc@ccc.com', 'password': '1q2w3e4r'})
                 .end(function(err, res) {
 
-                    if (res.body.code.should.equal(1000)) {
+                    if (res.body.codeName.should.equal('MSG_SUCCESS_LOGIN')) {
                         cookie = res.headers['set-cookie'].pop().split(';')[0];
                     }
 
@@ -63,13 +63,14 @@ describe('Login test: /routes/user.js', function() {
 
             req.end(function(err, res) {
                 (err === null).should.be.true;
-                res.body.code.should.equal(1002);
+                res.body.codeName.should.equal('MSG_HAVE_LOGIN');
                 done();
             });
         });
 
         after(function(done) {
             User.deleteDoc({email: 'ccc@ccc.com'}, function(err, doc) {
+                (err === null).should.be.true;
                 done();
             });
         });
@@ -110,7 +111,7 @@ describe('Login test: /routes/user.js', function() {
                 .send({email: 'aaa@aaa.com', password: '111111'})
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(2);
+                    res.body.codeName.should.equal('ERR_PASSWORD_WRONG');
                     done();
                 });
         });
@@ -118,6 +119,7 @@ describe('Login test: /routes/user.js', function() {
         // Delete test data
         after(function(done) {
             User.deleteDoc({email: 'aaa@aaa.com'}, function(err, doc) {
+                (err === null).should.be.true;
                 done();
             });
         });
@@ -147,19 +149,18 @@ describe('Login test: /routes/user.js', function() {
                 .send({email: 'bbb@bbb.com', password: '1q2w3e4r'})
                 .end(function(err, res) {
                     (err === null).should.be.true;
-                    res.body.code.should.equal(1000);
+                    res.body.codeName.should.equal('MSG_SUCCESS_LOGIN');
                     done();
                 });
         });
 
         // After testing, delete test data
         after(function(done) {
-            User.deleteDoc({email: 'bbb@bbb.com'}, function() {
+            User.deleteDoc({email: 'bbb@bbb.com'}, function(err, res) {
+                (err === null).should.be.true;
                 done();
             });
         });
     });
-
-
 
 });
