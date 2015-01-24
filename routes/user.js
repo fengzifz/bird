@@ -195,15 +195,15 @@ router.post('/reg', function(req, res) {
  */
 router.post('/forget', function(req, res) {
 
-    var mail = (req.body.mail).trim(),
+    var email = (req.body.email).trim(),
         pathFgt = path.user + '/forget';
 
     // 验证邮箱格式
-    if (!validator.isEmail(mail)) {
+    if (!validator.isEmail(email)) {
         return res.json(outputHelper.outputMsg(4));
     }
 
-    var emailIndex = {mail: (req.body.mail).trim()};
+    var emailIndex = {email: (req.body.email).trim()};
 
     User.get(emailIndex, function(err, doc) {
         // Database error
@@ -223,7 +223,7 @@ router.post('/forget', function(req, res) {
         // 更新数据库
         var newUser = new User({
             name: doc.user.name,
-            mail: mail,
+            email: email,
             password: newPassword
         });
 
@@ -235,7 +235,7 @@ router.post('/forget', function(req, res) {
             // 发送到用户邮箱
             // newUser.password = password;
             var mailOpt = {
-                mail: newUser.user.mail,
+                email: newUser.user.email,
                 name: newUser.user.name,
                 password: password,
                 type: 'fgt'
@@ -257,103 +257,6 @@ router.post('/forget', function(req, res) {
 });
 
 // =====================================================
-
-/**
- * 退出登录
- */
-router.get('/logout', function(req, res) {
-
-    // Empty user in session
-    req.session.user = null;
-
-    // Redirect to login page
-    req.flash('success', zhCN.SUCCESS_LOGOUT);
-    return res.redirect('/user/login');
-});
-
-/**
- * 用户资料页面
- */
-router.get('/profile', function(req, res) {
-
-    var user = req.session.user,
-        data = {};
-
-    User.get({name: user.name}, function(err, doc) {
-
-        data.title = zhCN.title.PROFILE;
-
-        // Get user information
-        if (err) {
-            data.user = null;
-        } else {
-            data.user = doc.user;
-        }
-
-        res.render('user/profile', data);
-    });
-
-});
-
-/**
- * 用户编辑页面
- */
-router.get('/profile/edit', function(req, res) {
-    var user = req.session.user,
-        data = {};
-
-    User.get({name: user.name}, function(err, doc) {
-        data.title = zhCN.title.PROFILE_EDIT;
-
-        if (err) {
-            data.user = null;
-        } else {
-            data.user = doc.user;
-        }
-
-        res.render('user/edit', data);
-    });
-
-});
-
-/**
- * 修改用户资料
- * TODO: 暂时添加修改目标时间
- */
-router.post('/profile/edit', function(req, res) {
-
-    var user = req.session.user,
-        goalTime = req.body.goaltime,
-        pathEdit = path.user + '/profile/edit',
-        queryIndex = {name: user.name};
-
-    User.get(queryIndex, function(err, doc) {
-        if (err) {
-            req.flash('error', err);
-            return res.redirect(pathEdit);
-        }
-
-        if (!doc) {
-            req.flash('error', zhCN.ERR_USER_NOT_FOUND);
-            return res.redirect(pathEdit);
-        }
-
-        // doc {user: {name: xxx, mail: xxx, ...}}
-        var updateUser = new User(doc.user);
-        updateUser.user.goalTime = goalTime;
-
-        updateUser.update(queryIndex, function(err) {
-            if (err) {
-                req.flash('error', err);
-                return res.redirect(pathEdit);
-            }
-
-            req.flash('success', zhCN.SUCCESS_PROFILE_UPDATE);
-            return res.redirect('/user/profile/edit');
-        });
-    });
-
-});
 
 /**
  * 加密密码
