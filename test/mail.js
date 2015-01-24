@@ -14,7 +14,7 @@ describe('Send email', function() {
         it('Send successfully', function(done) {
 
             var user = {
-                mail: 'chenzifeng2012@gmail.com',
+                email: 'chenzifeng2012@gmail.com',
                 name: 'Damon Chen',
                 type: 'reg'
             };
@@ -38,7 +38,7 @@ describe('Send email', function() {
         it('Send successfully', function(done) {
 
             var user = {
-                mail: 'chenzifeng2012@gmail.com',
+                email: 'chenzifeng2012@gmail.com',
                 name: 'Damon Chen',
                 password: '1q2w3e',
                 type: 'fgt'
