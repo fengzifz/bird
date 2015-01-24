@@ -8,7 +8,8 @@ var should = require('should'),
     path = require('../../configs/path_config'),
     user = require('../../routes/user'),
     post = require('../../routes/'),
-    User = require('../../models/user');
+    User = require('../../models/user'),
+    Post = require('../../models/post');
 
 /**
  * TODO: Step 1
@@ -42,7 +43,7 @@ describe('Post unit test routes/post.js', function() {
                 mail: registerUser.mail,
                 password: registerUser.password
             },
-            postMsg = {content: 'Damon post test'};
+            postMsg = {content: 'Damon post test2'};
 
         // Register
         before(function(done) {
@@ -87,117 +88,129 @@ describe('Post unit test routes/post.js', function() {
         // Notice: Name / email is unique when user register, so we can delete post by username
         // Delete post
         after(function(done) {
-            request(app).post(path.post + '/deleteTodayPostByName')
-                .send(registerUser)
-                .end(function(done) {
+            request(app).post(path.post + '/deleteTodayPostByUser')
+                .send({name: registerUser.name})
+                .end(function(err, res) {
+                    console.log(res.body.codeName);
                     done();
                 });
         });
 
-        // Delete user
-        after(function(done) {
-            User.deleteDoc({mail: registerUser.mail}, function(err, doc) {
-                 done();
-            });
-        });
+        //// Delete user
+        //after(function(done) {
+        //    console.log('============= after 2 ===========');
+        //    request(app).get(path.user + '/deleteUserByEmail/' + registerUser.mail)
+        //        .end(function(err, res) {
+        //            console.log('======---------==========: ' + registerUser.name);
+        //            done();
+        //        });
+        //    //User.deleteDoc({mail: registerUser.mail}, function(err, doc) {
+        //    //     done();
+        //    //});
+        //});
 
     });
 
     // TODO: User only can post 2 times everyday
-    describe('User only can post 2 times everyday', function() {
-        var cookie,
-            registerUser = {
-                email: 'damon@damon.com',
-                name: 'Damon chen',
-                password: '1q2w3e4r',
-                rePassword: '1q2w3e4r'
-            },
-            loginUser = {
-                email: registerUser.email,
-                password: registerUser.password
-            },
-            postMsg1 = {content: 'Damon post test 1.'},
-            postMsg2 = {content: 'Damon post test 2.'},
-            postMsg3 = {content: 'Damon post test 3.'};
-
-        // Register a testing user.
-        before(function(done) {
-            request(app).post(path.user + '/reg')
-                .send(registerUser)
-                .end(function(err, res) {
-                    done();
-                });
-        });
-
-        // Login
-        before(function(done) {
-            request(app).post(path.user + '/login')
-                .send(loginUser)
-                .end(function(err, res) {
-                    if (res.body.code.should.equal(1000)) {
-                        cookie = res.headers['set-cookie'].pop().split(';')[0];
-                    }
-                    done();
-                });
-        });
-
-        // Post 1 time
-        before(function(done) {
-            var req = request(app).post(path.post);
-
-            // Set cookie
-            req.cookies = cookie;
-
-            req.send(postMsg1).end(function(err, res) {
-                (err === null).should.be.true;
-                res.body.code.should.equal(1005);
-                done();
-            });
-
-        });
-
-        // Post 2 time
-        before(function(done) {
-            var req = request(app).post(path.post);
-
-            // Set cookie
-            req.cookies = cookie;
-
-            req.send(postMsg2).end(function(err, res) {
-                (err === null).should.be.true;
-                res.body.code.should.equal(1005);
-                done();
-            });
-        });
-
-        it('User only can post 2 times everyday', function(done) {
-            var req = request(app).post(path.post);
-
-            // Set cookie
-            req.cookies = cookie;
-
-            req.send(postMsg3).end(function(err, res) {
-                (err === null).should.be.true;
-                res.body.code.should.equal(11);
-                done();
-            });
-        });
-
-        // Delete test posts and user.
-        // Delete posts
-        after(function(done) {
-            request(app).post(path.post + '/deleteTodayPostByName')
-                .end(function(err, res) {
-                    done();
-                });
-        });
-
-        // Delete user
-        after(function(done) {
-            User.deleteDoc({mail: loginUser.mail}, function(err, res) {
-                done();
-            });
-        });
-
-    });
+    //describe('User only can post 2 times everyday', function() {
+    //    var cookie,
+    //        registerUser = {
+    //            email: 'damon@damon.com',
+    //            name: 'Damon chen654',
+    //            password: '1q2w3e4r',
+    //            rePassword: '1q2w3e4r'
+    //        },
+    //        loginUser = {
+    //            email: registerUser.email,
+    //            password: registerUser.password
+    //        },
+    //        postMsg1 = {content: 'Damon post test 1.'},
+    //        postMsg2 = {content: 'Damon post test 2.'},
+    //        postMsg3 = {content: 'Damon post test 3.'};
+    //
+    //    // Register a testing user.
+    //    before(function(done) {
+    //        request(app).post(path.user + '/reg')
+    //            .send(registerUser)
+    //            .end(function(err, res) {
+    //                done();
+    //            });
+    //    });
+    //
+    //    // Login
+    //    before(function(done) {
+    //        request(app).post(path.user + '/login')
+    //            .send(loginUser)
+    //            .end(function(err, res) {
+    //                if (res.body.code.should.equal(1000)) {
+    //                    cookie = res.headers['set-cookie'].pop().split(';')[0];
+    //                }
+    //                done();
+    //            });
+    //    });
+    //
+    //    // Post 1 time
+    //    before(function(done) {
+    //        var req = request(app).post(path.post);
+    //
+    //        // Set cookie
+    //        req.cookies = cookie;
+    //
+    //        req.send(postMsg1).end(function(err, res) {
+    //            (err === null).should.be.true;
+    //            res.body.code.should.equal(1005);
+    //            done();
+    //        });
+    //
+    //    });
+    //
+    //    // Post 2 time
+    //    before(function(done) {
+    //        var req = request(app).post(path.post);
+    //
+    //        // Set cookie
+    //        req.cookies = cookie;
+    //
+    //        req.send(postMsg2).end(function(err, res) {
+    //            (err === null).should.be.true;
+    //            res.body.code.should.equal(1005);
+    //            done();
+    //        });
+    //    });
+    //
+    //    it('User only can post 2 times everyday', function(done) {
+    //        var req = request(app).post(path.post);
+    //
+    //        // Set cookie
+    //        req.cookies = cookie;
+    //
+    //        req.send(postMsg3).end(function(err, res) {
+    //            (err === null).should.be.true;
+    //            res.body.code.should.equal(11);
+    //            done();
+    //        });
+    //    });
+    //
+    //    // Delete test posts and user.
+    //    // Delete posts
+    //    after(function(done) {
+    //        request(app).get(path.post + '/deleteTodayPostByUser/' + registerUser.name)
+    //            .end(function(err, res) {
+    //                done();
+    //            });
+    //        //request(app).post(path.post + '/deleteTodayPostByUser/' + registerUser.name)
+    //        //    .end(function(err, res) {
+    //        //        done();
+    //        //    });
+    //    });
+    //
+    //    // Delete user
+    //    after(function(done) {
+    //        request(app).get(path.user + '/deleteUserByEmail/' + registerUser.mail)
+    //            .end(function(err, res) {
+    //                done();
+    //            });
+    //    });
+    //
+    //});
 });
